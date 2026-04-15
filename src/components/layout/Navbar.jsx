@@ -1,43 +1,40 @@
 import { NavLink } from 'react-router-dom'
 import logoLs from '../../assets/logo-ls.png'
 
-const getLinkClassName = ({ isActive }) =>
-  [
-    'text-2xl font-medium tracking-tight transition-colors',
-    isActive ? 'text-white' : 'text-neutral-200 hover:text-orange-300',
-  ].join(' ')
+const linkClassName =
+  'text-[17px] leading-none font-medium tracking-[-0.02em] text-white transition-colors duration-200 hover:text-orange-200'
 
 function Navbar() {
   return (
-    <header className="border-b border-neutral-900 bg-[linear-gradient(90deg,#07090d_0%,#0b1018_48%,#07090d_100%)]">
-      <nav className="mx-auto flex h-20 w-full max-w-[1280px] items-center justify-between px-6">
-        <NavLink to="/" className="flex items-center gap-3">
+    <header className="border-b border-[#1a1a1a] bg-[linear-gradient(90deg,#0c0c0c_0%,#0a0a0a_52%,#090909_100%)]">
+      <nav className="mx-auto flex h-[78px] w-full max-w-[1160px] items-center justify-between px-5">
+        <NavLink to="/" className="flex items-center gap-2.5">
           <img
             src={logoLs}
             alt="Lorza's Fitness logo"
-            className="h-12 w-12 rounded-lg object-cover"
+            className="h-8 w-8 object-contain"
           />
-          <p className="text-2xl font-semibold tracking-tight">
-            <span className="text-orange-500">Lorza&apos;s</span>{' '}
+          <p className="whitespace-nowrap text-[18px] leading-none font-semibold tracking-[-0.03em]">
+            <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
             <span className="text-white">Fitness</span>
           </p>
         </NavLink>
 
         <div className="flex items-center gap-8">
-          <NavLink to="/" className={getLinkClassName}>
-            Quiénes Somos
+          <NavLink to="/" className={linkClassName}>
+            Qui&eacute;nes Somos
           </NavLink>
-          <NavLink to="/activities" className={getLinkClassName}>
+          <NavLink to="/activities" className={linkClassName}>
             Actividades
           </NavLink>
-          <NavLink to="/professors" className={getLinkClassName}>
+          <NavLink to="/professors" className={linkClassName}>
             Profesores
           </NavLink>
           <NavLink
             to="/management"
-            className="rounded-xl bg-orange-500 px-8 py-2.5 text-2xl font-medium tracking-tight text-neutral-950 transition-colors hover:bg-orange-400"
+            className="rounded-[12px] bg-[#ff6b2c] px-8 py-[13px] text-[17px] leading-none font-medium tracking-[-0.02em] text-black transition-colors duration-200 hover:bg-[#ff7a42]"
           >
-            Gestión
+            Gesti&oacute;n
           </NavLink>
         </div>
       </nav>
