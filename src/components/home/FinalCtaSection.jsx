@@ -1,31 +1,33 @@
+import { Link } from 'react-router-dom'
+
 function FinalCtaSection({ contactInfo }) {
   return (
     <section className="rounded-3xl border border-orange-500/30 bg-gradient-to-br from-neutral-900 to-neutral-950 px-8 py-12 md:px-12">
       <div className="space-y-5">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-400">
-          Ready to start
+          Let&apos;s begin together
         </p>
         <h2 className="max-w-3xl text-3xl font-bold leading-tight md:text-5xl">
-          Join Lorza&apos;s Fitness and build your strongest routine.
+          Choose movement that cares for your body and your wellbeing.
         </h2>
         <p className="max-w-2xl text-neutral-300">
-          Book your first session, explore our classes, and train with a team
-          committed to your progress.
+          Start with the option that feels right for you. We are here to guide
+          your process step by step, with respect and clarity.
         </p>
 
         <div className="flex flex-wrap gap-4">
-          <a
-            href="/activities"
+          <Link
+            to="/activities"
             className="rounded-md bg-orange-500 px-6 py-3 text-sm font-semibold text-neutral-950 transition-colors hover:bg-orange-400"
           >
             View Activities
-          </a>
-          <a
-            href="/management"
+          </Link>
+          <Link
+            to="/management"
             className="rounded-md border border-neutral-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-neutral-500"
           >
             Access Management
-          </a>
+          </Link>
         </div>
       </div>
 

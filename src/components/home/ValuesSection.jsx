@@ -8,11 +8,11 @@ function ValuesSection({ values }) {
           Our Values
         </p>
         <h2 className="text-3xl font-bold md:text-4xl">
-          Built around people, progress, and consistency.
+          Centered on wellbeing, respect, and shared progress.
         </h2>
         <p className="max-w-3xl text-neutral-300">
-          We create an environment where everyone can train with clarity,
-          confidence, and long-term support.
+          We believe healthy movement grows when people feel safe, accompanied,
+          and free to advance at their own rhythm.
         </p>
       </div>
 

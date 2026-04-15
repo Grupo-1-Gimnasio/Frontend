@@ -8,11 +8,11 @@ function TestimonialsSection({ testimonials }) {
           Testimonials
         </p>
         <h2 className="text-3xl font-bold md:text-4xl">
-          Real stories from the Lorza&apos;s Fitness community.
+          Voices from people who found a healthier relationship with movement.
         </h2>
         <p className="max-w-3xl text-neutral-300">
-          Members trust our methodology because it is practical, progressive,
-          and adapted to real life.
+          These stories reflect what matters to us: feeling supported, moving
+          safely, and enjoying progress without pressure.
         </p>
       </div>
 

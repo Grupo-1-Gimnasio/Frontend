@@ -1,84 +1,84 @@
 export const values = [
   {
-    title: 'Inclusive Training',
+    title: 'Movement Without Judgment',
     description:
-      'Programs designed for every fitness level, with adaptive guidance and clear progress paths.',
+      'Every person can participate with dignity, adapting each practice to their body, context, and energy.',
   },
   {
-    title: 'Professional Team',
+    title: 'Empathetic Guidance',
     description:
-      'Certified coaches who combine technical knowledge with close and human support.',
+      'Our professionals listen first, then guide with clarity so each step feels safe and possible.',
   },
   {
-    title: 'Healthy Community',
+    title: 'Community and Belonging',
     description:
-      'A positive environment where members motivate each other and celebrate every improvement.',
+      'We grow together in a respectful environment where support matters more than comparison.',
   },
   {
-    title: 'Sustainable Routine',
+    title: 'Sustainable Progress',
     description:
-      'Long-term habits focused on consistency, wellbeing, and measurable personal growth.',
+      'We focus on realistic habits that protect your wellbeing and can be maintained over time.',
   },
 ]
 
 export const featuredActivities = [
   {
-    name: 'Functional Strength',
+    name: 'Functional Movement',
     level: 'All levels',
     duration: '50 min',
-    focus: 'Mobility and full-body power',
+    focus: 'Mobility, coordination, and everyday strength',
   },
   {
-    name: 'Cardio HIIT',
+    name: 'Cardio in Motion',
     level: 'Intermediate',
     duration: '40 min',
-    focus: 'High-intensity endurance',
+    focus: 'Rhythm, breathing, and gradual endurance',
   },
   {
-    name: 'Yoga Flow',
+    name: 'Yoga and Breath',
     level: 'Beginner',
     duration: '55 min',
-    focus: 'Breathing, flexibility, control',
+    focus: 'Breathing, flexibility, and body awareness',
   },
   {
-    name: 'Core & Stability',
+    name: 'Core and Stability',
     level: 'All levels',
     duration: '45 min',
-    focus: 'Posture and abdominal strength',
+    focus: 'Posture support and balanced movement',
   },
   {
-    name: 'Boxing Basics',
+    name: 'Boxing Fundamentals',
     level: 'Beginner',
     duration: '60 min',
-    focus: 'Technique and cardio conditioning',
+    focus: 'Technique, confidence, and coordination',
   },
   {
-    name: 'Indoor Cycle',
+    name: 'Cycle Session',
     level: 'Intermediate',
     duration: '45 min',
-    focus: 'Lower body resistance',
+    focus: 'Cardio with adaptable resistance',
   },
 ]
 
 export const featuredProfessors = [
   {
     name: 'Sara Lopez',
-    specialty: 'Strength & conditioning',
+    specialty: 'Inclusive movement and strength',
     experience: '8 years of coaching',
   },
   {
     name: 'Miguel Torres',
-    specialty: 'Functional training',
+    specialty: 'Functional mobility',
     experience: '10 years of coaching',
   },
   {
     name: 'Lucia Reyes',
-    specialty: 'Yoga & mobility',
+    specialty: 'Yoga and body awareness',
     experience: '6 years of coaching',
   },
   {
     name: 'Daniel Navarro',
-    specialty: 'High-performance cardio',
+    specialty: 'Cardio and adaptive progression',
     experience: '9 years of coaching',
   },
 ]
@@ -87,19 +87,19 @@ export const testimonials = [
   {
     name: 'Andrea P.',
     message:
-      'I felt supported from day one. The team adapted every session to my pace and goals.',
+      'I felt accompanied from day one. The team adapted each session to my pace without pressure.',
     memberType: 'Member since 2024',
   },
   {
     name: 'Carlos M.',
     message:
-      'The classes are dynamic and motivating. I improved my strength and energy in just weeks.',
+      'The classes helped me reconnect with movement and improve my energy in a healthy way.',
     memberType: 'Member since 2023',
   },
   {
     name: 'Elena R.',
     message:
-      'The environment is welcoming and professional. It is easy to stay consistent here.',
+      'It is a respectful, professional space where I can stay consistent while taking care of myself.',
     memberType: 'Member since 2025',
   },
 ]
@@ -126,5 +126,5 @@ export const contactInfo = {
   phone: '+34 600 123 456',
   email: 'hello@lorzasfitness.com',
   address: 'Barcelona, Spain',
-  schedule: 'Mon-Fri 07:00 - 22:00',
+  schedule: 'Mon-Fri 07:00 - 22:00 | Sat 09:00 - 14:00',
 }

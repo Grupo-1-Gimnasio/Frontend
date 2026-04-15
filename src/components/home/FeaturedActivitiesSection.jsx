@@ -8,11 +8,11 @@ function FeaturedActivitiesSection({ featuredActivities }) {
           Featured Activities
         </p>
         <h2 className="text-3xl font-bold md:text-4xl">
-          Discover classes that match your training style.
+          Explore sessions designed for health, mobility, and confidence.
         </h2>
         <p className="max-w-3xl text-neutral-300">
-          From strength sessions to mobility-focused classes, each activity is
-          guided by professionals and adapted to your level.
+          Each class is guided by professionals and includes options to adapt
+          intensity, so everyone can move with comfort and intention.
         </p>
       </div>
 
