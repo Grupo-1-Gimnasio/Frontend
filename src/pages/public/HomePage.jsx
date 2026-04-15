@@ -18,7 +18,9 @@ import {
 function HomePage() {
   return (
     <div className="space-y-16">
-      <HeroSection />
+      <div className="relative left-1/2 right-1/2 -mt-10 ml-[-50vw] mr-[-50vw] w-screen">
+        <HeroSection />
+      </div>
       <AboutSection />
       <ValuesSection values={values} />
       <FeaturedActivitiesSection featuredActivities={featuredActivities} />
