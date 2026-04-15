@@ -1,14 +1,32 @@
+import AboutSection from '../../components/home/AboutSection'
+import FeaturedActivitiesSection from '../../components/home/FeaturedActivitiesSection'
+import FinalCtaSection from '../../components/home/FinalCtaSection'
+import HeroSection from '../../components/home/HeroSection'
+import TeamPreviewSection from '../../components/home/TeamPreviewSection'
+import TestimonialsSection from '../../components/home/TestimonialsSection'
+import ValuesSection from '../../components/home/ValuesSection'
+import Footer from '../../components/layout/Footer'
+import {
+  contactInfo,
+  featuredActivities,
+  featuredProfessors,
+  footerLinks,
+  testimonials,
+  values,
+} from '../../data/homeContent'
+
 function HomePage() {
   return (
-    <section className="space-y-3">
-      <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
-        Public Area
-      </p>
-      <h1 className="text-3xl font-bold">Home</h1>
-      <p className="text-neutral-300">
-        Base public page ready for the landing content.
-      </p>
-    </section>
+    <div className="space-y-16">
+      <HeroSection />
+      <AboutSection />
+      <ValuesSection values={values} />
+      <FeaturedActivitiesSection featuredActivities={featuredActivities} />
+      <TeamPreviewSection featuredProfessors={featuredProfessors} />
+      <TestimonialsSection testimonials={testimonials} />
+      <FinalCtaSection contactInfo={contactInfo} />
+      <Footer footerLinks={footerLinks} />
+    </div>
   )
 }
 
