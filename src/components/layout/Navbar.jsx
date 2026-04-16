@@ -21,9 +21,9 @@ function Navbar() {
         </NavLink>
 
         <div className="flex items-center gap-8">
-          <NavLink to="/" className={linkClassName}>
+          <a href="#about" className={linkClassName}>
             Qui&eacute;nes Somos
-          </NavLink>
+          </a>
           <NavLink to="/activities" className={linkClassName}>
             Actividades
           </NavLink>
