@@ -1,18 +1,37 @@
-const kpiCards = [
-  { label: 'Usuarios activos', value: '248' },
-  { label: 'Actividades', value: '12' },
-  { label: 'Profesores', value: '8' },
-  { label: 'Crecimiento', value: '+15%' },
-]
-
-const recentActivity = [
-  'Nuevo usuario registrado',
-  'Clase de yoga completada',
-  'Profesor a\u00f1adido al sistema',
-  'Actividad funcional actualizada',
-]
+import { useEffect, useState } from 'react'
+import { getDashboardData } from '../../services/dashboardService'
 
 function ManagementDashboardPage() {
+  const [kpiCards, setKpiCards] = useState([])
+  const [recentActivity, setRecentActivity] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let isMounted = true
+
+    getDashboardData().then((data) => {
+      if (!isMounted) {
+        return
+      }
+
+      setKpiCards(data.kpiCards)
+      setRecentActivity(data.recentActivity)
+      setLoading(false)
+    })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  if (loading) {
+    return (
+      <section className="space-y-3">
+        <p className="text-sm text-neutral-400">Cargando datos...</p>
+      </section>
+    )
+  }
+
   return (
     <section className="space-y-8">
       <div className="space-y-3">
@@ -43,10 +62,10 @@ function ManagementDashboardPage() {
         <ul className="mt-5 space-y-3">
           {recentActivity.map((item) => (
             <li
-              key={item}
+              key={item.id}
               className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-neutral-300"
             >
-              {item}
+              {item.name}
             </li>
           ))}
         </ul>
