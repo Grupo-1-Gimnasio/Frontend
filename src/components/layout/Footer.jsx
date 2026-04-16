@@ -9,14 +9,14 @@ function Footer({ footerLinks }) {
         <div className="space-y-3">
           <p className="text-lg font-semibold text-white">Lorza&apos;s Fitness</p>
           <p className="text-sm text-neutral-400">
-            A community for inclusive movement, sustainable wellbeing, and
-            shared care.
+            Una comunidad para el movimiento inclusivo, el bienestar
+            sostenible y el cuidado compartido.
           </p>
         </div>
 
         <div>
           <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-orange-400">
-            Navigation
+            Navegaci&oacute;n
           </h3>
           <ul className="space-y-2 text-sm text-neutral-300">
             {footerLinks.navigation.map((item) => (
@@ -37,7 +37,7 @@ function Footer({ footerLinks }) {
 
         <div>
           <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-orange-400">
-            Community
+            Comunidad
           </h3>
           <ul className="space-y-2 text-sm text-neutral-300">
             {footerLinks.community.map((item) => (

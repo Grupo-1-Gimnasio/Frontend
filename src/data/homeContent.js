@@ -1,85 +1,85 @@
 export const values = [
   {
-    title: 'Movement Without Judgment',
+    title: 'Movimiento sin juicio',
     description:
-      'Every person can participate with dignity, adapting each practice to their body, context, and energy.',
+      'Cada persona puede participar con dignidad, adaptando cada pr\u00e1ctica a su cuerpo, su contexto y su energ\u00eda.',
   },
   {
-    title: 'Empathetic Guidance',
+    title: 'Acompa\u00f1amiento emp\u00e1tico',
     description:
-      'Our professionals listen first, then guide with clarity so each step feels safe and possible.',
+      'Nuestros profesionales escuchan primero y despu\u00e9s gu\u00edan con claridad para que cada paso se sienta seguro y posible.',
   },
   {
-    title: 'Community and Belonging',
+    title: 'Comunidad y pertenencia',
     description:
-      'We grow together in a respectful environment where support matters more than comparison.',
+      'Crecemos juntos en un entorno respetuoso donde el apoyo importa m\u00e1s que la comparaci\u00f3n.',
   },
   {
-    title: 'Sustainable Progress',
+    title: 'Progreso sostenible',
     description:
-      'We focus on realistic habits that protect your wellbeing and can be maintained over time.',
+      'Nos enfocamos en h\u00e1bitos realistas que cuidan tu bienestar y pueden mantenerse con el tiempo.',
   },
 ]
 
 export const featuredActivities = [
   {
-    name: 'Functional Movement',
-    level: 'All levels',
+    name: 'Movimiento funcional',
+    level: 'Todos los niveles',
     duration: '50 min',
-    focus: 'Mobility, coordination, and everyday strength',
+    focus: 'Movilidad, coordinaci\u00f3n y fuerza para el d\u00eda a d\u00eda',
   },
   {
-    name: 'Cardio in Motion',
-    level: 'Intermediate',
+    name: 'Cardio en movimiento',
+    level: 'Intermedio',
     duration: '40 min',
-    focus: 'Rhythm, breathing, and gradual endurance',
+    focus: 'Ritmo, respiraci\u00f3n y resistencia progresiva',
   },
   {
-    name: 'Yoga and Breath',
-    level: 'Beginner',
+    name: 'Yoga y respiraci\u00f3n',
+    level: 'Principiante',
     duration: '55 min',
-    focus: 'Breathing, flexibility, and body awareness',
+    focus: 'Respiraci\u00f3n, flexibilidad y conciencia corporal',
   },
   {
-    name: 'Core and Stability',
-    level: 'All levels',
+    name: 'Core y estabilidad',
+    level: 'Todos los niveles',
     duration: '45 min',
-    focus: 'Posture support and balanced movement',
+    focus: 'Soporte postural y movimiento equilibrado',
   },
   {
-    name: 'Boxing Fundamentals',
-    level: 'Beginner',
+    name: 'Fundamentos de boxeo',
+    level: 'Principiante',
     duration: '60 min',
-    focus: 'Technique, confidence, and coordination',
+    focus: 'T\u00e9cnica, confianza y coordinaci\u00f3n',
   },
   {
-    name: 'Cycle Session',
-    level: 'Intermediate',
+    name: 'Sesi\u00f3n de ciclo',
+    level: 'Intermedio',
     duration: '45 min',
-    focus: 'Cardio with adaptable resistance',
+    focus: 'Cardio con resistencia adaptable',
   },
 ]
 
 export const featuredProfessors = [
   {
     name: 'Sara Lopez',
-    specialty: 'Inclusive movement and strength',
-    experience: '8 years of coaching',
+    specialty: 'Movimiento inclusivo y fuerza',
+    experience: '8 a\u00f1os acompa\u00f1ando procesos',
   },
   {
     name: 'Miguel Torres',
-    specialty: 'Functional mobility',
-    experience: '10 years of coaching',
+    specialty: 'Movilidad funcional',
+    experience: '10 a\u00f1os acompa\u00f1ando procesos',
   },
   {
     name: 'Lucia Reyes',
-    specialty: 'Yoga and body awareness',
-    experience: '6 years of coaching',
+    specialty: 'Yoga y conciencia corporal',
+    experience: '6 a\u00f1os acompa\u00f1ando procesos',
   },
   {
     name: 'Daniel Navarro',
-    specialty: 'Cardio and adaptive progression',
-    experience: '9 years of coaching',
+    specialty: 'Cardio y progresi\u00f3n adaptativa',
+    experience: '9 a\u00f1os acompa\u00f1ando procesos',
   },
 ]
 
@@ -87,37 +87,37 @@ export const testimonials = [
   {
     name: 'Andrea P.',
     message:
-      'I felt accompanied from day one. The team adapted each session to my pace without pressure.',
-    memberType: 'Member since 2024',
+      'Me sent\u00ed acompa\u00f1ada desde el primer d\u00eda. El equipo adapt\u00f3 cada sesi\u00f3n a mi ritmo sin presi\u00f3n.',
+    memberType: 'Miembro desde 2024',
   },
   {
     name: 'Carlos M.',
     message:
-      'The classes helped me reconnect with movement and improve my energy in a healthy way.',
-    memberType: 'Member since 2023',
+      'Las clases me ayudaron a reconectar con el movimiento y a mejorar mi energ\u00eda de una manera saludable.',
+    memberType: 'Miembro desde 2023',
   },
   {
     name: 'Elena R.',
     message:
-      'It is a respectful, professional space where I can stay consistent while taking care of myself.',
-    memberType: 'Member since 2025',
+      'Es un espacio respetuoso y profesional donde puedo ser constante mientras me cuido.',
+    memberType: 'Miembro desde 2025',
   },
 ]
 
 export const footerLinks = {
   navigation: [
-    { label: 'Home', href: '/' },
-    { label: 'Activities', href: '/activities' },
-    { label: 'Professors', href: '/professors' },
+    { label: 'Inicio', href: '/' },
+    { label: 'Actividades', href: '/activities' },
+    { label: 'Profesores', href: '/professors' },
   ],
   community: [
     { label: 'Instagram', href: '#' },
     { label: 'YouTube', href: '#' },
-    { label: 'Events', href: '#' },
+    { label: 'Eventos', href: '#' },
   ],
   legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
+    { label: 'Pol\u00edtica de privacidad', href: '#' },
+    { label: 'T\u00e9rminos de servicio', href: '#' },
     { label: 'Cookies', href: '#' },
   ],
 }
@@ -125,6 +125,6 @@ export const footerLinks = {
 export const contactInfo = {
   phone: '+34 600 123 456',
   email: 'hello@lorzasfitness.com',
-  address: 'Barcelona, Spain',
-  schedule: 'Mon-Fri 07:00 - 22:00 | Sat 09:00 - 14:00',
+  address: 'Barcelona, Espa\u00f1a',
+  schedule: 'Lun-Vie 07:00 - 22:00 | S\u00e1b 09:00 - 14:00',
 }

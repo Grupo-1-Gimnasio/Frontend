@@ -5,14 +5,14 @@ function TeamPreviewSection({ featuredProfessors }) {
     <section className="space-y-8">
       <div className="space-y-3">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-400">
-          Team Preview
+          Nuestro equipo
         </p>
         <h2 className="text-3xl font-bold md:text-4xl">
-          Meet the people who accompany your process.
+          Conoce a las personas que te acompa&ntilde;an en tu proceso.
         </h2>
         <p className="max-w-3xl text-neutral-300">
-          Our team combines technical preparation and empathetic coaching, so
-          you can build habits that feel realistic and sustainable.
+          Nuestro equipo combina preparaci&oacute;n t&eacute;cnica y acompa&ntilde;amiento
+          emp&aacute;tico para ayudarte a construir h&aacute;bitos realistas y sostenibles.
         </p>
       </div>
 
