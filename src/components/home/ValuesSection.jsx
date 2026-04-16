@@ -5,14 +5,15 @@ function ValuesSection({ values }) {
     <section className="mt-24 space-y-8">
       <div className="space-y-3">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#ff6b2c]">
-          Our Values
+          Nuestros valores
         </p>
         <h2 className="max-w-[900px] text-3xl font-extrabold md:text-4xl lg:text-[3rem]">
-          Centered on wellbeing, respect, and shared progress.
+          Centrados en el bienestar, el respeto y el progreso compartido.
         </h2>
         <p className="mt-4 max-w-[600px] text-white/70">
-          We believe healthy movement grows when people feel safe, accompanied,
-          and free to advance at their own rhythm.
+          Creemos que el movimiento saludable crece cuando las personas se
+          sienten seguras, acompa&ntilde;adas y libres para avanzar a su propio
+          ritmo.
         </p>
       </div>
 

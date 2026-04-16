@@ -5,14 +5,16 @@ function FeaturedActivitiesSection({ featuredActivities }) {
     <section className="space-y-8">
       <div className="space-y-3">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-400">
-          Featured Activities
+          Actividades destacadas
         </p>
         <h2 className="text-3xl font-bold md:text-4xl">
-          Explore sessions designed for health, mobility, and confidence.
+          Explora sesiones dise&ntilde;adas para mejorar tu salud, movilidad y
+          confianza.
         </h2>
         <p className="max-w-3xl text-neutral-300">
-          Each class is guided by professionals and includes options to adapt
-          intensity, so everyone can move with comfort and intention.
+          Cada clase est&aacute; guiada por profesionales e incluye opciones para
+          adaptar la intensidad, para que todas las personas puedan moverse con
+          comodidad.
         </p>
       </div>
 
