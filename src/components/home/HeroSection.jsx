@@ -3,7 +3,10 @@ import heroImage from '../../assets/lorzas-hero.jpg'
 
 function HeroSection() {
   return (
-    <section className="relative h-screen overflow-hidden border-b border-[#1a1a1a] bg-[#080808]">
+    <section
+      id="home"
+      className="relative h-screen overflow-hidden border-b border-[#1a1a1a] bg-[#080808]"
+    >
       <img
         src={heroImage}
         alt="Inclusive movement session at Lorza's Fitness"

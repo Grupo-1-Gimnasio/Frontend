@@ -2,11 +2,11 @@ function ManagementProfessorsPage() {
   return (
     <section className="space-y-3">
       <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
-        Management Area
+        Panel de gesti&oacute;n
       </p>
-      <h1 className="text-3xl font-bold">Professors</h1>
+      <h1 className="text-3xl font-bold">Profesores</h1>
       <p className="text-neutral-300">
-        Base page ready for professors management.
+        P&aacute;gina base lista para la gesti&oacute;n de profesores.
       </p>
     </section>
   )

@@ -2,7 +2,7 @@ import ActivityHighlightCard from './ActivityHighlightCard'
 
 function FeaturedActivitiesSection({ featuredActivities }) {
   return (
-    <section className="space-y-8">
+    <section id="activities" className="scroll-mt-24 space-y-8">
       <div className="space-y-3">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-400">
           Actividades destacadas

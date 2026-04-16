@@ -1,8 +1,4 @@
-import { Link } from 'react-router-dom'
-
 function Footer({ footerLinks }) {
-  const isInternalLink = (href) => href.startsWith('/')
-
   return (
     <footer className="rounded-3xl border border-neutral-800 bg-neutral-900 px-8 py-10">
       <div className="grid gap-10 md:grid-cols-4">
@@ -21,15 +17,9 @@ function Footer({ footerLinks }) {
           <ul className="space-y-2 text-sm text-neutral-300">
             {footerLinks.navigation.map((item) => (
               <li key={item.label}>
-                {isInternalLink(item.href) ? (
-                  <Link to={item.href} className="hover:text-white">
-                    {item.label}
-                  </Link>
-                ) : (
-                  <a href={item.href} className="hover:text-white">
-                    {item.label}
-                  </a>
-                )}
+                <a href={item.href} className="hover:text-white">
+                  {item.label}
+                </a>
               </li>
             ))}
           </ul>

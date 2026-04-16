@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import logoLs from '../../assets/logo-ls.png'
 
 const linkClassName =
@@ -8,7 +8,7 @@ function Navbar() {
   return (
     <header className="border-b border-[#1a1a1a] bg-[linear-gradient(90deg,#0c0c0c_0%,#0a0a0a_52%,#090909_100%)]">
       <nav className="mx-auto flex h-[78px] w-full max-w-[1160px] items-center justify-between px-5">
-        <NavLink to="/" className="flex items-center gap-2.5">
+        <a href="#home" className="flex items-center gap-2.5">
           <img
             src={logoLs}
             alt="Lorza's Fitness logo"
@@ -18,24 +18,27 @@ function Navbar() {
             <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
             <span className="text-white">Fitness</span>
           </p>
-        </NavLink>
+        </a>
 
         <div className="flex items-center gap-8">
+          <a href="#home" className={linkClassName}>
+            Inicio
+          </a>
           <a href="#about" className={linkClassName}>
             Qui&eacute;nes Somos
           </a>
-          <NavLink to="/activities" className={linkClassName}>
+          <a href="#activities" className={linkClassName}>
             Actividades
-          </NavLink>
-          <NavLink to="/professors" className={linkClassName}>
+          </a>
+          <a href="#team" className={linkClassName}>
             Profesores
-          </NavLink>
-          <NavLink
-            to="/management"
+          </a>
+          <Link
+            to="/dashboard"
             className="rounded-[12px] bg-[#ff6b2c] px-8 py-[13px] text-[17px] leading-none font-medium tracking-[-0.02em] text-black transition-colors duration-200 hover:bg-[#ff7a42]"
           >
             Gesti&oacute;n
-          </NavLink>
+          </Link>
         </div>
       </nav>
     </header>

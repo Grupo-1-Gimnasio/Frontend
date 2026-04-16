@@ -106,9 +106,9 @@ export const testimonials = [
 
 export const footerLinks = {
   navigation: [
-    { label: 'Inicio', href: '/' },
-    { label: 'Actividades', href: '/activities' },
-    { label: 'Profesores', href: '/professors' },
+    { label: 'Inicio', href: '#home' },
+    { label: 'Actividades', href: '#activities' },
+    { label: 'Profesores', href: '#team' },
   ],
   community: [
     { label: 'Instagram', href: '#' },

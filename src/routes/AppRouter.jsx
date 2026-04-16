@@ -25,6 +25,13 @@ function AppRouter() {
           <Route path="activities" element={<ManagementActivitiesPage />} />
           <Route path="professors" element={<ManagementProfessorsPage />} />
         </Route>
+
+        <Route path="/dashboard" element={<ManagementLayout />}>
+          <Route index element={<ManagementDashboardPage />} />
+          <Route path="users" element={<ManagementUsersPage />} />
+          <Route path="activities" element={<ManagementActivitiesPage />} />
+          <Route path="professors" element={<ManagementProfessorsPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

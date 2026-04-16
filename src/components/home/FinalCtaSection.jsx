@@ -2,7 +2,10 @@ import { Link } from 'react-router-dom'
 
 function FinalCtaSection({ contactInfo }) {
   return (
-    <section className="rounded-3xl border border-orange-500/30 bg-gradient-to-br from-neutral-900 to-neutral-950 px-8 py-12 md:px-12">
+    <section
+      id="cta"
+      className="scroll-mt-24 rounded-3xl border border-orange-500/30 bg-gradient-to-br from-neutral-900 to-neutral-950 px-8 py-12 md:px-12"
+    >
       <div className="space-y-5">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-400">
           Empecemos juntos
@@ -16,15 +19,15 @@ function FinalCtaSection({ contactInfo }) {
         </p>
 
         <div className="flex flex-wrap gap-4">
-          <Link
-            to="/activities"
+          <a
+            href="#activities"
             className="rounded-md bg-orange-500 px-6 py-3 text-sm font-semibold text-neutral-950 transition-colors hover:bg-orange-400"
           >
             Ver actividades
-          </Link>
+          </a>
           <Link
-            to="/management"
-            className="rounded-md border border-neutral-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-neutral-500"
+            to="/dashboard"
+            className="inline-flex items-center justify-center rounded-md border border-white/20 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
           >
             Acceso gesti&oacute;n
           </Link>

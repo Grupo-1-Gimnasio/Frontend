@@ -2,7 +2,7 @@ import ValueCard from './ValueCard'
 
 function ValuesSection({ values }) {
   return (
-    <section className="mt-24 space-y-8">
+    <section id="values" className="mt-24 scroll-mt-24 space-y-8">
       <div className="space-y-3">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#ff6b2c]">
           Nuestros valores

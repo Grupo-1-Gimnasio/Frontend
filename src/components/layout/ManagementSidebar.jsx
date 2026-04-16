@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const getSidebarLinkClassName = ({ isActive }) =>
   [
@@ -10,26 +10,35 @@ const getSidebarLinkClassName = ({ isActive }) =>
 
 function ManagementSidebar() {
   return (
-    <aside className="w-64 border-r border-neutral-800 bg-neutral-900 p-4">
+    <aside className="flex w-64 flex-col border-r border-neutral-800 bg-neutral-900 p-4">
       <div className="mb-8">
         <p className="text-lg font-semibold text-white">Lorza&apos;s Fitness</p>
-        <p className="text-xs text-neutral-400">Management Panel</p>
+        <p className="text-xs text-neutral-400">Panel de gesti&oacute;n</p>
       </div>
 
       <nav className="space-y-2">
-        <NavLink to="/management" end className={getSidebarLinkClassName}>
-          Inicio
+        <NavLink to="/dashboard" end className={getSidebarLinkClassName}>
+          Panel de control
         </NavLink>
-        <NavLink to="/management/users" className={getSidebarLinkClassName}>
+        <NavLink to="/dashboard/users" className={getSidebarLinkClassName}>
           Usuarios
         </NavLink>
-        <NavLink to="/management/activities" className={getSidebarLinkClassName}>
+        <NavLink to="/dashboard/activities" className={getSidebarLinkClassName}>
           Actividades
         </NavLink>
-        <NavLink to="/management/professors" className={getSidebarLinkClassName}>
+        <NavLink to="/dashboard/professors" className={getSidebarLinkClassName}>
           Profesores
         </NavLink>
       </nav>
+
+      <div className="mt-8">
+        <Link
+          to="/"
+          className="block rounded-md border border-neutral-700 px-3 py-2 text-sm font-medium text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-white"
+        >
+          &larr; Volver a la web
+        </Link>
+      </div>
     </aside>
   )
 }
