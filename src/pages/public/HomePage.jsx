@@ -25,7 +25,7 @@ function HomePage() {
       <TeamPreviewSection featuredProfessors={featuredProfessors} />
       <TestimonialsSection testimonials={testimonials} />
       <FinalCtaSection contactInfo={contactInfo} />
-      <Footer footerLinks={footerLinks} contactInfo={contactInfo} />
+      <Footer footerLinks={footerLinks} />
     </div>
   )
 }
