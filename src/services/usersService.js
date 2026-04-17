@@ -7,7 +7,9 @@ function mapUser(user) {
     name: user.name || user.firstName,
     surname: user.surname || user.lastName,
     dni: user.dni,
-    isActive: user.isActive ?? true,
+    startYear: user.startYear ?? user.start_year,
+    isActive: user.isActive ?? (user.status === 'active'),
+    annualFeePaid: user.annualFeePaid,
     image: user.image,
   }
 }
