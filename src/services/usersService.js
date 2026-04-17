@@ -1,9 +1,11 @@
 import { users } from '../data/dashboardData'
+import httpClient from './httpClient'
 
-export function getUsers() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(users)
-    }, 300)
-  })
+export async function getUsers() {
+  try {
+    const response = await httpClient.get('/users')
+    return response.data
+  } catch {
+    return users
+  }
 }
