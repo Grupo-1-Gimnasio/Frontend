@@ -103,6 +103,10 @@ export const professors = [
   {
     id: 1,
     name: 'Sara Lopez',
+    dni: '31774011K',
+    hiring_year: 2019,
+    is_hired: true,
+    image: 'https://i.pravatar.cc/96?img=5',
     email: 'sara@example.com',
     phone: '+34 600 444 444',
     status: 'active',
@@ -111,6 +115,10 @@ export const professors = [
   {
     id: 2,
     name: 'Miguel Torres',
+    dni: '29183540L',
+    hiring_year: 2017,
+    is_hired: true,
+    image: 'https://i.pravatar.cc/96?img=15',
     email: 'miguel@example.com',
     phone: '+34 600 555 555',
     status: 'active',
@@ -119,6 +127,10 @@ export const professors = [
   {
     id: 3,
     name: 'Lucia Reyes',
+    dni: '40866291M',
+    hiring_year: 2021,
+    is_hired: false,
+    image: 'https://i.pravatar.cc/96?img=45',
     email: 'lucia@example.com',
     phone: '+34 600 666 666',
     status: 'active',
