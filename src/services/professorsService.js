@@ -7,7 +7,7 @@ function mapProfessor(professor) {
     name: professor.name ?? professor.firstName,
     dni: professor.dni,
     hiringYear: professor.hiringYear ?? professor.hiring_year,
-    isActive: professor.isActive ?? professor.is_hired ?? true,
+    isActive: professor.isActive ?? professor.is_hired,
     image: professor.image,
   }
 }
