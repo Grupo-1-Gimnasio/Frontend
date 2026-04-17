@@ -60,6 +60,12 @@ export const users = [
 export const activities = [
   {
     id: 1,
+    title: 'Yoga y respiracion',
+    price: 22,
+    week_day: 1,
+    start_hour: '09:00',
+    end_hour: '10:00',
+    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=200&q=60',
     name: 'Yoga y respiraci\u00f3n',
     type: 'wellness',
     status: 'active',
@@ -67,6 +73,12 @@ export const activities = [
   },
   {
     id: 2,
+    title: 'Movimiento funcional',
+    price: 25,
+    week_day: 3,
+    start_hour: '18:30',
+    end_hour: '19:30',
+    image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=200&q=60',
     name: 'Movimiento funcional',
     type: 'strength',
     status: 'active',
@@ -74,6 +86,12 @@ export const activities = [
   },
   {
     id: 3,
+    title: 'Cardio en movimiento',
+    price: 20,
+    week_day: 5,
+    start_hour: '07:30',
+    end_hour: '08:15',
+    image: 'https://images.unsplash.com/photo-1571019613914-85f342c55f6b?auto=format&fit=crop&w=200&q=60',
     name: 'Cardio en movimiento',
     type: 'cardio',
     status: 'draft',
