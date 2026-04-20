@@ -113,25 +113,27 @@ function MapPinIcon({ className = '' }) {
   )
 }
 
+const focusRingClassName =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b2c] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950'
+
+const iconButtonClassName =
+  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900/55 text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white'
+
 const communityIcons = {
   instagram: InstagramIcon,
   youtube: YoutubeIcon,
   events: CalendarIcon,
 }
 
-const focusRingClassName =
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b2c] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950'
-
 function Footer({ footerLinks, contactInfo }) {
   const isInternalLink = (href) => href.startsWith('/')
   const isExternalLink = (href) => /^https?:\/\//.test(href)
 
-  const contactRows = [
+  const contactActions = [
     contactInfo?.email
       ? {
           label: 'Email',
           href: `mailto:${contactInfo.email}`,
-          value: contactInfo.email,
           icon: MailIcon,
         }
       : null,
@@ -139,7 +141,6 @@ function Footer({ footerLinks, contactInfo }) {
       ? {
           label: 'Telefono',
           href: `tel:${contactInfo.phone.replace(/\s+/g, '')}`,
-          value: contactInfo.phone,
           icon: PhoneIcon,
         }
       : null,
@@ -147,170 +148,119 @@ function Footer({ footerLinks, contactInfo }) {
       ? {
           label: 'Direccion',
           href: `https://maps.google.com/?q=${encodeURIComponent(contactInfo.address)}`,
-          value: contactInfo.address,
           icon: MapPinIcon,
         }
       : null,
   ].filter(Boolean)
 
   return (
-    <footer className="relative overflow-hidden rounded-[32px] border border-neutral-800 bg-[linear-gradient(155deg,#080808_0%,#0c0c0c_45%,#111111_100%)] text-white">
+    <footer className="relative overflow-hidden rounded-[30px] border border-neutral-800 bg-[linear-gradient(160deg,#0a0a0a_0%,#0e0e0e_50%,#111111_100%)] text-white">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-16 top-0 h-56 w-56 rounded-full bg-[#ff6b2c]/14 blur-3xl" />
-        <div className="absolute -right-14 bottom-0 h-52 w-52 rounded-full bg-[#ff6b2c]/12 blur-3xl" />
+        <div className="absolute -right-12 -top-16 h-44 w-44 rounded-full bg-[#ff6b2c]/10 blur-3xl" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff6b2c] to-transparent" />
-        <p className="absolute -bottom-7 left-6 text-[clamp(2.4rem,9vw,6.2rem)] font-semibold tracking-[-0.05em] text-white/[0.05]">
-          MOVE WITH CARE
-        </p>
       </div>
 
-      <div className="relative z-10 px-6 py-12 md:px-10 md:py-14">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-          <section className="rounded-2xl border border-neutral-800/80 bg-neutral-950/45 p-6 md:p-8">
-            <div className="space-y-7">
-              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#ff6b2c]" />
-                Lorza&apos;s Fitness
-              </div>
+      <div className="relative z-10 px-6 py-10 md:px-10">
+        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-3">
+            <p className="text-sm font-semibold tracking-[-0.02em]">
+              <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
+              <span className="text-white">Fitness</span>
+            </p>
+            <p className="max-w-sm text-sm leading-6 text-neutral-300">
+              Inclusive movement with a clean and modern experience.
+            </p>
+          </div>
 
-              <h3 className="max-w-lg text-3xl leading-tight font-semibold tracking-[-0.045em] text-white md:text-[2.55rem]">
-                Impacto minimal para una marca que se siente premium.
-              </h3>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              {contactActions.map((item) => {
+                const Icon = item.icon
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    aria-label={item.label}
+                    title={item.label}
+                    target={isExternalLink(item.href) ? '_blank' : undefined}
+                    rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
+                    className={`${iconButtonClassName} ${focusRingClassName}`}
+                  >
+                    <Icon className="h-4 w-4 text-[#ff6b2c]" />
+                  </a>
+                )
+              })}
+            </div>
 
-              <p className="max-w-md text-sm leading-6 text-neutral-300">
-                Entrenamiento inclusivo, acompanamiento experto y una experiencia visual
-                limpia y contemporanea.
-              </p>
+            <span className="h-6 w-px bg-neutral-700/80" aria-hidden="true" />
 
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  to="/activities"
-                  className={`inline-flex items-center gap-2 rounded-full bg-[#ff6b2c] px-5 py-2.5 text-sm font-semibold text-neutral-950 transition-colors hover:bg-[#ff7a42] ${focusRingClassName}`}
-                >
-                  Ver actividades
-                  <ArrowUpRightIcon className="h-3.5 w-3.5" />
-                </Link>
+            <div className="flex items-center gap-2">
+              {footerLinks.community.map((item) => {
+                const Icon = communityIcons[item.label.toLowerCase()] || CalendarIcon
 
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    aria-label={item.label}
+                    title={item.label}
+                    target={isExternalLink(item.href) ? '_blank' : undefined}
+                    rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
+                    className={`${iconButtonClassName} ${focusRingClassName}`}
+                  >
+                    <Icon className="h-4 w-4 text-[#ff6b2c]" />
+                  </a>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative z-10 border-y border-neutral-800/80 px-6 py-5 md:px-10">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-300">
+            {footerLinks.navigation.map((item) => (
+              <li key={item.label}>
+                {isInternalLink(item.href) ? (
+                  <Link
+                    to={item.href}
+                    className={`group inline-flex items-center gap-1.5 transition-colors hover:text-white ${focusRingClassName}`}
+                  >
+                    <span>{item.label}</span>
+                    <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-colors group-hover:text-[#ff6b2c]" />
+                  </Link>
+                ) : (
+                  <a
+                    href={item.href}
+                    className={`group inline-flex items-center gap-1.5 transition-colors hover:text-white ${focusRingClassName}`}
+                  >
+                    <span>{item.label}</span>
+                    <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-colors group-hover:text-[#ff6b2c]" />
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-xs uppercase tracking-[0.16em] text-neutral-400">
+            {footerLinks.legal.map((item) => (
+              <li key={item.label}>
                 <a
-                  href={contactInfo?.email ? `mailto:${contactInfo.email}` : '#'}
-                  className={`inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-900/55 px-5 py-2.5 text-sm font-medium text-neutral-200 transition-colors hover:border-neutral-500 hover:text-white ${focusRingClassName}`}
+                  href={item.href}
+                  className={`transition-colors hover:text-neutral-200 ${focusRingClassName}`}
                 >
-                  Contactar
-                  <MailIcon className="h-3.5 w-3.5 text-[#ff6b2c]" />
+                  {item.label}
                 </a>
-              </div>
-
-              <ul className="grid gap-3 pt-2 sm:grid-cols-2">
-                {contactRows.map((item) => {
-                  const Icon = item.icon
-                  return (
-                    <li key={item.label}>
-                      <a
-                        href={item.href}
-                        aria-label={`${item.label}: ${item.value}`}
-                        target={isExternalLink(item.href) ? '_blank' : undefined}
-                        rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                        className={`flex h-full items-center gap-3 rounded-xl border border-neutral-800/85 bg-neutral-900/35 px-4 py-3 text-sm text-neutral-300 transition-colors hover:border-neutral-600 hover:text-white ${focusRingClassName}`}
-                      >
-                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-700 bg-neutral-950/80">
-                          <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
-                        </span>
-                        <span className="truncate">{item.value}</span>
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          </section>
-
-          <section className="rounded-2xl border border-neutral-800/80 bg-neutral-950/65 p-6 md:p-8">
-            <div className="space-y-7">
-              <div className="space-y-4 border-b border-neutral-800/80 pb-6">
-                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-300">
-                  Navegacion
-                </h3>
-                <ul className="grid gap-2.5 text-sm text-neutral-400">
-                  {footerLinks.navigation.map((item, index) => (
-                    <li key={item.label}>
-                      {isInternalLink(item.href) ? (
-                        <Link
-                          to={item.href}
-                          className={`group inline-flex items-center gap-2 transition-colors duration-200 hover:text-white ${focusRingClassName}`}
-                        >
-                          <span className="text-neutral-500">0{index + 1}</span>
-                          <span>{item.label}</span>
-                          <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[#ff6b2c]" />
-                        </Link>
-                      ) : (
-                        <a
-                          href={item.href}
-                          className={`group inline-flex items-center gap-2 transition-colors duration-200 hover:text-white ${focusRingClassName}`}
-                        >
-                          <span className="text-neutral-500">0{index + 1}</span>
-                          <span>{item.label}</span>
-                          <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[#ff6b2c]" />
-                        </a>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="space-y-4 border-b border-neutral-800/80 pb-6">
-                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-300">
-                  Comunidad
-                </h3>
-                <ul className="flex flex-wrap gap-2.5">
-                  {footerLinks.community.map((item) => {
-                    const Icon = communityIcons[item.label.toLowerCase()] || CalendarIcon
-
-                    return (
-                      <li key={item.label}>
-                        <a
-                          href={item.href}
-                          aria-label={`Open ${item.label}`}
-                          target={isExternalLink(item.href) ? '_blank' : undefined}
-                          rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                          className={`inline-flex items-center gap-2 rounded-full border border-neutral-700/80 bg-neutral-900/50 px-3.5 py-2 text-sm text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white ${focusRingClassName}`}
-                        >
-                          <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
-                          <span>{item.label}</span>
-                        </a>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-300">
-                  Legal
-                </h3>
-                <ul className="grid gap-2 text-sm text-neutral-400">
-                  {footerLinks.legal.map((item) => (
-                    <li key={item.label}>
-                      <a
-                        href={item.href}
-                        className={`inline-flex items-center gap-2 transition-colors duration-200 hover:text-white ${focusRingClassName}`}
-                      >
-                        {item.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </section>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
-      <div className="relative z-10 border-t border-neutral-800/80 px-6 py-4 sm:px-10">
-        <div className="grid gap-2 text-xs text-neutral-500 md:grid-cols-3 md:items-center">
-          <p className="md:text-left">(c) 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
-          <p className="md:text-center">{contactInfo?.schedule || 'Mon-Fri 07:00 - 22:00'}</p>
-          <p className="md:text-right">Built for inclusive wellbeing.</p>
-        </div>
+      <div className="relative z-10 flex flex-col gap-1 px-6 py-4 text-xs text-neutral-500 md:flex-row md:items-center md:justify-between md:px-10">
+        <p>(c) 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
+        <p>{contactInfo?.schedule || 'Mon-Fri 07:00 - 22:00'}</p>
       </div>
     </footer>
   )
