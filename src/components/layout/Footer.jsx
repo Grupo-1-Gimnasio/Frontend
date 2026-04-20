@@ -119,14 +119,14 @@ const communityIcons = {
   events: CalendarIcon,
 }
 
-const interactiveLinkClassName =
-  'transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b2c] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950'
+const focusRingClassName =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b2c] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950'
 
 function Footer({ footerLinks, contactInfo }) {
   const isInternalLink = (href) => href.startsWith('/')
   const isExternalLink = (href) => /^https?:\/\//.test(href)
 
-  const contactItems = [
+  const contactRows = [
     contactInfo?.email
       ? {
           label: 'Email',
@@ -154,28 +154,48 @@ function Footer({ footerLinks, contactInfo }) {
   ].filter(Boolean)
 
   return (
-    <footer className="overflow-hidden rounded-3xl border border-neutral-800 bg-gradient-to-br from-neutral-950 via-neutral-950 to-neutral-900 text-white">
-      <div
-        aria-hidden="true"
-        className="h-px bg-gradient-to-r from-transparent via-[#ff6b2c]/70 to-transparent"
-      />
-      <div className="border-b border-neutral-800/80 px-6 py-12 md:px-10">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-          <div className="space-y-5 lg:pr-8">
-            <p className="text-sm font-semibold tracking-[-0.02em]">
-              <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
-              <span className="text-white">Fitness</span>
-            </p>
-            <h3 className="max-w-sm text-2xl leading-tight font-semibold tracking-[-0.03em] text-white">
-              Movimiento con acompanamiento profesional y cercano.
-            </h3>
-            <p className="max-w-md text-sm leading-6 text-neutral-300">
-              Construimos una experiencia de entrenamiento respetuosa, sostenible y
-              adaptada a cada persona.
-            </p>
+    <footer className="relative overflow-hidden rounded-3xl border border-neutral-800 bg-[radial-gradient(120%_120%_at_0%_0%,rgba(255,107,44,0.16)_0%,rgba(255,107,44,0.04)_30%,transparent_55%),linear-gradient(165deg,#0a0a0a_0%,#0d0d0d_45%,#111111_100%)] text-white">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div className="absolute -right-20 -top-24 h-56 w-56 rounded-full bg-[#ff6b2c]/10 blur-3xl" />
+        <div className="absolute -left-20 bottom-0 h-48 w-48 rounded-full bg-[#ff6b2c]/8 blur-3xl" />
+      </div>
 
-            <ul className="grid gap-2.5 sm:grid-cols-2">
-              {contactItems.map((item) => {
+      <div className="relative z-10 px-6 py-12 md:px-10 md:py-14">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="space-y-7">
+            <div className="space-y-4">
+              <p className="text-sm font-semibold tracking-[-0.02em]">
+                <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
+                <span className="text-white">Fitness</span>
+              </p>
+              <h3 className="max-w-md text-3xl leading-tight font-semibold tracking-[-0.03em] text-white md:text-[2.1rem]">
+                Entrena con calma, constancia y estilo.
+              </h3>
+              <p className="max-w-md text-sm leading-6 text-neutral-300">
+                Una propuesta fitness inclusiva con acompanamiento real y objetivos
+                sostenibles.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <Link
+                to="/activities"
+                className={`inline-flex items-center gap-2 rounded-full bg-[#ff6b2c] px-5 py-2.5 text-sm font-semibold text-neutral-950 transition-colors hover:bg-[#ff7a42] ${focusRingClassName}`}
+              >
+                Ver actividades
+                <ArrowUpRightIcon className="h-3.5 w-3.5" />
+              </Link>
+              <a
+                href={contactInfo?.email ? `mailto:${contactInfo.email}` : '#'}
+                className={`inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-900/60 px-5 py-2.5 text-sm font-medium text-neutral-200 transition-colors hover:border-neutral-500 hover:text-white ${focusRingClassName}`}
+              >
+                Contactar
+                <MailIcon className="h-3.5 w-3.5 text-[#ff6b2c]" />
+              </a>
+            </div>
+
+            <ul className="space-y-3">
+              {contactRows.map((item) => {
                 const Icon = item.icon
                 return (
                   <li key={item.label}>
@@ -184,9 +204,11 @@ function Footer({ footerLinks, contactInfo }) {
                       aria-label={`${item.label}: ${item.value}`}
                       target={isExternalLink(item.href) ? '_blank' : undefined}
                       rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                      className="inline-flex w-full items-center gap-2 rounded-full border border-neutral-700 bg-neutral-900/70 px-3 py-1.5 text-xs text-neutral-200 transition-colors hover:border-neutral-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b2c] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                      className={`inline-flex items-center gap-3 text-sm text-neutral-300 transition-colors hover:text-white ${focusRingClassName}`}
                     >
-                      <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
+                      <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900/70">
+                        <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
+                      </span>
                       <span>{item.value}</span>
                     </a>
                   </li>
@@ -195,7 +217,7 @@ function Footer({ footerLinks, contactInfo }) {
             </ul>
           </div>
 
-          <div className="space-y-8 rounded-2xl border border-neutral-800/80 bg-neutral-950/45 p-6">
+          <div className="rounded-2xl border border-neutral-800/80 bg-neutral-950/55 p-6 md:p-7">
             <div className="grid gap-8 sm:grid-cols-2">
               <div>
                 <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-300">
@@ -207,7 +229,7 @@ function Footer({ footerLinks, contactInfo }) {
                       {isInternalLink(item.href) ? (
                         <Link
                           to={item.href}
-                          className={`group inline-flex items-center gap-2 ${interactiveLinkClassName}`}
+                          className={`group inline-flex items-center gap-2 transition-colors duration-200 hover:text-white ${focusRingClassName}`}
                         >
                           {item.label}
                           <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[#ff6b2c]" />
@@ -215,7 +237,7 @@ function Footer({ footerLinks, contactInfo }) {
                       ) : (
                         <a
                           href={item.href}
-                          className={`group inline-flex items-center gap-2 ${interactiveLinkClassName}`}
+                          className={`group inline-flex items-center gap-2 transition-colors duration-200 hover:text-white ${focusRingClassName}`}
                         >
                           {item.label}
                           <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[#ff6b2c]" />
@@ -228,63 +250,56 @@ function Footer({ footerLinks, contactInfo }) {
 
               <div>
                 <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-300">
-                  Comunidad
+                  Legal
                 </h3>
-                <ul className="space-y-2 text-sm text-neutral-400">
-                  {footerLinks.community.map((item) => {
-                    const Icon = communityIcons[item.label.toLowerCase()] || CalendarIcon
-
-                    return (
-                      <li key={item.label}>
-                        <a
-                          href={item.href}
-                          aria-label={`Open ${item.label}`}
-                          target={isExternalLink(item.href) ? '_blank' : undefined}
-                          rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                          className="group inline-flex items-center gap-2 rounded-full border border-neutral-700/80 bg-neutral-900/40 px-3 py-1.5 text-sm transition-colors hover:border-neutral-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b2c] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
-                        >
-                          <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
-                          <span>{item.label}</span>
-                          <ArrowUpRightIcon className="h-3 w-3 opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100" />
-                        </a>
-                      </li>
-                    )
-                  })}
+                <ul className="space-y-2.5 text-sm text-neutral-400">
+                  {footerLinks.legal.map((item) => (
+                    <li key={item.label}>
+                      <a
+                        href={item.href}
+                        className={`inline-flex items-center gap-2 transition-colors duration-200 hover:text-white ${focusRingClassName}`}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
 
-            <div className="border-t border-neutral-800/80 pt-5">
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-300">
-                Legal
-              </h3>
-              <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-neutral-400">
-                {footerLinks.legal.map((item) => (
-                  <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className={`inline-flex items-center gap-2 ${interactiveLinkClassName}`}
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
+            <div className="mt-8 border-t border-neutral-800/80 pt-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-300">
+                Comunidad
+              </p>
+              <ul className="mt-3 flex flex-wrap gap-2.5">
+                {footerLinks.community.map((item) => {
+                  const Icon = communityIcons[item.label.toLowerCase()] || CalendarIcon
+
+                  return (
+                    <li key={item.label}>
+                      <a
+                        href={item.href}
+                        aria-label={`Open ${item.label}`}
+                        target={isExternalLink(item.href) ? '_blank' : undefined}
+                        rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
+                        className={`inline-flex items-center gap-2 rounded-full border border-neutral-700/80 bg-neutral-900/55 px-3 py-1.5 text-sm text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white ${focusRingClassName}`}
+                      >
+                        <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
+                        <span>{item.label}</span>
+                      </a>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid gap-3 px-6 py-4 text-xs text-neutral-500 sm:px-10 md:grid-cols-2 md:items-center">
-        <p className="md:text-left">
-          (c) 2026 Lorza&apos;s Fitness. Todos los derechos reservados.
-        </p>
-        <div className="text-left md:text-right">
-          <p>
-            {contactInfo?.schedule ? `${contactInfo.schedule} | ` : ''}
-            Built for inclusive wellbeing.
-          </p>
-        </div>
+      <div className="relative z-10 grid gap-2 border-t border-neutral-800/80 px-6 py-4 text-xs text-neutral-500 sm:px-10 md:grid-cols-3 md:items-center">
+        <p className="md:text-left">(c) 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
+        <p className="md:text-center">{contactInfo?.schedule || 'Mon-Fri 07:00 - 22:00'}</p>
+        <p className="md:text-right">Built for inclusive wellbeing.</p>
       </div>
     </footer>
   )
