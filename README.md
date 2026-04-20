@@ -12,8 +12,8 @@
 ## 📋 Tabla de Contenidos
 
 - [📸 Capturas de Pantalla](#-capturas-de-pantalla)
-- [✨ Características](#-características)
 - [🛠️ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
+- [✨ Características](#-características)
 - [📊 Calidad y Auditorías](#-calidad-y-auditorías-con-lighthouse)
 - [📈 Estado del Proyecto](#-estado-del-proyecto)
 - [💻 Requisitos del Sistema](#-requisitos-del-sistema)
@@ -38,6 +38,26 @@
 ![Activities Page](screenshots/activities.png)
 
 *Las capturas de pantalla se actualizarán próximamente.*
+
+## 🛠️ Tecnologías Utilizadas
+
+### Frontend Core
+- **React 18** - Framework para interfaces de usuario
+- **Vite 8** - Herramienta de build y desarrollo
+- **React Router** - Navegación SPA
+
+### Estilos y UI
+- **Tailwind CSS** - Framework CSS utility-first
+- **Heroicons** - Iconos SVG optimizados
+
+### Calidad y Accesibilidad
+- **ESLint** - Linting y estándares de código
+- **Lighthouse** - Auditoría de rendimiento y accesibilidad
+- **axe-core** - Testing de accesibilidad automatizado
+
+### Desarrollo
+- **npm** - Gestión de dependencias
+- **Git** - Control de versiones
 
 ## ✨ Características
 
@@ -141,27 +161,7 @@ npx lighthouse http://localhost:5177 --chrome-flags="--headless --no-sandbox"
 - **Navegadores**: Chrome 90+, Firefox 88+, Safari 14+
 - **SO**: Windows 10+, macOS 10.15+, Linux Ubuntu 18.04+
 
-## 🛠️ Tecnologías Utilizadas
-
-### Frontend Core
-- **React 18** - Framework para interfaces de usuario
-- **Vite 8** - Herramienta de build y desarrollo
-- **React Router** - Navegación SPA
-
-### Estilos y UI
-- **Tailwind CSS** - Framework CSS utility-first
-- **Heroicons** - Iconos SVG optimizados
-
-### Calidad y Accesibilidad
-- **ESLint** - Linting y estándares de código
-- **Lighthouse** - Auditoría de rendimiento y accesibilidad
-- **axe-core** - Testing de accesibilidad automatizado
-
-### Desarrollo
-- **npm** - Gestión de dependencias
-- **Git** - Control de versiones
-
-## 🚀 Instalación
+##  Instalación
 
 ```bash
 # Clonar el repositorio
