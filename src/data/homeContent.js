@@ -1,85 +1,85 @@
 export const values = [
   {
-    title: 'Movimiento sin juicio',
+    title: 'Movement Without Judgment',
     description:
-      'Cada persona puede participar con dignidad, adaptando cada pr\u00e1ctica a su cuerpo, su contexto y su energ\u00eda.',
+      'Every person can participate with dignity, adapting each practice to their body, context, and energy.',
   },
   {
-    title: 'Acompa\u00f1amiento emp\u00e1tico',
+    title: 'Empathetic Guidance',
     description:
-      'Nuestros profesionales escuchan primero y despu\u00e9s gu\u00edan con claridad para que cada paso se sienta seguro y posible.',
+      'Our professionals listen first, then guide with clarity so each step feels safe and possible.',
   },
   {
-    title: 'Comunidad y pertenencia',
+    title: 'Community and Belonging',
     description:
-      'Crecemos juntos en un entorno respetuoso donde el apoyo importa m\u00e1s que la comparaci\u00f3n.',
+      'We grow together in a respectful environment where support matters more than comparison.',
   },
   {
-    title: 'Progreso sostenible',
+    title: 'Sustainable Progress',
     description:
-      'Nos enfocamos en h\u00e1bitos realistas que cuidan tu bienestar y pueden mantenerse con el tiempo.',
+      'We focus on realistic habits that protect your wellbeing and can be maintained over time.',
   },
 ]
 
 export const featuredActivities = [
   {
-    name: 'Movimiento funcional',
-    level: 'Todos los niveles',
+    name: 'Functional Movement',
+    level: 'All levels',
     duration: '50 min',
-    focus: 'Movilidad, coordinaci\u00f3n y fuerza para el d\u00eda a d\u00eda',
+    focus: 'Mobility, coordination, and everyday strength',
   },
   {
-    name: 'Cardio en movimiento',
-    level: 'Intermedio',
+    name: 'Cardio in Motion',
+    level: 'Intermediate',
     duration: '40 min',
-    focus: 'Ritmo, respiraci\u00f3n y resistencia progresiva',
+    focus: 'Rhythm, breathing, and gradual endurance',
   },
   {
-    name: 'Yoga y respiraci\u00f3n',
-    level: 'Principiante',
+    name: 'Yoga and Breath',
+    level: 'Beginner',
     duration: '55 min',
-    focus: 'Respiraci\u00f3n, flexibilidad y conciencia corporal',
+    focus: 'Breathing, flexibility, and body awareness',
   },
   {
-    name: 'Core y estabilidad',
-    level: 'Todos los niveles',
+    name: 'Core and Stability',
+    level: 'All levels',
     duration: '45 min',
-    focus: 'Soporte postural y movimiento equilibrado',
+    focus: 'Posture support and balanced movement',
   },
   {
-    name: 'Fundamentos de boxeo',
-    level: 'Principiante',
+    name: 'Boxing Fundamentals',
+    level: 'Beginner',
     duration: '60 min',
-    focus: 'T\u00e9cnica, confianza y coordinaci\u00f3n',
+    focus: 'Technique, confidence, and coordination',
   },
   {
-    name: 'Sesi\u00f3n de ciclo',
-    level: 'Intermedio',
+    name: 'Cycle Session',
+    level: 'Intermediate',
     duration: '45 min',
-    focus: 'Cardio con resistencia adaptable',
+    focus: 'Cardio with adaptable resistance',
   },
 ]
 
 export const featuredProfessors = [
   {
     name: 'Sara Lopez',
-    specialty: 'Movimiento inclusivo y fuerza',
-    experience: '8 a\u00f1os acompa\u00f1ando procesos',
+    specialty: 'Inclusive movement and strength',
+    experience: '8 years of coaching',
   },
   {
     name: 'Miguel Torres',
-    specialty: 'Movilidad funcional',
-    experience: '10 a\u00f1os acompa\u00f1ando procesos',
+    specialty: 'Functional mobility',
+    experience: '10 years of coaching',
   },
   {
     name: 'Lucia Reyes',
-    specialty: 'Yoga y conciencia corporal',
-    experience: '6 a\u00f1os acompa\u00f1ando procesos',
+    specialty: 'Yoga and body awareness',
+    experience: '6 years of coaching',
   },
   {
     name: 'Daniel Navarro',
-    specialty: 'Cardio y progresi\u00f3n adaptativa',
-    experience: '9 a\u00f1os acompa\u00f1ando procesos',
+    specialty: 'Cardio and adaptive progression',
+    experience: '9 years of coaching',
   },
 ]
 
@@ -87,44 +87,44 @@ export const testimonials = [
   {
     name: 'Andrea P.',
     message:
-      'Me sent\u00ed acompa\u00f1ada desde el primer d\u00eda. El equipo adapt\u00f3 cada sesi\u00f3n a mi ritmo sin presi\u00f3n.',
-    memberType: 'Miembro desde 2024',
+      'I felt accompanied from day one. The team adapted each session to my pace without pressure.',
+    memberType: 'Member since 2024',
   },
   {
     name: 'Carlos M.',
     message:
-      'Las clases me ayudaron a reconectar con el movimiento y a mejorar mi energ\u00eda de una manera saludable.',
-    memberType: 'Miembro desde 2023',
+      'The classes helped me reconnect with movement and improve my energy in a healthy way.',
+    memberType: 'Member since 2023',
   },
   {
     name: 'Elena R.',
     message:
-      'Es un espacio respetuoso y profesional donde puedo ser constante mientras me cuido.',
-    memberType: 'Miembro desde 2025',
+      'It is a respectful, professional space where I can stay consistent while taking care of myself.',
+    memberType: 'Member since 2025',
   },
 ]
 
 export const footerLinks = {
   navigation: [
-    { label: 'Inicio', href: '#home' },
-    { label: 'Actividades', href: '#activities' },
-    { label: 'Profesores', href: '#team' },
+    { label: 'Inicio', href: '/' },
+    { label: 'Actividades', href: '/activities' },
+    { label: 'Profesores', href: '/professors' },
   ],
   community: [
-    { label: 'Instagram', href: '#' },
-    { label: 'YouTube', href: '#' },
-    { label: 'Eventos', href: '#' },
+    { label: 'Instagram', href: 'https://www.instagram.com/lorzasfitness' },
+    { label: 'YouTube', href: 'https://www.youtube.com/@lorzasfitness' },
+    { label: 'Events', href: '/events' },
   ],
   legal: [
-    { label: 'Pol\u00edtica de privacidad', href: '#' },
-    { label: 'T\u00e9rminos de servicio', href: '#' },
-    { label: 'Cookies', href: '#' },
+    { label: 'Política de privacidad', href: '/coming-soon' },
+    { label: 'Términos del servicio', href: '/coming-soon' },
+    { label: 'Cookies', href: '/coming-soon' },
   ],
 }
 
 export const contactInfo = {
   phone: '+34 600 123 456',
   email: 'hello@lorzasfitness.com',
-  address: 'Barcelona, Espa\u00f1a',
-  schedule: 'Lun-Vie 07:00 - 22:00 | S\u00e1b 09:00 - 14:00',
+  address: 'Barcelona, Spain',
+  schedule: 'Mon-Fri 07:00 - 22:00 | Sat 09:00 - 14:00',
 }

@@ -1,50 +1,28 @@
-import aboutImage from '../../assets/lorzas13.jpg'
-
 function AboutSection() {
   return (
-    <section
-      id="about"
-      className="relative left-1/2 right-1/2 ml-[-50vw] mr-[-50vw] w-screen scroll-mt-24 bg-[#12110f] py-12 md:py-16 lg:py-20"
-    >
-      <div className="mx-auto max-w-[1720px] px-4">
-        <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-24">
-          <div className="max-w-[640px]">
-            <h2
-              className="flex flex-col text-[2rem] font-extrabold leading-[0.96] tracking-[-0.04em] text-white sm:text-[2.5rem] md:text-[3rem] lg:text-[3.45rem]"
-              style={{ fontFamily: 'var(--font-display, "Outfit", sans-serif)' }}
-            >
-              <span className="sm:whitespace-nowrap">Fitness inclusivo para</span>
-              <span className="text-[#ff6b2c]">todas las personas</span>
-            </h2>
+    <section className="grid gap-6 rounded-3xl border border-neutral-800 bg-neutral-900/60 p-8 md:grid-cols-2 md:p-10">
+      <div className="space-y-4">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-400">
+          About Us
+        </p>
+        <h2 className="text-3xl font-bold md:text-4xl">
+          A gym community built around care, diversity, and real life.
+        </h2>
+        <p className="text-neutral-300">
+          At Lorza&apos;s Fitness, movement is for everyone. We welcome people
+          with different stories, bodies, and levels of experience, without
+          judgment.
+        </p>
+        <p className="text-neutral-300">
+          Our approach combines professional guidance, adapted sessions, and a
+          supportive environment where progress is sustainable and personal.
+        </p>
+      </div>
 
-            <div
-              className="mt-8 max-w-[640px] space-y-5 text-base leading-[1.8] tracking-[-0.01em] text-white/80 sm:text-[1.1rem]"
-              style={{
-                fontFamily: 'var(--font-body, "Plus Jakarta Sans", sans-serif)',
-              }}
-            >
-              <p>
-                En Lorza&apos;s Fitness creemos que el bienestar es un derecho, no
-                un privilegio. Nuestro espacio est&aacute; dise&ntilde;ado para celebrar la
-                diversidad de cuerpos, habilidades y experiencias.
-              </p>
-              <p>
-                Nos comprometemos a crear un ambiente donde puedas moverte,
-                crecer y conectar sin miedo al juicio. Aqu&iacute; encontrar&aacute;s una
-                comunidad aut&eacute;ntica que te apoya en tu camino &uacute;nico hacia la
-                salud.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-[#12110f] lg:justify-self-end">
-            <img
-              src={aboutImage}
-              alt="Comunidad de Lorza's Fitness compartiendo un entrenamiento inclusivo"
-              className="h-auto w-full rounded-[24px] bg-[#12110f] object-cover object-[50%_20%]"
-            />
-          </div>
-        </div>
+      <div className="flex min-h-72 items-center justify-center rounded-2xl border border-dashed border-neutral-700 bg-neutral-900">
+        <p className="text-sm font-medium uppercase tracking-wider text-neutral-400">
+          Community Image Placeholder
+        </p>
       </div>
     </section>
   )

@@ -4,6 +4,8 @@ import ManagementLayout from '../components/layout/ManagementLayout'
 import HomePage from '../pages/public/HomePage'
 import ActivitiesPage from '../pages/public/ActivitiesPage'
 import ProfessorsPage from '../pages/public/ProfessorsPage'
+import ComingSoon from '../pages/public/ComingSoon'
+import EventsPage from '../pages/public/EventsPage'
 import ManagementDashboardPage from '../pages/management/ManagementDashboardPage'
 import ManagementUsersPage from '../pages/management/ManagementUsersPage'
 import ManagementActivitiesPage from '../pages/management/ManagementActivitiesPage'
@@ -17,6 +19,8 @@ function AppRouter() {
           <Route path="/" element={<HomePage />} />
           <Route path="/activities" element={<ActivitiesPage />} />
           <Route path="/professors" element={<ProfessorsPage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/coming-soon" element={<ComingSoon />} />
         </Route>
 
         <Route path="/management" element={<ManagementLayout />}>
