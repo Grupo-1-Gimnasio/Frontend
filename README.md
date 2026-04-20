@@ -18,7 +18,7 @@
 - 📊 **Dashboard Administrativo** - Panel de control para gestión del gimnasio
 - 🌐 **Multilenguaje** - Soporte completo para español
 
-## � Calidad y Auditorías con Lighthouse
+## 📊 Calidad y Auditorías con Lighthouse
 
 [![Lighthouse Accessibility](https://img.shields.io/badge/Lighthouse-Accessibility_100%25-brightgreen?style=for-the-badge&logo=lighthouse)](https://developers.google.com/web/tools/lighthouse)
 [![Lighthouse Performance](https://img.shields.io/badge/Lighthouse-Performance_95%2B%25-green?style=for-the-badge&logo=lighthouse)](https://developers.google.com/web/tools/lighthouse)
@@ -80,7 +80,7 @@ npx lighthouse http://localhost:5177 --chrome-flags="--headless --no-sandbox"
 
 *Las auditorías se ejecutan automáticamente en cada build y merge a dev para garantizar calidad continua.*
 
-## �️ Tecnologías Utilizadas
+## 🛠️ Tecnologías Utilizadas
 
 ### Frontend Core
 - **React 18** - Framework para interfaces de usuario
