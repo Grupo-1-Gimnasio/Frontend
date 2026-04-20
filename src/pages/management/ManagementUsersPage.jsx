@@ -4,6 +4,14 @@ import { getUsers } from '../../services/usersService'
 function ManagementUsersPage() {
   const [users, setUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedUser, setSelectedUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('selectedUser')
+      return savedUser ? JSON.parse(savedUser) : null
+    } catch {
+      return null
+    }
+  })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -25,6 +33,10 @@ function ManagementUsersPage() {
 
   const totalUsers = users.length
   const normalizedSearchTerm = searchTerm.trim().toLowerCase()
+  const handleUserSelect = (user) => {
+    setSelectedUser(user)
+    localStorage.setItem('selectedUser', JSON.stringify(user))
+  }
   const filteredUsers =
     normalizedSearchTerm === ''
       ? users
@@ -87,7 +99,12 @@ function ManagementUsersPage() {
               return (
                 <article
                   key={user.id}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
+                  onClick={() => handleUserSelect(user)}
+                  className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border p-4 transition ${
+                    selectedUser?.id === user.id
+                      ? 'border-orange-400 bg-neutral-800'
+                      : 'border-neutral-800 bg-neutral-900'
+                  }`}
                 >
                   <div className="flex items-center gap-4">
                     {user.image ? (

@@ -3,6 +3,14 @@ import { getActivities } from '../../services/activitiesService'
 
 function ManagementActivitiesPage() {
   const [activities, setActivities] = useState([])
+  const [selectedUser, setSelectedUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('selectedUser')
+      return savedUser ? JSON.parse(savedUser) : null
+    } catch {
+      return null
+    }
+  })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -23,6 +31,46 @@ function ManagementActivitiesPage() {
   }, [])
 
   const totalActivities = activities.length
+  const selectedUserFullName = [selectedUser?.name, selectedUser?.surname]
+    .filter(Boolean)
+    .join(' ')
+  const hasSelectedUser = Boolean(selectedUser)
+  const enrolledActivities = selectedUser?.enrolledActivities ?? []
+  const hasReachedLimit = enrolledActivities.length >= 3
+  const canUserEnroll =
+    hasSelectedUser &&
+    selectedUser.isActive === true &&
+    selectedUser.annualFeePaid === true &&
+    !hasReachedLimit
+
+  const handleEnroll = (activity) => {
+    setSelectedUser((currentUser) => {
+      if (!currentUser) {
+        return currentUser
+      }
+
+      const currentEnrolledActivities = currentUser.enrolledActivities ?? []
+      const isAlreadyEnrolled = currentEnrolledActivities.includes(activity.id)
+      const canSelectActivity =
+        currentUser.isActive === true &&
+        currentUser.annualFeePaid === true &&
+        currentEnrolledActivities.length < 3 &&
+        !isAlreadyEnrolled
+
+      if (!canSelectActivity) {
+        return currentUser
+      }
+
+      const updatedUser = {
+        ...currentUser,
+        enrolledActivities: [...currentEnrolledActivities, activity.id],
+      }
+
+      localStorage.setItem('selectedUser', JSON.stringify(updatedUser))
+
+      return updatedUser
+    })
+  }
 
   if (loading) {
     return (
@@ -44,6 +92,51 @@ function ManagementActivitiesPage() {
       <p className="text-neutral-300">
         P&aacute;gina base lista para la gesti&oacute;n de actividades.
       </p>
+      <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-300">
+        <p>{selectedUserFullName || 'Selecciona un usuario primero'}</p>
+
+        {hasSelectedUser ? (
+          <>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  selectedUser.isActive
+                    ? 'bg-emerald-500/20 text-emerald-300'
+                    : 'bg-red-500/20 text-red-300'
+                }`}
+              >
+                {selectedUser.isActive ? 'Activo' : 'Inactivo'}
+              </span>
+
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  selectedUser.annualFeePaid
+                    ? 'bg-blue-500/20 text-blue-300'
+                    : 'bg-amber-500/20 text-amber-300'
+                }`}
+              >
+                {selectedUser.annualFeePaid
+                  ? 'Cuota pagada'
+                  : 'Cuota pendiente'}
+              </span>
+            </div>
+
+            {!selectedUser.isActive ? (
+              <p className="mt-3 text-sm text-red-300">Usuario no activo</p>
+            ) : null}
+
+            {!selectedUser.annualFeePaid ? (
+              <p className="mt-1 text-sm text-amber-300">Cuota pendiente</p>
+            ) : null}
+
+            {hasReachedLimit ? (
+              <p className="mt-1 text-sm text-red-300">
+                M&aacute;ximo de actividades alcanzado
+              </p>
+            ) : null}
+          </>
+        ) : null}
+      </div>
       <span className="sr-only">Total de actividades: {totalActivities}</span>
 
       {activities.length === 0 ? (
@@ -56,6 +149,9 @@ function ManagementActivitiesPage() {
             const weekDay = activity.weekDay ?? activity.week_day
             const startHour = activity.startHour ?? activity.start_hour
             const endHour = activity.endHour ?? activity.end_hour
+            const isAlreadyEnrolled = enrolledActivities.includes(activity.id)
+            const canSelectActivity =
+              canUserEnroll && !isAlreadyEnrolled
 
             return (
               <article
@@ -85,8 +181,26 @@ function ManagementActivitiesPage() {
                       Horario: {startHour ?? 'No disponible'} -{' '}
                       {endHour ?? 'No disponible'}
                     </p>
+                    {isAlreadyEnrolled ? (
+                      <p className="text-sm text-red-300">
+                        Ya inscrito en esta actividad
+                      </p>
+                    ) : null}
                   </div>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleEnroll(activity)}
+                  disabled={!canSelectActivity}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                    canSelectActivity
+                      ? 'bg-orange-400 text-neutral-950 hover:bg-orange-300'
+                      : 'cursor-not-allowed bg-neutral-700 text-neutral-400 opacity-60'
+                  }`}
+                >
+                  {isAlreadyEnrolled ? 'Ya inscrito' : 'Seleccionar actividad'}
+                </button>
               </article>
             )
           })}
