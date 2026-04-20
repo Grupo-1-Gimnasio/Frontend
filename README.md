@@ -4,9 +4,27 @@
 [![Vite](https://img.shields.io/badge/Vite-8.0.8-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![ESLint](https://img.shields.io/badge/ESLint-9.9.0-4B32C3?style=for-the-badge&logo=eslint)](https://eslint.org/)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)](https://github.com/Grupo-1-Gimnasio/Frontend/releases)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 > **Gimnasio inclusivo** - Una plataforma web moderna para entrenamientos adaptados y comunidad respetuosa, construida con tecnologías de vanguardia.
+
+## 📋 Tabla de Contenidos
+
+- [✨ Características](#-características)
+- [🛠️ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
+- [📊 Calidad y Auditorías](#-calidad-y-auditorías-con-lighthouse)
+- [📈 Estado del Proyecto](#-estado-del-proyecto)
+- [💻 Requisitos del Sistema](#-requisitos-del-sistema)
+- [🚀 Instalación](#-instalación)
+- [📖 Uso](#-uso)
+- [🏗️ Arquitectura](#️-arquitectura-del-proyecto)
+- [🔗 Backend](#-backend)
+- [🚀 Despliegue](#-despliegue)
+- [📸 Capturas de Pantalla](#-capturas-de-pantalla)
+- [🤝 Contribución](#-contribución)
+- [🆘 Soporte](#-soporte)
+- [📄 Licencia](#-licencia)
 
 ## ✨ Características
 
@@ -24,6 +42,7 @@
 [![Lighthouse Performance](https://img.shields.io/badge/Lighthouse-Performance_95%2B%25-green?style=for-the-badge&logo=lighthouse)](https://developers.google.com/web/tools/lighthouse)
 [![Lighthouse Best Practices](https://img.shields.io/badge/Lighthouse-Best_Practices_95%2B%25-green?style=for-the-badge&logo=lighthouse)](https://developers.google.com/web/tools/lighthouse)
 [![Lighthouse SEO](https://img.shields.io/badge/Lighthouse-SEO_95%2B%25-green?style=for-the-badge&logo=lighthouse)](https://developers.google.com/web/tools/lighthouse)
+[![Lighthouse PWA](https://img.shields.io/badge/Lighthouse-PWA_95%2B%25-blue?style=for-the-badge&logo=lighthouse)](https://developers.google.com/web/tools/lighthouse)
 
 **Lighthouse** es la herramienta de auditoría automatizada de Google que evalúa la calidad de nuestras aplicaciones web en **5 categorías críticas**:
 
@@ -80,6 +99,35 @@ npx lighthouse http://localhost:5177 --chrome-flags="--headless --no-sandbox"
 
 *Las auditorías se ejecutan automáticamente en cada build y merge a dev para garantizar calidad continua.*
 
+## 📈 Estado del Proyecto
+
+### ✅ Completado
+- [x] **Accesibilidad WCAG 2.1 AA** (100% Lighthouse)
+- [x] **Diseño responsive** completo
+- [x] **Sistema de navegación** con React Router
+- [x] **Componentes UI** con Tailwind CSS
+- [x] **Layout administrativo** y público
+
+### 🚧 En Desarrollo
+- [ ] Integración completa con backend API
+- [ ] Sistema de autenticación de usuarios
+- [ ] Dashboard administrativo funcional
+- [ ] Gestión de actividades y clases
+
+### 🔮 Roadmap
+- [ ] App móvil nativa (React Native)
+- [ ] Sistema de reservas en tiempo real
+- [ ] Notificaciones push
+- [ ] Integración con wearables
+
+## 💻 Requisitos del Sistema
+
+- **Node.js**: 18.0.0 o superior
+- **npm**: 9.0.0 o superior
+- **Git**: 2.30.0 o superior
+- **Navegadores**: Chrome 90+, Firefox 88+, Safari 14+
+- **SO**: Windows 10+, macOS 10.15+, Linux Ubuntu 18.04+
+
 ## 🛠️ Tecnologías Utilizadas
 
 ### Frontend Core
@@ -122,6 +170,8 @@ npm run dev          # Servidor de desarrollo en localhost:5177
 npm run build        # Build de producción
 npm run preview      # Vista previa del build
 npm run lint         # Ejecutar ESLint
+npm run audit        # Auditoría completa con Lighthouse
+npm run audit:accessibility  # Solo auditoría de accesibilidad
 ```
 
 ### Scripts Disponibles
@@ -129,6 +179,8 @@ npm run lint         # Ejecutar ESLint
 - `build` - Genera build optimizado para producción
 - `lint` - Ejecuta análisis de código estático
 - `preview` - Vista previa del build de producción
+- `audit` - Ejecuta auditoría completa con Lighthouse
+- `audit:accessibility` - Auditoría solo de accesibilidad
 
 ## 🏗️ Arquitectura del Proyecto
 
@@ -162,6 +214,30 @@ La aplicación frontend se conecta con una API RESTful que maneja:
 - Perfiles de profesores y usuarios
 - Sistema de reservas
 
+## 🚀 Despliegue
+
+### Producción
+```bash
+# Generar build optimizado
+npm run build
+
+# El contenido se genera en la carpeta 'dist/'
+# Desplegar en tu servidor web preferido (Netlify, Vercel, etc.)
+```
+
+### Variables de Entorno
+Crear un archivo `.env` en la raíz del proyecto:
+```bash
+VITE_API_URL=https://api.lorzasfitness.com
+VITE_APP_ENV=production
+VITE_APP_VERSION=1.0.0
+```
+
+### Plataformas Recomendadas
+- **Vercel** - Despliegue automático desde Git
+- **Netlify** - CDN global y funciones serverless
+- **GitHub Pages** - Hosting gratuito para proyectos open source
+
 ## 📸 Capturas de Pantalla
 
 ### Página Principal
@@ -189,6 +265,22 @@ La aplicación frontend se conecta con una API RESTful que maneja:
 - Usar commits convencionales
 - Documentar componentes nuevos
 
+## 🆘 Soporte
+
+### Reportar Issues
+- Usa [GitHub Issues](https://github.com/Grupo-1-Gimnasio/Frontend/issues) para bugs
+- Incluye pasos para reproducir y entorno utilizado
+
+### Contacto
+- **Email**: soporte@lorzasfitness.com
+- **Discord**: [Únete a nuestra comunidad](https://discord.gg/lorzas)
+- **Documentación**: [Wiki del proyecto](https://github.com/Grupo-1-Gimnasio/Frontend/wiki)
+
+### Recursos Adicionales
+- [Documentación de React](https://reactjs.org/docs)
+- [Guía de Tailwind CSS](https://tailwindcss.com/docs)
+- [Documentación de Vite](https://vitejs.dev/guide/)
+
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
@@ -198,6 +290,19 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 - **Desarrollo Frontend**: Equipo Lorza's Fitness
 - **Diseño UI/UX**: Especialistas en accesibilidad
 - **Testing**: QA Automation Team
+
+---
+
+<div align="center">
+
+**Lorza's Fitness** - Construyendo comunidad inclusiva, un componente a la vez. 💪
+
+[![Website](https://img.shields.io/badge/Website-lorzasfitness.com-blue?style=flat-square)](https://lorzasfitness.com)
+[![Twitter](https://img.shields.io/badge/Twitter-@LorzasFitness-blue?style=flat-square&logo=twitter)](https://twitter.com/LorzasFitness)
+
+*Hecho con ❤️ por el equipo de Lorza's Fitness*
+
+</div>
 
 ---
 

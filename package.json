@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "audit": "lighthouse http://localhost:5177 --output=json --output-path=./lighthouse-report.json",
+    "audit:accessibility": "lighthouse http://localhost:5177 --only-categories=accessibility"
   },
   "dependencies": {
     "axios": "^1.15.0",
