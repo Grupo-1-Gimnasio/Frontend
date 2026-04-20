@@ -206,6 +206,7 @@ function Footer({ footerLinks, contactInfo }) {
                 {isInternalLink(item.href) ? (
                   <Link
                     to={item.href}
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     className={`transition-colors hover:text-white ${focusRingClassName}`}
                   >
                     {item.label}
@@ -240,7 +241,7 @@ function Footer({ footerLinks, contactInfo }) {
       {/* Franja inferior: copyright + frase */}
       <div className="relative z-10 flex flex-col gap-1 px-6 py-4 text-xs text-neutral-500 md:flex-row md:items-center md:justify-between md:px-10">
         <p>© 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
-        <p>un espacio inclusivo y para todos los públicos</p>
+        <p>Un espacio inclusivo y para todos los públicos</p>
       </div>
     </footer>
   )
