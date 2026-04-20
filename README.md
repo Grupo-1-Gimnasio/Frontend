@@ -304,6 +304,4 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 </div>
 
----
 
-**Lorza's Fitness** - Construyendo comunidad inclusiva, un componente a la vez. 💪
