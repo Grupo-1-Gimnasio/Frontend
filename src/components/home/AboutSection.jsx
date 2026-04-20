@@ -20,7 +20,7 @@ function AboutSection() {
       </div>
 
       <div className="flex min-h-72 items-center justify-center rounded-2xl border border-dashed border-neutral-700 bg-neutral-900">
-        <p className="text-sm font-medium uppercase tracking-wider text-neutral-500">
+        <p className="text-sm font-medium uppercase tracking-wider text-neutral-400">
           Community Image Placeholder
         </p>
       </div>
