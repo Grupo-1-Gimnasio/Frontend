@@ -11,6 +11,7 @@
 
 ## 📋 Tabla de Contenidos
 
+- [📸 Capturas de Pantalla](#-capturas-de-pantalla)
 - [✨ Características](#-características)
 - [🛠️ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
 - [📊 Calidad y Auditorías](#-calidad-y-auditorías-con-lighthouse)
@@ -21,10 +22,22 @@
 - [🏗️ Arquitectura](#️-arquitectura-del-proyecto)
 - [🔗 Backend](#-backend)
 - [🚀 Despliegue](#-despliegue)
-- [📸 Capturas de Pantalla](#-capturas-de-pantalla)
 - [🤝 Contribución](#-contribución)
 - [🆘 Soporte](#-soporte)
 - [📄 Licencia](#-licencia)
+
+## 📸 Capturas de Pantalla
+
+### Página Principal
+![Home Page](screenshots/home.png)
+
+### Dashboard Administrativo
+![Admin Dashboard](screenshots/dashboard.png)
+
+### Página de Actividades
+![Activities Page](screenshots/activities.png)
+
+*Las capturas de pantalla se actualizarán próximamente.*
 
 ## ✨ Características
 
@@ -237,19 +250,6 @@ VITE_APP_VERSION=1.0.0
 - **Vercel** - Despliegue automático desde Git
 - **Netlify** - CDN global y funciones serverless
 - **GitHub Pages** - Hosting gratuito para proyectos open source
-
-## 📸 Capturas de Pantalla
-
-### Página Principal
-![Home Page](screenshots/home.png)
-
-### Dashboard Administrativo
-![Admin Dashboard](screenshots/dashboard.png)
-
-### Página de Actividades
-![Activities Page](screenshots/activities.png)
-
-*Las capturas de pantalla se actualizarán próximamente.*
 
 ## 🤝 Contribución
 
