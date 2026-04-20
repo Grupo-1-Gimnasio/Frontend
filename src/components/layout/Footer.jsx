@@ -154,77 +154,83 @@ function Footer({ footerLinks, contactInfo }) {
   ].filter(Boolean)
 
   return (
-    <footer className="relative overflow-hidden rounded-[28px] border border-neutral-800 bg-[linear-gradient(135deg,#0a0a0a_0%,#0e0e0e_45%,#111111_100%)] text-white">
+    <footer className="relative overflow-hidden rounded-[32px] border border-neutral-800 bg-[linear-gradient(155deg,#080808_0%,#0c0c0c_45%,#111111_100%)] text-white">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-14 top-0 h-52 w-52 rounded-full bg-[#ff6b2c]/12 blur-3xl" />
-        <div className="absolute -right-12 bottom-0 h-48 w-48 rounded-full bg-[#ff6b2c]/10 blur-3xl" />
+        <div className="absolute -left-16 top-0 h-56 w-56 rounded-full bg-[#ff6b2c]/14 blur-3xl" />
+        <div className="absolute -right-14 bottom-0 h-52 w-52 rounded-full bg-[#ff6b2c]/12 blur-3xl" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff6b2c] to-transparent" />
+        <p className="absolute -bottom-7 left-6 text-[clamp(2.4rem,9vw,6.2rem)] font-semibold tracking-[-0.05em] text-white/[0.05]">
+          MOVE WITH CARE
+        </p>
       </div>
 
       <div className="relative z-10 px-6 py-12 md:px-10 md:py-14">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]">
-          <section className="space-y-8">
-            <div className="space-y-4">
-              <p className="text-sm font-semibold tracking-[-0.02em]">
-                <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
-                <span className="text-white">Fitness</span>
-              </p>
-              <h3 className="max-w-lg text-3xl leading-tight font-semibold tracking-[-0.04em] text-white md:text-[2.35rem]">
-                Minimalismo potente para entrenar mejor cada dia.
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+          <section className="rounded-2xl border border-neutral-800/80 bg-neutral-950/45 p-6 md:p-8">
+            <div className="space-y-7">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#ff6b2c]" />
+                Lorza&apos;s Fitness
+              </div>
+
+              <h3 className="max-w-lg text-3xl leading-tight font-semibold tracking-[-0.045em] text-white md:text-[2.55rem]">
+                Impacto minimal para una marca que se siente premium.
               </h3>
+
               <p className="max-w-md text-sm leading-6 text-neutral-300">
-                Un espacio cuidado, una metodologia clara y una comunidad que te ayuda
-                a sostener el proceso.
+                Entrenamiento inclusivo, acompanamiento experto y una experiencia visual
+                limpia y contemporanea.
               </p>
-            </div>
 
-            <div className="flex flex-wrap gap-3">
-              <Link
-                to="/activities"
-                className={`inline-flex items-center gap-2 rounded-full bg-[#ff6b2c] px-5 py-2.5 text-sm font-semibold text-neutral-950 transition-colors hover:bg-[#ff7a42] ${focusRingClassName}`}
-              >
-                Explorar actividades
-                <ArrowUpRightIcon className="h-3.5 w-3.5" />
-              </Link>
-              <a
-                href={contactInfo?.email ? `mailto:${contactInfo.email}` : '#'}
-                className={`inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-900/55 px-5 py-2.5 text-sm font-medium text-neutral-200 transition-colors hover:border-neutral-500 hover:text-white ${focusRingClassName}`}
-              >
-                Escribenos
-                <MailIcon className="h-3.5 w-3.5 text-[#ff6b2c]" />
-              </a>
-            </div>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  to="/activities"
+                  className={`inline-flex items-center gap-2 rounded-full bg-[#ff6b2c] px-5 py-2.5 text-sm font-semibold text-neutral-950 transition-colors hover:bg-[#ff7a42] ${focusRingClassName}`}
+                >
+                  Ver actividades
+                  <ArrowUpRightIcon className="h-3.5 w-3.5" />
+                </Link>
 
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {contactRows.map((item) => {
-                const Icon = item.icon
-                return (
-                  <li key={item.label}>
-                    <a
-                      href={item.href}
-                      aria-label={`${item.label}: ${item.value}`}
-                      target={isExternalLink(item.href) ? '_blank' : undefined}
-                      rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                      className={`group flex h-full items-center gap-3 rounded-2xl border border-neutral-800/80 bg-neutral-900/35 px-4 py-3 text-sm text-neutral-300 transition-colors hover:border-neutral-600 hover:text-white ${focusRingClassName}`}
-                    >
-                      <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-700 bg-neutral-950/80">
-                        <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
-                      </span>
-                      <span className="truncate">{item.value}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
+                <a
+                  href={contactInfo?.email ? `mailto:${contactInfo.email}` : '#'}
+                  className={`inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-900/55 px-5 py-2.5 text-sm font-medium text-neutral-200 transition-colors hover:border-neutral-500 hover:text-white ${focusRingClassName}`}
+                >
+                  Contactar
+                  <MailIcon className="h-3.5 w-3.5 text-[#ff6b2c]" />
+                </a>
+              </div>
+
+              <ul className="grid gap-3 pt-2 sm:grid-cols-2">
+                {contactRows.map((item) => {
+                  const Icon = item.icon
+                  return (
+                    <li key={item.label}>
+                      <a
+                        href={item.href}
+                        aria-label={`${item.label}: ${item.value}`}
+                        target={isExternalLink(item.href) ? '_blank' : undefined}
+                        rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
+                        className={`flex h-full items-center gap-3 rounded-xl border border-neutral-800/85 bg-neutral-900/35 px-4 py-3 text-sm text-neutral-300 transition-colors hover:border-neutral-600 hover:text-white ${focusRingClassName}`}
+                      >
+                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-700 bg-neutral-950/80">
+                          <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
+                        </span>
+                        <span className="truncate">{item.value}</span>
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
           </section>
 
-          <section className="rounded-2xl border border-neutral-800/80 bg-neutral-950/55 p-6 md:p-7">
-            <div className="grid gap-8 sm:grid-cols-2">
-              <div>
-                <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-300">
+          <section className="rounded-2xl border border-neutral-800/80 bg-neutral-950/65 p-6 md:p-8">
+            <div className="space-y-7">
+              <div className="space-y-4 border-b border-neutral-800/80 pb-6">
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-300">
                   Navegacion
                 </h3>
-                <ul className="space-y-2.5 text-sm text-neutral-400">
+                <ul className="grid gap-2.5 text-sm text-neutral-400">
                   {footerLinks.navigation.map((item, index) => (
                     <li key={item.label}>
                       {isInternalLink(item.href) ? (
@@ -251,11 +257,37 @@ function Footer({ footerLinks, contactInfo }) {
                 </ul>
               </div>
 
-              <div>
-                <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-300">
+              <div className="space-y-4 border-b border-neutral-800/80 pb-6">
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-300">
+                  Comunidad
+                </h3>
+                <ul className="flex flex-wrap gap-2.5">
+                  {footerLinks.community.map((item) => {
+                    const Icon = communityIcons[item.label.toLowerCase()] || CalendarIcon
+
+                    return (
+                      <li key={item.label}>
+                        <a
+                          href={item.href}
+                          aria-label={`Open ${item.label}`}
+                          target={isExternalLink(item.href) ? '_blank' : undefined}
+                          rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
+                          className={`inline-flex items-center gap-2 rounded-full border border-neutral-700/80 bg-neutral-900/50 px-3.5 py-2 text-sm text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white ${focusRingClassName}`}
+                        >
+                          <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
+                          <span>{item.label}</span>
+                        </a>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-300">
                   Legal
                 </h3>
-                <ul className="space-y-2.5 text-sm text-neutral-400">
+                <ul className="grid gap-2 text-sm text-neutral-400">
                   {footerLinks.legal.map((item) => (
                     <li key={item.label}>
                       <a
@@ -268,32 +300,6 @@ function Footer({ footerLinks, contactInfo }) {
                   ))}
                 </ul>
               </div>
-            </div>
-
-            <div className="mt-8 border-t border-neutral-800/80 pt-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-300">
-                Comunidad
-              </p>
-              <ul className="mt-4 flex flex-wrap gap-2.5">
-                {footerLinks.community.map((item) => {
-                  const Icon = communityIcons[item.label.toLowerCase()] || CalendarIcon
-
-                  return (
-                    <li key={item.label}>
-                      <a
-                        href={item.href}
-                        aria-label={`Open ${item.label}`}
-                        target={isExternalLink(item.href) ? '_blank' : undefined}
-                        rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                        className={`inline-flex items-center gap-2 rounded-full border border-neutral-700/80 bg-neutral-900/50 px-3.5 py-2 text-sm text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white ${focusRingClassName}`}
-                      >
-                        <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
-                        <span>{item.label}</span>
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
             </div>
           </section>
         </div>
