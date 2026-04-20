@@ -3,6 +3,7 @@ import { getUsers } from '../../services/usersService'
 
 function ManagementUsersPage() {
   const [users, setUsers] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -23,6 +24,21 @@ function ManagementUsersPage() {
   }, [])
 
   const totalUsers = users.length
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase()
+  const filteredUsers =
+    normalizedSearchTerm === ''
+      ? users
+      : users.filter((user) => {
+          const name = (user.name || '').toLowerCase()
+          const surname = (user.surname || '').toLowerCase()
+          const dni = (user.dni || '').toLowerCase()
+
+          return (
+            name.includes(normalizedSearchTerm) ||
+            surname.includes(normalizedSearchTerm) ||
+            dni.includes(normalizedSearchTerm)
+          )
+        })
 
   if (loading) {
     return (
@@ -49,65 +65,83 @@ function ManagementUsersPage() {
         </p>
       ) : (
         <div className="mt-4 space-y-3">
-          {users.map((user) => {
-            const fullName = [user.name, user.surname].filter(Boolean).join(' ')
-            const startYear = user.startYear ?? user.start_year
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Buscar por nombre, apellido o DNI"
+            className="w-full rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+          />
 
-            return (
-              <article
-                key={user.id}
-                className="flex items-center justify-between gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
-              >
-                <div className="flex items-center gap-4">
-                  {user.image ? (
-                    <img
-                      src={user.image}
-                      alt={`Avatar de ${fullName || 'usuario'}`}
-                      className="h-12 w-12 rounded-full object-cover"
-                    />
-                  ) : null}
+          {filteredUsers.length === 0 ? (
+            <p className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-300">
+              No hay usuarios que coincidan con la b&uacute;squeda.
+            </p>
+          ) : (
+            filteredUsers.map((user) => {
+              const fullName = [user.name, user.surname]
+                .filter(Boolean)
+                .join(' ')
+              const startYear = user.startYear ?? user.start_year
 
-                  <div className="space-y-1">
-                    <p className="font-semibold text-white">
-                      {fullName || 'Nombre no disponible'}
-                    </p>
-                    <p className="text-sm text-neutral-300">
-                      DNI: {user.dni || 'No disponible'}
-                    </p>
-                    <p className="text-sm text-neutral-400">
-                      A&ntilde;o de inicio: {startYear || 'No disponible'}
-                    </p>
+              return (
+                <article
+                  key={user.id}
+                  className="flex items-center justify-between gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
+                >
+                  <div className="flex items-center gap-4">
+                    {user.image ? (
+                      <img
+                        src={user.image}
+                        alt={`Avatar de ${fullName || 'usuario'}`}
+                        className="h-12 w-12 rounded-full object-cover"
+                      />
+                    ) : null}
+
+                    <div className="space-y-1">
+                      <p className="font-semibold text-white">
+                        {fullName || 'Nombre no disponible'}
+                      </p>
+                      <p className="text-sm text-neutral-300">
+                        DNI: {user.dni || 'No disponible'}
+                      </p>
+                      <p className="text-sm text-neutral-400">
+                        A&ntilde;o de inicio: {startYear || 'No disponible'}
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex flex-wrap justify-end gap-2">
-                  {typeof user.isActive !== 'undefined' ? (
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        user.isActive
-                          ? 'bg-emerald-500/20 text-emerald-300'
-                          : 'bg-red-500/20 text-red-300'
-                      }`}
-                    >
-                      {user.isActive ? 'Activo' : 'Inactivo'}
-                    </span>
-                  ) : null}
+                  <div className="flex flex-wrap justify-end gap-2">
+                    {typeof user.isActive !== 'undefined' ? (
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                          user.isActive
+                            ? 'bg-emerald-500/20 text-emerald-300'
+                            : 'bg-red-500/20 text-red-300'
+                        }`}
+                      >
+                        {user.isActive ? 'Activo' : 'Inactivo'}
+                      </span>
+                    ) : null}
 
-                  {typeof user.annualFeePaid !== 'undefined' ? (
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        user.annualFeePaid
-                          ? 'bg-blue-500/20 text-blue-300'
-                          : 'bg-amber-500/20 text-amber-300'
-                      }`}
-                    >
-                      {user.annualFeePaid ? 'Cuota pagada' : 'Cuota pendiente'}
-                    </span>
-                  ) : null}
-                </div>
-              </article>
-            )
-          })}
+                    {typeof user.annualFeePaid !== 'undefined' ? (
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                          user.annualFeePaid
+                            ? 'bg-blue-500/20 text-blue-300'
+                            : 'bg-amber-500/20 text-amber-300'
+                        }`}
+                      >
+                        {user.annualFeePaid
+                          ? 'Cuota pagada'
+                          : 'Cuota pendiente'}
+                      </span>
+                    ) : null}
+                  </div>
+                </article>
+              )
+            })
+          )}
         </div>
       )}
     </section>
