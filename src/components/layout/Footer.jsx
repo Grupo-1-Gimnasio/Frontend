@@ -119,6 +119,9 @@ const communityIcons = {
   events: CalendarIcon,
 }
 
+const interactiveLinkClassName =
+  'transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b2c] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950'
+
 function Footer({ footerLinks, contactInfo }) {
   const isInternalLink = (href) => href.startsWith('/')
   const isExternalLink = (href) => /^https?:\/\//.test(href)
@@ -152,6 +155,10 @@ function Footer({ footerLinks, contactInfo }) {
 
   return (
     <footer className="overflow-hidden rounded-3xl border border-neutral-800 bg-gradient-to-br from-neutral-950 via-neutral-950 to-neutral-900 text-white">
+      <div
+        aria-hidden="true"
+        className="h-px bg-gradient-to-r from-transparent via-[#ff6b2c]/70 to-transparent"
+      />
       <div className="border-b border-neutral-800/80 px-6 py-12 md:px-10">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="space-y-5 lg:col-span-5">
@@ -174,9 +181,10 @@ function Footer({ footerLinks, contactInfo }) {
                   <li key={item.label}>
                     <a
                       href={item.href}
+                      aria-label={`${item.label}: ${item.value}`}
                       target={isExternalLink(item.href) ? '_blank' : undefined}
                       rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                      className="inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-900/70 px-3 py-1.5 text-xs text-neutral-200 transition-colors hover:border-neutral-500 hover:text-white"
+                      className="inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-900/70 px-3 py-1.5 text-xs text-neutral-200 transition-colors hover:border-neutral-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b2c] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
                     >
                       <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
                       <span>{item.value}</span>
@@ -198,7 +206,7 @@ function Footer({ footerLinks, contactInfo }) {
                     {isInternalLink(item.href) ? (
                       <Link
                         to={item.href}
-                        className="group inline-flex items-center gap-2 transition-colors duration-200 hover:text-white"
+                        className={`group inline-flex items-center gap-2 ${interactiveLinkClassName}`}
                       >
                         {item.label}
                         <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[#ff6b2c]" />
@@ -206,7 +214,7 @@ function Footer({ footerLinks, contactInfo }) {
                     ) : (
                       <a
                         href={item.href}
-                        className="group inline-flex items-center gap-2 transition-colors duration-200 hover:text-white"
+                        className={`group inline-flex items-center gap-2 ${interactiveLinkClassName}`}
                       >
                         {item.label}
                         <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[#ff6b2c]" />
@@ -229,9 +237,10 @@ function Footer({ footerLinks, contactInfo }) {
                     <li key={item.label}>
                       <a
                         href={item.href}
+                        aria-label={`Open ${item.label}`}
                         target={isExternalLink(item.href) ? '_blank' : undefined}
                         rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                        className="group inline-flex items-center gap-2 rounded-full border border-neutral-700/80 bg-neutral-900/40 px-3 py-1.5 text-sm transition-colors hover:border-neutral-500 hover:text-white"
+                        className="group inline-flex items-center gap-2 rounded-full border border-neutral-700/80 bg-neutral-900/40 px-3 py-1.5 text-sm transition-colors hover:border-neutral-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b2c] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
                       >
                         <Icon className="h-3.5 w-3.5 text-[#ff6b2c]" />
                         <span>{item.label}</span>
@@ -252,7 +261,7 @@ function Footer({ footerLinks, contactInfo }) {
                   <li key={item.label}>
                     <a
                       href={item.href}
-                      className="inline-flex items-center gap-2 transition-colors duration-200 hover:text-white"
+                      className={`inline-flex items-center gap-2 ${interactiveLinkClassName}`}
                     >
                       {item.label}
                     </a>
@@ -266,7 +275,10 @@ function Footer({ footerLinks, contactInfo }) {
 
       <div className="flex flex-col gap-2 px-6 py-4 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between sm:px-10">
         <p>(c) 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
-        <p>Built for inclusive wellbeing.</p>
+        <div className="space-y-1 text-left sm:text-right">
+          {contactInfo?.schedule ? <p>{contactInfo.schedule}</p> : null}
+          <p>Built for inclusive wellbeing.</p>
+        </div>
       </div>
     </footer>
   )
