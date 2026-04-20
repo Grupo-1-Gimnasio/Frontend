@@ -106,9 +106,9 @@ export const testimonials = [
 
 export const footerLinks = {
   navigation: [
-    { label: 'Home', href: '/' },
-    { label: 'Activities', href: '/activities' },
-    { label: 'Professors', href: '/professors' },
+    { label: 'Inicio', href: '/' },
+    { label: 'Actividades', href: '/activities' },
+    { label: 'Profesores', href: '/professors' },
   ],
   community: [
     { label: 'Instagram', href: 'https://www.instagram.com/lorzasfitness' },
@@ -116,8 +116,8 @@ export const footerLinks = {
     { label: 'Events', href: '/events' },
   ],
   legal: [
-    { label: 'Privacy Policy', href: '/coming-soon' },
-    { label: 'Terms of Service', href: '/coming-soon' },
+    { label: 'Política de privacidad', href: '/coming-soon' },
+    { label: 'Términos del servicio', href: '/coming-soon' },
     { label: 'Cookies', href: '/coming-soon' },
   ],
 }

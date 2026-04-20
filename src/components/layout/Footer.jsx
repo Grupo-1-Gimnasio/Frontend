@@ -1,20 +1,5 @@
 import { Link } from 'react-router-dom'
-
-function ArrowUpRightIcon({ className = '' }) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      className={className}
-    >
-      <path d="M7 17 17 7" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
+import logoLs from '../../assets/logo-ls.png'
 
 function InstagramIcon({ className = '' }) {
   return (
@@ -139,14 +124,14 @@ function Footer({ footerLinks, contactInfo }) {
       : null,
     contactInfo?.phone
       ? {
-          label: 'Telefono',
+          label: 'Teléfono',
           href: `tel:${contactInfo.phone.replace(/\s+/g, '')}`,
           icon: PhoneIcon,
         }
       : null,
     contactInfo?.address
       ? {
-          label: 'Direccion',
+          label: 'Dirección',
           href: `https://maps.google.com/?q=${encodeURIComponent(contactInfo.address)}`,
           icon: MapPinIcon,
         }
@@ -160,63 +145,59 @@ function Footer({ footerLinks, contactInfo }) {
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff6b2c] to-transparent" />
       </div>
 
+      {/* Franja superior: logo + iconos */}
       <div className="relative z-10 px-6 py-10 md:px-10">
-        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-3">
-            <p className="text-sm font-semibold tracking-[-0.02em]">
+        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-2.5">
+            <img
+              src={logoLs}
+              alt="Lorza's Fitness logo"
+              className="h-8 w-8 object-contain"
+            />
+            <p className="whitespace-nowrap text-[18px] leading-none font-semibold tracking-[-0.03em]">
               <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
               <span className="text-white">Fitness</span>
             </p>
-            <p className="max-w-sm text-sm leading-6 text-neutral-300">
-              Inclusive movement with a clean and modern experience.
-            </p>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              {contactActions.map((item) => {
-                const Icon = item.icon
-                return (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    aria-label={item.label}
-                    title={item.label}
-                    target={isExternalLink(item.href) ? '_blank' : undefined}
-                    rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                    className={`${iconButtonClassName} ${focusRingClassName}`}
-                  >
-                    <Icon className="h-4 w-4 text-[#ff6b2c]" />
-                  </a>
-                )
-              })}
-            </div>
-
-            <span className="h-6 w-px bg-neutral-700/80" aria-hidden="true" />
-
-            <div className="flex items-center gap-2">
-              {footerLinks.community.map((item) => {
-                const Icon = communityIcons[item.label.toLowerCase()] || CalendarIcon
-
-                return (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    aria-label={item.label}
-                    title={item.label}
-                    target={isExternalLink(item.href) ? '_blank' : undefined}
-                    rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
-                    className={`${iconButtonClassName} ${focusRingClassName}`}
-                  >
-                    <Icon className="h-4 w-4 text-[#ff6b2c]" />
-                  </a>
-                )
-              })}
-            </div>
+          <div className="flex items-center gap-2">
+            {contactActions.map((item) => {
+              const Icon = item.icon
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  aria-label={item.label}
+                  title={item.label}
+                  target={isExternalLink(item.href) ? '_blank' : undefined}
+                  rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
+                  className={`${iconButtonClassName} ${focusRingClassName}`}
+                >
+                  <Icon className="h-4 w-4 text-[#ff6b2c]" />
+                </a>
+              )
+            })}
+            {footerLinks.community.map((item) => {
+              const Icon = communityIcons[item.label.toLowerCase()] || CalendarIcon
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  aria-label={item.label}
+                  title={item.label}
+                  target={isExternalLink(item.href) ? '_blank' : undefined}
+                  rel={isExternalLink(item.href) ? 'noreferrer noopener' : undefined}
+                  className={`${iconButtonClassName} ${focusRingClassName}`}
+                >
+                  <Icon className="h-4 w-4 text-[#ff6b2c]" />
+                </a>
+              )
+            })}
           </div>
         </div>
       </div>
 
+      {/* Franja media: navegación + legal */}
       <div className="relative z-10 border-y border-neutral-800/80 px-6 py-5 md:px-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-300">
@@ -225,18 +206,16 @@ function Footer({ footerLinks, contactInfo }) {
                 {isInternalLink(item.href) ? (
                   <Link
                     to={item.href}
-                    className={`group inline-flex items-center gap-1.5 transition-colors hover:text-white ${focusRingClassName}`}
+                    className={`transition-colors hover:text-white ${focusRingClassName}`}
                   >
-                    <span>{item.label}</span>
-                    <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-colors group-hover:text-[#ff6b2c]" />
+                    {item.label}
                   </Link>
                 ) : (
                   <a
                     href={item.href}
-                    className={`group inline-flex items-center gap-1.5 transition-colors hover:text-white ${focusRingClassName}`}
+                    className={`transition-colors hover:text-white ${focusRingClassName}`}
                   >
-                    <span>{item.label}</span>
-                    <ArrowUpRightIcon className="h-3.5 w-3.5 text-neutral-500 transition-colors group-hover:text-[#ff6b2c]" />
+                    {item.label}
                   </a>
                 )}
               </li>
@@ -258,9 +237,10 @@ function Footer({ footerLinks, contactInfo }) {
         </div>
       </div>
 
+      {/* Franja inferior: copyright + frase */}
       <div className="relative z-10 flex flex-col gap-1 px-6 py-4 text-xs text-neutral-500 md:flex-row md:items-center md:justify-between md:px-10">
-        <p>(c) 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
-        <p>{contactInfo?.schedule || 'Mon-Fri 07:00 - 22:00'}</p>
+        <p>© 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
+        <p>un espacio inclusivo y para todos los públicos</p>
       </div>
     </footer>
   )
