@@ -4,97 +4,93 @@ function Footer({ footerLinks }) {
   const isInternalLink = (href) => href.startsWith('/')
 
   return (
-    <footer className="bg-neutral-950 text-white">
-      {/* Main footer content */}
-      <div className="mx-auto max-w-[1160px] px-5 py-12">
-        <div className="grid gap-12 md:grid-cols-4">
-          {/* Brand section */}
-          <div className="space-y-3">
-            <div>
-              <p className="text-sm font-semibold tracking-[-0.02em]">
-                <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
-                <span className="text-white">Fitness</span>
-              </p>
-            </div>
-            <p className="text-xs leading-6 text-neutral-400">
-              A community for inclusive movement, sustainable wellbeing, and shared care.
+    <footer className="overflow-hidden rounded-3xl border border-neutral-800 bg-gradient-to-br from-neutral-950 via-neutral-950 to-neutral-900 text-white">
+      <div className="border-b border-neutral-800/80 px-6 py-12 md:px-10">
+        <div className="grid gap-10 lg:grid-cols-12">
+          <div className="space-y-4 lg:col-span-5">
+            <p className="text-sm font-semibold tracking-[-0.02em]">
+              <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
+              <span className="text-white">Fitness</span>
+            </p>
+            <h3 className="max-w-sm text-2xl leading-tight font-semibold tracking-[-0.03em] text-white">
+              Movimiento con acompanamiento profesional y cercano.
+            </h3>
+            <p className="max-w-md text-sm leading-6 text-neutral-300">
+              Construimos una experiencia de entrenamiento respetuosa, sostenible y
+              adaptada a cada persona.
             </p>
           </div>
 
-          {/* Navigation */}
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-neutral-300">
-              Navegación
-            </h3>
-            <ul className="space-y-2.5 text-xs text-neutral-400">
-              {footerLinks.navigation.map((item) => (
-                <li key={item.label}>
-                  {isInternalLink(item.href) ? (
-                    <Link
-                      to={item.href}
-                      className="transition-colors duration-200 hover:text-white"
-                    >
-                      {item.label}
-                    </Link>
-                  ) : (
+          <div className="grid gap-8 sm:grid-cols-3 lg:col-span-7">
+            <div>
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-300">
+                Navegacion
+              </h3>
+              <ul className="space-y-2.5 text-sm text-neutral-400">
+                {footerLinks.navigation.map((item) => (
+                  <li key={item.label}>
+                    {isInternalLink(item.href) ? (
+                      <Link
+                        to={item.href}
+                        className="transition-colors duration-200 hover:text-white"
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className="transition-colors duration-200 hover:text-white"
+                      >
+                        {item.label}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-300">
+                Comunidad
+              </h3>
+              <ul className="space-y-2.5 text-sm text-neutral-400">
+                {footerLinks.community.map((item) => (
+                  <li key={item.label}>
                     <a
                       href={item.href}
                       className="transition-colors duration-200 hover:text-white"
                     >
                       {item.label}
                     </a>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Community */}
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-neutral-300">
-              Comunidad
-            </h3>
-            <ul className="space-y-2.5 text-xs text-neutral-400">
-              {footerLinks.community.map((item) => (
-                <li key={item.label}>
-                  <a
-                    href={item.href}
-                    className="transition-colors duration-200 hover:text-white"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-neutral-300">
-              Legal
-            </h3>
-            <ul className="space-y-2.5 text-xs text-neutral-400">
-              {footerLinks.legal.map((item) => (
-                <li key={item.label}>
-                  <a
-                    href={item.href}
-                    className="transition-colors duration-200 hover:text-white"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-300">
+                Legal
+              </h3>
+              <ul className="space-y-2.5 text-sm text-neutral-400">
+                {footerLinks.legal.map((item) => (
+                  <li key={item.label}>
+                    <a
+                      href={item.href}
+                      className="transition-colors duration-200 hover:text-white"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-neutral-900 bg-neutral-950">
-        <div className="mx-auto flex max-w-[1160px] items-center justify-between px-5 py-3 text-xs text-neutral-500">
-          <p>© 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
-          <p>Crafted with care</p>
-        </div>
+      <div className="flex flex-col gap-2 px-6 py-4 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between sm:px-10">
+        <p>(c) 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
+        <p>Built for inclusive wellbeing.</p>
       </div>
     </footer>
   )
