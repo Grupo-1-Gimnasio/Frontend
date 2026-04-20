@@ -111,14 +111,14 @@ export const footerLinks = {
     { label: 'Professors', href: '/professors' },
   ],
   community: [
-    { label: 'Instagram', href: '#' },
-    { label: 'YouTube', href: '#' },
-    { label: 'Events', href: '#' },
+    { label: 'Instagram', href: 'https://www.instagram.com/lorzasfitness' },
+    { label: 'YouTube', href: 'https://www.youtube.com/@lorzasfitness' },
+    { label: 'Events', href: '/events' },
   ],
   legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Cookies', href: '#' },
+    { label: 'Privacy Policy', href: '/coming-soon' },
+    { label: 'Terms of Service', href: '/coming-soon' },
+    { label: 'Cookies', href: '/coming-soon' },
   ],
 }
 
