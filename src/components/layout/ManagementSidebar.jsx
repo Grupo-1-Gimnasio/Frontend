@@ -26,6 +26,12 @@ function ManagementSidebar() {
         <NavLink to="/dashboard/activities" className={getSidebarLinkClassName}>
           Actividades
         </NavLink>
+        <NavLink
+          to="/dashboard/user-activities"
+          className={getSidebarLinkClassName}
+        >
+          Cursos usuario
+        </NavLink>
         <NavLink to="/dashboard/professors" className={getSidebarLinkClassName}>
           Profesores
         </NavLink>

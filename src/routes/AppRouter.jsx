@@ -10,6 +10,7 @@ import ManagementDashboardPage from '../pages/management/ManagementDashboardPage
 import ManagementUsersPage from '../pages/management/ManagementUsersPage'
 import ManagementActivitiesPage from '../pages/management/ManagementActivitiesPage'
 import ManagementProfessorsPage from '../pages/management/ManagementProfessorsPage'
+import ManagementUserActivitiesPage from '../pages/management/ManagementUserActivitiesPage'
 
 function AppRouter() {
   return (
@@ -23,17 +24,14 @@ function AppRouter() {
           <Route path="/coming-soon" element={<ComingSoon />} />
         </Route>
 
-        <Route path="/management" element={<ManagementLayout />}>
-          <Route index element={<ManagementDashboardPage />} />
-          <Route path="users" element={<ManagementUsersPage />} />
-          <Route path="activities" element={<ManagementActivitiesPage />} />
-          <Route path="professors" element={<ManagementProfessorsPage />} />
-        </Route>
-
         <Route path="/dashboard" element={<ManagementLayout />}>
           <Route index element={<ManagementDashboardPage />} />
           <Route path="users" element={<ManagementUsersPage />} />
           <Route path="activities" element={<ManagementActivitiesPage />} />
+          <Route
+            path="user-activities"
+            element={<ManagementUserActivitiesPage />}
+          />
           <Route path="professors" element={<ManagementProfessorsPage />} />
         </Route>
       </Routes>

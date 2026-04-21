@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { getUsers } from '../../services/usersService'
 
 function ManagementUsersPage() {
+  const navigate = useNavigate()
   const [users, setUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [showForm, setShowForm] = useState(false)
+  const [editingUser, setEditingUser] = useState(null)
+  const [formData, setFormData] = useState({
+    name: '',
+    surname: '',
+    dni: '',
+    image: '',
+    isActive: true,
+    annualFeePaid: false,
+  })
   const [selectedUser, setSelectedUser] = useState(() => {
     try {
       const savedUser = localStorage.getItem('selectedUser')
@@ -17,12 +29,25 @@ function ManagementUsersPage() {
   useEffect(() => {
     let isMounted = true
 
+    try {
+      const savedUsers = localStorage.getItem('users')
+
+      if (savedUsers) {
+        setUsers(JSON.parse(savedUsers))
+        setLoading(false)
+        return
+      }
+    } catch {
+      localStorage.removeItem('users')
+    }
+
     getUsers().then((data) => {
       if (!isMounted) {
         return
       }
 
       setUsers(data)
+      localStorage.setItem('users', JSON.stringify(data))
       setLoading(false)
     })
 
@@ -34,8 +59,84 @@ function ManagementUsersPage() {
   const totalUsers = users.length
   const normalizedSearchTerm = searchTerm.trim().toLowerCase()
   const handleUserSelect = (user) => {
-    setSelectedUser(user)
-    localStorage.setItem('selectedUser', JSON.stringify(user))
+    let finalUser = user
+
+    try {
+      const savedUser = JSON.parse(localStorage.getItem('selectedUser'))
+
+      if (savedUser && savedUser.id === user.id) {
+        finalUser = {
+          ...savedUser,
+          ...user,
+          enrolledActivities: savedUser.enrolledActivities ?? [],
+        }
+      }
+    } catch {
+      finalUser = user
+    }
+
+    setSelectedUser(finalUser)
+    localStorage.setItem('selectedUser', JSON.stringify(finalUser))
+  }
+  const handleViewCourses = (event, user) => {
+    event.stopPropagation()
+    handleUserSelect(user)
+    navigate('/dashboard/user-activities')
+  }
+  const handleFormChange = (event) => {
+    const { name, value, type, checked } = event.target
+
+    setFormData((currentData) => ({
+      ...currentData,
+      [name]: type === 'checkbox' ? checked : value,
+    }))
+  }
+  const handleEditUser = (event, user) => {
+    event.stopPropagation()
+    setEditingUser(user)
+    setFormData({
+      name: user.name || '',
+      surname: user.surname || '',
+      dni: user.dni || '',
+      image: user.image || '',
+      isActive: user.isActive ?? false,
+      annualFeePaid: user.annualFeePaid ?? false,
+    })
+    setShowForm(true)
+  }
+  const handleCreateUser = (event) => {
+    event.preventDefault()
+
+    const updatedUsers =
+      editingUser !== null
+        ? users.map((u) =>
+            u.id === editingUser.id ? { ...u, ...formData } : u
+          )
+        : [
+            ...users,
+            {
+              id: Date.now(),
+              name: formData.name,
+              surname: formData.surname,
+              dni: formData.dni,
+              image: formData.image,
+              isActive: formData.isActive,
+              annualFeePaid: formData.annualFeePaid,
+            },
+          ]
+
+    setUsers(updatedUsers)
+    localStorage.setItem('users', JSON.stringify(updatedUsers))
+    setFormData({
+      name: '',
+      surname: '',
+      dni: '',
+      image: '',
+      isActive: true,
+      annualFeePaid: false,
+    })
+    setEditingUser(null)
+    setShowForm(false)
   }
   const filteredUsers =
     normalizedSearchTerm === ''
@@ -69,7 +170,85 @@ function ManagementUsersPage() {
       <p className="text-neutral-300">
         P&aacute;gina base lista para la gesti&oacute;n de usuarios.
       </p>
+      <button
+        type="button"
+        onClick={() => setShowForm((currentValue) => !currentValue)}
+        className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
+      >
+        Crear usuario
+      </button>
       <span className="sr-only">Total de usuarios: {totalUsers}</span>
+
+      {showForm ? (
+        <form
+          onSubmit={handleCreateUser}
+          className="space-y-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleFormChange}
+              placeholder="Nombre"
+              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+            />
+            <input
+              type="text"
+              name="surname"
+              value={formData.surname}
+              onChange={handleFormChange}
+              placeholder="Apellido"
+              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+            />
+            <input
+              type="text"
+              name="dni"
+              value={formData.dni}
+              onChange={handleFormChange}
+              placeholder="DNI"
+              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+            />
+            <input
+              type="text"
+              name="image"
+              value={formData.image}
+              onChange={handleFormChange}
+              placeholder="URL de la imagen"
+              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+            />
+          </div>
+
+          <label className="flex items-center gap-3 text-sm text-neutral-300">
+            <input
+              type="checkbox"
+              name="isActive"
+              checked={formData.isActive}
+              onChange={handleFormChange}
+              className="h-4 w-4 rounded border-neutral-700 bg-neutral-950 text-orange-400 focus:ring-orange-400"
+            />
+            Usuario activo
+          </label>
+
+          <label className="flex items-center gap-3 text-sm text-neutral-300">
+            <input
+              type="checkbox"
+              name="annualFeePaid"
+              checked={formData.annualFeePaid}
+              onChange={handleFormChange}
+              className="h-4 w-4 rounded border-neutral-700 bg-neutral-950 text-orange-400 focus:ring-orange-400"
+            />
+            Cuota pagada
+          </label>
+
+          <button
+            type="submit"
+            className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
+          >
+            {editingUser ? 'Actualizar usuario' : 'Guardar usuario'}
+          </button>
+        </form>
+      ) : null}
 
       {users.length === 0 ? (
         <p className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-300">
@@ -154,6 +333,22 @@ function ManagementUsersPage() {
                           : 'Cuota pendiente'}
                       </span>
                     ) : null}
+
+                    <button
+                      type="button"
+                      onClick={(event) => handleEditUser(event, user)}
+                      className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-200 transition hover:bg-neutral-800"
+                    >
+                      Editar
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={(event) => handleViewCourses(event, user)}
+                      className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
+                    >
+                      Ver cursos
+                    </button>
                   </div>
                 </article>
               )
