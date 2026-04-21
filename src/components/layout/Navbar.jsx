@@ -27,7 +27,7 @@ function Navbar() {
           <Link to="/#about" onClick={() => setTimeout(() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }), 100)} className={linkClassName}>
             Quiénes Somos
           </Link>
-          <Link to="/activities" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className={linkClassName}>
+          <Link to="/#activities" onClick={() => setTimeout(() => document.getElementById('activities')?.scrollIntoView({ behavior: 'smooth' }), 100)} className={linkClassName}>
             Actividades
           </Link>
           <Link to="/professors" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className={linkClassName}>

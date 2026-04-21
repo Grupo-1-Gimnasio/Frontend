@@ -1,3 +1,10 @@
+import lorzas2 from '../assets/lorzas2.jpg'
+import lorzas3 from '../assets/lorzas3.jpg'
+import lorzas4 from '../assets/lorzas4.jpg'
+import lorzas5 from '../assets/lorzas5.jpg'
+import lorzas6 from '../assets/lorzas6.jpg'
+import lorzas7 from '../assets/lorzas7.jpg'
+
 export const values = [
   {
     title: 'Sin Juzgar',
@@ -23,40 +30,40 @@ export const values = [
 
 export const featuredActivities = [
   {
-    name: 'Functional Movement',
-    level: 'All levels',
-    duration: '50 min',
-    focus: 'Mobility, coordination, and everyday strength',
+    name: 'Yoga Adaptado',
+    description: 'Sesiones adaptadas para todas las habilidades y movilidades',
+    schedule: 'Lun, Mié, Vie 9:00–10:00',
+    image: lorzas2,
   },
   {
-    name: 'Cardio in Motion',
-    level: 'Intermediate',
-    duration: '40 min',
-    focus: 'Rhythm, breathing, and gradual endurance',
+    name: 'Entrenamiento Funcional',
+    description: 'Fortalece tu cuerpo de forma práctica y segura',
+    schedule: 'Mar, Jue 18:00–19:00',
+    image: lorzas3,
   },
   {
-    name: 'Yoga and Breath',
-    level: 'Beginner',
-    duration: '55 min',
-    focus: 'Breathing, flexibility, and body awareness',
+    name: 'Deportes Adaptados',
+    description: 'Baloncesto en silla de ruedas y otras actividades inclusivas',
+    schedule: 'Sáb 11:00–13:00',
+    image: lorzas4,
   },
   {
-    name: 'Core and Stability',
-    level: 'All levels',
-    duration: '45 min',
-    focus: 'Posture support and balanced movement',
+    name: 'Movimiento Consciente',
+    description: 'Conecta con tu cuerpo a través del movimiento intuitivo',
+    schedule: 'Lun, Vie 19:00–20:00',
+    image: lorzas5,
   },
   {
-    name: 'Boxing Fundamentals',
-    level: 'Beginner',
-    duration: '60 min',
-    focus: 'Technique, confidence, and coordination',
+    name: 'Fuerza y Bienestar',
+    description: 'Construye fuerza funcional a tu propio ritmo',
+    schedule: 'Mar, Jue, Sáb 10:00–11:30',
+    image: lorzas6,
   },
   {
-    name: 'Cycle Session',
-    level: 'Intermediate',
-    duration: '45 min',
-    focus: 'Cardio with adaptable resistance',
+    name: 'Meditación en Comunidad',
+    description: 'Cultiva paz interior junto a otros',
+    schedule: 'Dom 10:00–11:00',
+    image: lorzas7,
   },
 ]
 

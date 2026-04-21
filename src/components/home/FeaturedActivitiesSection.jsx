@@ -2,32 +2,32 @@ import ActivityHighlightCard from './ActivityHighlightCard'
 
 function FeaturedActivitiesSection({ featuredActivities }) {
   return (
-    <section id="activities" className="scroll-mt-24 space-y-8">
-      <div className="space-y-3">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-400">
-          Actividades destacadas
-        </p>
-        <h2 className="text-3xl font-bold md:text-4xl">
-          Explora sesiones dise&ntilde;adas para mejorar tu salud, movilidad y
-          confianza.
-        </h2>
-        <p className="max-w-3xl text-neutral-300">
-          Cada clase est&aacute; guiada por profesionales e incluye opciones para
-          adaptar la intensidad, para que todas las personas puedan moverse con
-          comodidad.
-        </p>
-      </div>
+    <section
+      id="activities"
+      className="relative left-1/2 right-1/2 ml-[calc(-50vw+7.5px)] mr-[calc(-50vw+7.5px)] w-[calc(100vw-15px)] scroll-mt-24 py-16 md:py-24"
+    >
+      <div className="mx-auto max-w-7xl space-y-14 px-6">
+        <div className="mx-auto max-w-4xl space-y-4 text-center">
+          <h2 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+            Actividades para Todos
+          </h2>
+          <p className="text-lg leading-relaxed text-white/65 md:text-xl">
+            Encuentra el movimiento que resuena contigo, sin importar tu nivel o
+            experiencia
+          </p>
+        </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {featuredActivities.map((activity) => (
-          <ActivityHighlightCard
-            key={activity.name}
-            name={activity.name}
-            level={activity.level}
-            duration={activity.duration}
-            focus={activity.focus}
-          />
-        ))}
+        <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          {featuredActivities.map((activity) => (
+            <ActivityHighlightCard
+              key={activity.name}
+              name={activity.name}
+              description={activity.description}
+              schedule={activity.schedule}
+              image={activity.image}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )

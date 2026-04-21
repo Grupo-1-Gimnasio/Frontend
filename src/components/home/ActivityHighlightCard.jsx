@@ -1,12 +1,36 @@
-function ActivityHighlightCard({ name, level, duration, focus }) {
+function ActivityHighlightCard({ name, description, schedule, image }) {
   return (
-    <article className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5">
-      <p className="mb-3 inline-flex rounded-full border border-orange-500/40 bg-orange-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-300">
-        {level}
-      </p>
-      <h3 className="text-xl font-semibold text-white">{name}</h3>
-      <p className="mt-2 text-neutral-300">{focus}</p>
-      <p className="mt-4 text-sm text-neutral-400">{duration}</p>
+    <article className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 transition duration-200 hover:border-orange-500/40 hover:bg-neutral-900/90">
+      <div className="relative h-56 overflow-hidden bg-neutral-800">
+        {image ? (
+          <img
+            src={image}
+            alt={`Imagen de ${name}`}
+            className="h-full w-full object-cover transition duration-300 hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-neutral-800 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-500">
+            Actividad
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/80" />
+      </div>
+
+      <div className="space-y-5 p-7">
+        <div className="space-y-3">
+          <h3 className="text-2xl font-bold leading-tight text-white">
+            {name}
+          </h3>
+          <p className="text-base leading-relaxed text-white/65">
+            {description}
+          </p>
+        </div>
+
+        <p className="flex items-center gap-2 text-sm font-semibold text-orange-400">
+          <span className="h-2 w-2 rounded-full bg-orange-400" />
+          {schedule}
+        </p>
+      </div>
     </article>
   )
 }
