@@ -18,7 +18,7 @@ import {
 function HomePage() {
   return (
     <div className="space-y-16">
-      <div className="relative left-1/2 right-1/2 -mt-10 ml-[-50vw] mr-[-50vw] w-screen">
+      <div className="relative left-1/2 right-1/2 -mt-10 ml-[calc(-50vw+7.5px)] mr-[calc(-50vw+7.5px)] w-[calc(100vw-15px)]">
         <HeroSection />
       </div>
       <AboutSection />
