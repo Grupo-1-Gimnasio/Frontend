@@ -70,23 +70,23 @@ export const featuredActivities = [
 export const featuredProfessors = [
   {
     name: 'Sara Lopez',
-    specialty: 'Inclusive movement and strength',
-    experience: '8 years of coaching',
+    specialty: 'Movimiento inclusivo',
+    experience: '8 años acompañando procesos de fuerza y confianza',
   },
   {
     name: 'Miguel Torres',
-    specialty: 'Functional mobility',
-    experience: '10 years of coaching',
+    specialty: 'Movilidad funcional',
+    experience: '10 años adaptando entrenamientos a diferentes cuerpos',
   },
   {
     name: 'Lucia Reyes',
-    specialty: 'Yoga and body awareness',
-    experience: '6 years of coaching',
+    specialty: 'Yoga y conciencia corporal',
+    experience: '6 años guiando sesiones tranquilas y accesibles',
   },
   {
     name: 'Daniel Navarro',
-    specialty: 'Cardio and adaptive progression',
-    experience: '9 years of coaching',
+    specialty: 'Cardio adaptado',
+    experience: '9 años creando progresiones seguras y sostenibles',
   },
 ]
 
