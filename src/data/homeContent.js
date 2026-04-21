@@ -4,6 +4,10 @@ import lorzas4 from '../assets/lorzas4.jpg'
 import lorzas5 from '../assets/lorzas5.jpg'
 import lorzas6 from '../assets/lorzas6.jpg'
 import lorzas7 from '../assets/lorzas7.jpg'
+import lorzas8 from '../assets/lorzas8.jpg'
+import lorzas9 from '../assets/lorzas9.jpg'
+import lorzas10 from '../assets/lorzas10.jpg'
+import lorzas11 from '../assets/lorzas11.jpg'
 
 export const values = [
   {
@@ -69,24 +73,28 @@ export const featuredActivities = [
 
 export const featuredProfessors = [
   {
-    name: 'Sara Lopez',
-    specialty: 'Movimiento inclusivo',
-    experience: '8 años acompañando procesos de fuerza y confianza',
+    name: 'María González',
+    specialty: 'Instructora de Yoga Adaptado',
+    experience: 'Especializada en movilidad reducida y cuerpos diversos',
+    image: lorzas8,
   },
   {
-    name: 'Miguel Torres',
-    specialty: 'Movilidad funcional',
-    experience: '10 años adaptando entrenamientos a diferentes cuerpos',
+    name: 'Michael Johnson',
+    specialty: 'Entrenador de Fuerza',
+    experience: 'Fuerza funcional y body positive masculino',
+    image: lorzas9,
   },
   {
-    name: 'Lucia Reyes',
-    specialty: 'Yoga y conciencia corporal',
-    experience: '6 años guiando sesiones tranquilas y accesibles',
+    name: 'Aisha Williams',
+    specialty: 'Coach de Bienestar',
+    experience: 'Salud en todas las tallas y empoderamiento',
+    image: lorzas10,
   },
   {
-    name: 'Daniel Navarro',
-    specialty: 'Cardio adaptado',
-    experience: '9 años creando progresiones seguras y sostenibles',
+    name: 'Carlos Ramírez',
+    specialty: 'Instructor de Deportes Adaptados',
+    experience: 'Atletismo adaptado y comunidad inclusiva',
+    image: lorzas11,
   },
 ]
 

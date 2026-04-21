@@ -1,4 +1,4 @@
-function ProfessorPreviewCard({ name, specialty, experience }) {
+function ProfessorPreviewCard({ name, specialty, experience, image }) {
   const initials = name
     .split(' ')
     .map((word) => word[0])
@@ -7,27 +7,32 @@ function ProfessorPreviewCard({ name, specialty, experience }) {
     .toUpperCase()
 
   return (
-    <article className="min-h-[310px] rounded-2xl border border-neutral-800 bg-neutral-900/80 p-7 transition duration-200 hover:-translate-y-1 hover:border-orange-500/40 hover:bg-neutral-900">
-      <div className="mb-7 flex items-center gap-4">
-        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-orange-500/20 bg-orange-500/10 text-2xl font-extrabold text-orange-400">
-          {initials}
-        </div>
-        <span className="rounded-full border border-neutral-700 bg-neutral-950 px-3 py-1 text-xs font-semibold uppercase tracking-normal text-neutral-300">
-          Equipo
-        </span>
+    <article className="group">
+      <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-orange-500/10">
+        {image ? (
+          <img
+            src={image}
+            alt={name}
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-5xl font-extrabold text-orange-400">
+            {initials}
+          </div>
+        )}
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 pt-5">
         <div>
           <h3 className="text-2xl font-bold leading-tight text-white">
             {name}
           </h3>
-          <p className="mt-2 text-sm font-semibold uppercase tracking-[0.16em] text-orange-300">
+          <p className="mt-2 text-lg font-semibold leading-snug text-orange-500">
             {specialty}
           </p>
         </div>
 
-        <p className="text-base leading-relaxed text-white/65">
+        <p className="text-base leading-relaxed text-neutral-300">
           {experience}
         </p>
       </div>
