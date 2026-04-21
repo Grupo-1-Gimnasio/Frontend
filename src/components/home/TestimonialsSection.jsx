@@ -2,22 +2,17 @@ import TestimonialCard from './TestimonialCard'
 
 function TestimonialsSection({ testimonials }) {
   return (
-    <section id="testimonials" className="scroll-mt-24 space-y-8">
-      <div className="space-y-3">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-400">
-          Testimonios
-        </p>
-        <h2 className="text-3xl font-bold md:text-4xl">
-          Voces de personas que han encontrado una relaci&oacute;n m&aacute;s saludable con
-          el movimiento.
+    <section id="testimonials" className="scroll-mt-24 py-12 md:py-16">
+      <div className="mx-auto max-w-3xl space-y-4 text-center">
+        <h2 className="text-4xl font-bold text-white md:text-5xl">
+          Voces de Nuestra Comunidad
         </h2>
-        <p className="max-w-3xl text-neutral-300">
-          Estas historias reflejan lo que m&aacute;s valoramos: sentirse acompa&ntilde;ado,
-          moverse con seguridad y disfrutar del progreso sin presi&oacute;n.
+        <p className="text-lg leading-8 text-neutral-300">
+          Historias reales de personas que encontraron su espacio aqu&iacute;
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {testimonials.map((testimonial) => (
           <TestimonialCard
             key={testimonial.name}

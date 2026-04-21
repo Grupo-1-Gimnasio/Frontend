@@ -92,22 +92,22 @@ export const featuredProfessors = [
 
 export const testimonials = [
   {
-    name: 'Andrea P.',
+    name: 'Laura M.',
     message:
-      'I felt accompanied from day one. The team adapted each session to my pace without pressure.',
-    memberType: 'Member since 2024',
+      'Por primera vez en mi vida, encontré un gimnasio donde puedo ser yo misma sin sentirme juzgada. La comunidad aquí es increíblemente acogedora.',
+    memberType: 'Miembro desde 2024',
   },
   {
-    name: 'Carlos M.',
+    name: 'Javier S.',
     message:
-      'The classes helped me reconnect with movement and improve my energy in a healthy way.',
-    memberType: 'Member since 2023',
+      'Como usuario de silla de ruedas, siempre me sentí excluido del fitness. Aquí descubrí que mi cuerpo es capaz de cosas increíbles.',
+    memberType: 'Atleta adaptado',
   },
   {
-    name: 'Elena R.',
+    name: 'Sofia R.',
     message:
-      'It is a respectful, professional space where I can stay consistent while taking care of myself.',
-    memberType: 'Member since 2025',
+      'Después de años luchando con la imagen corporal, encontré un espacio que celebra la diversidad. Esto cambió mi relación con el movimiento.',
+    memberType: 'Instructora voluntaria',
   },
 ]
 
