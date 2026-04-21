@@ -114,8 +114,8 @@ export const testimonials = [
 export const footerLinks = {
   navigation: [
     { label: 'Inicio', href: '/' },
-    { label: 'Actividades', href: '/activities' },
-    { label: 'Profesores', href: '/professors' },
+    { label: 'Actividades', href: '/#activities' },
+    { label: 'Profesores', href: '/#team' },
   ],
   community: [
     { label: 'Instagram', href: 'https://www.instagram.com/lorzasfitness' },

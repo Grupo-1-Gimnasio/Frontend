@@ -113,6 +113,21 @@ const communityIcons = {
 function Footer({ footerLinks, contactInfo }) {
   const isInternalLink = (href) => href.startsWith('/')
   const isExternalLink = (href) => /^https?:\/\//.test(href)
+  const isHashLink = (href) => href.startsWith('/#')
+
+  const handleInternalLinkClick = (href) => {
+    if (isHashLink(href)) {
+      const sectionId = href.replace('/#', '')
+
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+
+      return
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   const contactActions = [
     contactInfo?.email
@@ -206,7 +221,7 @@ function Footer({ footerLinks, contactInfo }) {
                 {isInternalLink(item.href) ? (
                   <Link
                     to={item.href}
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    onClick={() => handleInternalLinkClick(item.href)}
                     className={`transition-colors hover:text-white ${focusRingClassName}`}
                   >
                     {item.label}
