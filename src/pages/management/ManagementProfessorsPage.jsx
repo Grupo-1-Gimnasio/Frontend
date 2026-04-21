@@ -7,7 +7,9 @@ function ManagementProfessorsPage() {
   const [editingProfessor, setEditingProfessor] = useState(null)
   const [formData, setFormData] = useState({
     name: '',
+    dni: '',
     specialty: '',
+    hiringYear: '',
     image: '',
     isActive: true,
   })
@@ -20,7 +22,13 @@ function ManagementProfessorsPage() {
       const savedProfessors = localStorage.getItem('professors')
 
       if (savedProfessors) {
-        setProfessors(JSON.parse(savedProfessors))
+        const parsedProfessors = JSON.parse(savedProfessors)
+        const cleanProfessors = parsedProfessors.filter(
+          (professor) => professor.name && professor.dni && professor.specialty
+        )
+
+        setProfessors(cleanProfessors)
+        localStorage.setItem('professors', JSON.stringify(cleanProfessors))
         setLoading(false)
         return
       }
@@ -59,9 +67,11 @@ function ManagementProfessorsPage() {
 
     setFormData({
       name: professor.name || '',
+      dni: professor.dni || '',
       specialty: professor.specialty || '',
       image: professor.image || '',
       isActive: professor.isActive ?? true,
+      hiringYear: professor.hiringYear || '',
     })
 
     setShowForm(true)
@@ -69,6 +79,10 @@ function ManagementProfessorsPage() {
   const handleCreateProfessor = (event) => {
     event.preventDefault()
 
+    if (!formData.name || !formData.dni || !formData.specialty) {
+      alert('Completa todos los campos obligatorios')
+      return
+    }
 
     const updatedProfessors =
       editingProfessor !== null
@@ -89,7 +103,9 @@ function ManagementProfessorsPage() {
     localStorage.setItem('professors', JSON.stringify(updatedProfessors))
     setFormData({
       name: '',
+      dni: '',
       specialty: '',
+      hiringYear: '',
       image: '',
       isActive: true,
     })
@@ -132,6 +148,59 @@ function ManagementProfessorsPage() {
           className="space-y-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
         >
           <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-1">
+              <label className="text-xs text-neutral-400">Nombre</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleFormChange}
+                placeholder="Nombre"
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs text-neutral-400">DNI</label>
+              <input
+                type="text"
+                name="dni"
+                value={formData.dni}
+                onChange={handleFormChange}
+                placeholder="Ej: 12345678A"
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs text-neutral-400">Especialidad</label>
+              <select
+                name="specialty"
+                value={formData.specialty}
+                onChange={handleFormChange}
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+              >
+                <option value="">Selecciona una especialidad</option>
+                <option value="Yoga">Yoga</option>
+                <option value="Cardio">Cardio</option>
+                <option value="Fuerza">Fuerza</option>
+                <option value="Funcional">Funcional</option>
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs text-neutral-400">
+                📅 A&ntilde;o de contrataci&oacute;n
+              </label>
+              <input
+                type="number"
+                name="hiringYear"
+                value={formData.hiringYear}
+                onChange={handleFormChange}
+                placeholder="Ej: 2022"
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+              />
+            </div>
 
             <div className="space-y-1 md:col-span-2">
               <label className="text-xs text-neutral-400">Imagen (URL)</label>
@@ -169,7 +238,9 @@ function ManagementProfessorsPage() {
               onClick={() => {
                 setFormData({
                   name: '',
+                  dni: '',
                   specialty: '',
+                  hiringYear: '',
                   image: '',
                   isActive: true,
                 })
@@ -191,8 +262,6 @@ function ManagementProfessorsPage() {
       ) : (
         <div className="mt-4 space-y-3">
           {professors.map((professor) => {
-            const hiringYear = professor.hiringYear ?? professor.hiring_year
-
             return (
               <article
                 key={professor.id}
@@ -209,14 +278,14 @@ function ManagementProfessorsPage() {
 
                   <div className="space-y-1">
                     <p className="font-semibold text-white">
-                      {professor.name || 'Nombre no disponible'}
+                      {professor.name || 'Profesor sin nombre'}
                     </p>
                     <p className="text-sm text-neutral-300">
-                      DNI: {professor.dni || 'No disponible'}
+                      DNI: {professor.dni || 'Sin DNI'}
                     </p>
                     <p className="text-sm text-neutral-400">
                       A&ntilde;o de contrataci&oacute;n:{' '}
-                      {hiringYear || 'No disponible'}
+                      {professor.hiringYear || 'No disponible'}
                     </p>
                   </div>
                 </div>
