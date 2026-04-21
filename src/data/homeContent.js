@@ -1,23 +1,23 @@
 export const values = [
   {
-    title: 'Movement Without Judgment',
+    title: 'Sin Juzgar',
     description:
-      'Every person can participate with dignity, adapting each practice to their body, context, and energy.',
+      'Tu viaje es único y respetamos cada paso del camino',
   },
   {
-    title: 'Empathetic Guidance',
+    title: 'Espacio Seguro',
     description:
-      'Our professionals listen first, then guide with clarity so each step feels safe and possible.',
+      'Un ambiente protegido donde puedes ser tú mismo sin miedo',
   },
   {
-    title: 'Community and Belonging',
+    title: 'Comunidad Real',
     description:
-      'We grow together in a respectful environment where support matters more than comparison.',
+      'Personas auténticas que se apoyan mutuamente',
   },
   {
-    title: 'Sustainable Progress',
+    title: 'Bienestar Integral',
     description:
-      'We focus on realistic habits that protect your wellbeing and can be maintained over time.',
+      'Salud física, mental y emocional en armonía',
   },
 ]
 
