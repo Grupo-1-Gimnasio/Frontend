@@ -2,6 +2,12 @@ import { Link } from 'react-router-dom'
 import heroImage from '../../assets/lorzas-hero.jpg'
 
 function HeroSection() {
+  const scrollToSection = (sectionId) => {
+    setTimeout(() => {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+  }
+
   return (
     <section
       id="home"
@@ -37,14 +43,16 @@ function HeroSection() {
 
           <div className="mt-24 flex flex-wrap gap-4 md:mt-28 lg:mt-32">
             <Link
-              to="/activities"
+              to="/#activities"
+              onClick={() => scrollToSection('activities')}
               className="rounded-[10px] bg-[#ff6b2c] px-9 py-5 text-[18px] font-semibold tracking-[-0.03em] text-black transition-colors duration-200 hover:bg-[#ff7a42]"
               style={{ fontFamily: 'var(--font-display, "Outfit", sans-serif)' }}
             >
               &Uacute;nete a la Comunidad &rarr;
             </Link>
             <Link
-              to="/professors"
+              to="/#about"
+              onClick={() => scrollToSection('about')}
               className="rounded-[10px] border border-white/10 bg-[#212123]/92 px-9 py-5 text-[18px] font-semibold tracking-[-0.03em] text-white transition-colors duration-200 hover:border-white/20 hover:bg-[#2a2a2d]"
               style={{ fontFamily: 'var(--font-display, "Outfit", sans-serif)' }}
             >
