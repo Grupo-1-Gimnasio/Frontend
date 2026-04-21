@@ -3,10 +3,30 @@ import { getProfessors } from '../../services/professorsService'
 
 function ManagementProfessorsPage() {
   const [professors, setProfessors] = useState([])
+  const [showForm, setShowForm] = useState(false)
+  const [editingProfessor, setEditingProfessor] = useState(null)
+  const [formData, setFormData] = useState({
+    name: '',
+    specialty: '',
+    image: '',
+    isActive: true,
+  })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let isMounted = true
+
+    try {
+      const savedProfessors = localStorage.getItem('professors')
+
+      if (savedProfessors) {
+        setProfessors(JSON.parse(savedProfessors))
+        setLoading(false)
+        return
+      }
+    } catch {
+      localStorage.removeItem('professors')
+    }
 
     getProfessors().then((data) => {
       if (!isMounted) {
@@ -14,6 +34,7 @@ function ManagementProfessorsPage() {
       }
 
       setProfessors(data)
+      localStorage.setItem('professors', JSON.stringify(data))
       setLoading(false)
     })
 
@@ -23,6 +44,58 @@ function ManagementProfessorsPage() {
   }, [])
 
   const totalProfessors = professors.length
+  const handleFormChange = (event) => {
+    const { name, value, type, checked } = event.target
+
+    setFormData((currentData) => ({
+      ...currentData,
+      [name]: type === 'checkbox' ? checked : value,
+    }))
+  }
+  const handleEditProfessor = (event, professor) => {
+    event.stopPropagation()
+
+    setEditingProfessor(professor)
+
+    setFormData({
+      name: professor.name || '',
+      specialty: professor.specialty || '',
+      image: professor.image || '',
+      isActive: professor.isActive ?? true,
+    })
+
+    setShowForm(true)
+  }
+  const handleCreateProfessor = (event) => {
+    event.preventDefault()
+
+
+    const updatedProfessors =
+      editingProfessor !== null
+        ? professors.map((professor) =>
+            professor.id === editingProfessor.id
+              ? { ...professor, ...formData }
+              : professor
+          )
+        : [
+            ...professors,
+            {
+              id: Date.now(),
+              ...formData,
+            },
+          ]
+
+    setProfessors(updatedProfessors)
+    localStorage.setItem('professors', JSON.stringify(updatedProfessors))
+    setFormData({
+      name: '',
+      specialty: '',
+      image: '',
+      isActive: true,
+    })
+    setEditingProfessor(null)
+    setShowForm(false)
+  }
 
   if (loading) {
     return (
@@ -44,7 +117,72 @@ function ManagementProfessorsPage() {
       <p className="text-neutral-300">
         P&aacute;gina base lista para la gesti&oacute;n de profesores.
       </p>
+      <button
+        type="button"
+        onClick={() => setShowForm((currentValue) => !currentValue)}
+        className="w-fit rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
+      >
+        Crear profesor
+      </button>
       <span className="sr-only">Total de profesores: {totalProfessors}</span>
+
+      {showForm ? (
+        <form
+          onSubmit={handleCreateProfessor}
+          className="space-y-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+
+            <div className="space-y-1 md:col-span-2">
+              <label className="text-xs text-neutral-400">Imagen (URL)</label>
+              <input
+                type="text"
+                name="image"
+                value={formData.image}
+                onChange={handleFormChange}
+                placeholder="URL de la imagen"
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <label className="flex items-center gap-3 text-sm text-neutral-300">
+            <input
+              type="checkbox"
+              name="isActive"
+              checked={formData.isActive}
+              onChange={handleFormChange}
+              className="h-4 w-4 rounded border-neutral-700 bg-neutral-950 text-orange-400 focus:ring-orange-400"
+            />
+            Profesor activo
+          </label>
+
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="submit"
+              className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
+            >
+              {editingProfessor ? 'Actualizar profesor' : 'Crear profesor'}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setFormData({
+                  name: '',
+                  specialty: '',
+                  image: '',
+                  isActive: true,
+                })
+                setEditingProfessor(null)
+                setShowForm(false)
+              }}
+              className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-200 transition hover:bg-neutral-800"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      ) : null}
 
       {professors.length === 0 ? (
         <p className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-300">
@@ -95,6 +233,14 @@ function ManagementProfessorsPage() {
                       {professor.isActive ? 'Activo' : 'Inactivo'}
                     </span>
                   ) : null}
+
+                  <button
+                    type="button"
+                    onClick={(event) => handleEditProfessor(event, professor)}
+                    className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-200 hover:bg-neutral-800"
+                  >
+                    Editar
+                  </button>
                 </div>
               </article>
             )
