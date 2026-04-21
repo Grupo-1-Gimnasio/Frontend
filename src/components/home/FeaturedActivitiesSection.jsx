@@ -8,7 +8,7 @@ function FeaturedActivitiesSection({ featuredActivities }) {
     >
       <div className="mx-auto max-w-7xl space-y-14 px-6">
         <div className="mx-auto max-w-4xl space-y-4 text-center">
-          <h2 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+          <h2 className="text-4xl font-extrabold tracking-normal text-white md:text-5xl">
             Actividades para Todos
           </h2>
           <p className="text-lg leading-relaxed text-white/65 md:text-xl">

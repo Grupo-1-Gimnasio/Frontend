@@ -76,18 +76,35 @@ function Navbar() {
           aria-label={isMenuOpen ? 'Cerrar menu' : 'Abrir menu'}
           aria-expanded={isMenuOpen}
           onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] border border-white/10 bg-[#1a1a1a] text-white transition hover:border-white/20 hover:bg-[#222] md:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] border border-white/15 bg-[#1a1a1a] text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] transition hover:border-orange-400/45 hover:bg-[#222] md:hidden"
         >
-          <span className="flex flex-col gap-1.5">
-            <span className="h-0.5 w-5 rounded-full bg-current" />
-            <span className="h-0.5 w-5 rounded-full bg-current" />
-            <span className="h-0.5 w-5 rounded-full bg-current" />
+          <span className="relative h-5 w-5">
+            <span
+              className={`absolute left-0 top-1 h-0.5 w-5 rounded-full bg-current transition duration-200 ${
+                isMenuOpen ? 'translate-y-2 rotate-45' : ''
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-2.5 h-0.5 w-5 rounded-full bg-current transition duration-200 ${
+                isMenuOpen ? 'opacity-0' : ''
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-4 h-0.5 w-5 rounded-full bg-current transition duration-200 ${
+                isMenuOpen ? '-translate-y-1.5 -rotate-45' : ''
+              }`}
+            />
           </span>
         </button>
       </nav>
 
-      {isMenuOpen ? (
-        <div className="absolute left-0 top-full w-full border-t border-[#1a1a1a] bg-[#0a0a0a] px-5 py-5 shadow-2xl md:hidden">
+      <div
+        className={`absolute left-0 top-full w-full overflow-hidden border-t border-[#1a1a1a] bg-[#0a0a0a]/98 px-5 shadow-2xl transition-all duration-200 ease-out md:hidden ${
+          isMenuOpen
+            ? 'max-h-96 py-5 opacity-100'
+            : 'pointer-events-none max-h-0 py-0 opacity-0'
+        }`}
+      >
           <div className="mx-auto flex w-full max-w-[1160px] flex-col gap-4">
             <Link to="/" onClick={scrollToTop} className={linkClassName}>
               Inicio
@@ -122,7 +139,6 @@ function Navbar() {
             </Link>
           </div>
         </div>
-      ) : null}
     </header>
   )
 }

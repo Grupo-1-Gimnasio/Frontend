@@ -154,14 +154,14 @@ function Footer({ footerLinks, contactInfo }) {
   ].filter(Boolean)
 
   return (
-    <footer className="relative overflow-hidden rounded-[30px] border border-neutral-800 bg-[linear-gradient(160deg,#0a0a0a_0%,#0e0e0e_50%,#111111_100%)] text-white">
+    <footer className="relative overflow-hidden rounded-[30px] border border-neutral-800 bg-[linear-gradient(160deg,#0a0a0a_0%,#0e0e0e_50%,#111111_100%)] text-white shadow-[0_24px_80px_rgba(0,0,0,0.24)]">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute -right-12 -top-16 h-44 w-44 rounded-full bg-[#ff6b2c]/10 blur-3xl" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff6b2c] to-transparent" />
       </div>
 
       {/* Franja superior: logo + iconos */}
-      <div className="relative z-10 px-6 py-10 md:px-10">
+      <div className="relative z-10 px-6 py-9 md:px-10">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-2.5">
             <img
@@ -222,14 +222,14 @@ function Footer({ footerLinks, contactInfo }) {
                   <Link
                     to={item.href}
                     onClick={() => handleInternalLinkClick(item.href)}
-                    className={`transition-colors hover:text-white ${focusRingClassName}`}
+                  className={`font-medium transition-colors hover:text-white ${focusRingClassName}`}
                   >
                     {item.label}
                   </Link>
                 ) : (
                   <a
                     href={item.href}
-                    className={`transition-colors hover:text-white ${focusRingClassName}`}
+                    className={`font-medium transition-colors hover:text-white ${focusRingClassName}`}
                   >
                     {item.label}
                   </a>
@@ -238,7 +238,7 @@ function Footer({ footerLinks, contactInfo }) {
             ))}
           </ul>
 
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-xs uppercase tracking-[0.16em] text-neutral-400">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-xs uppercase tracking-normal text-neutral-400">
             {footerLinks.legal.map((item) => (
               <li key={item.label}>
                 <a
@@ -254,7 +254,7 @@ function Footer({ footerLinks, contactInfo }) {
       </div>
 
       {/* Franja inferior: copyright + frase */}
-      <div className="relative z-10 flex flex-col gap-1 px-6 py-4 text-xs text-neutral-500 md:flex-row md:items-center md:justify-between md:px-10">
+      <div className="relative z-10 flex flex-col gap-1 px-6 py-5 text-xs leading-relaxed text-neutral-500 md:flex-row md:items-center md:justify-between md:px-10">
         <p>© 2026 Lorza&apos;s Fitness. Todos los derechos reservados.</p>
         <p>Un espacio inclusivo y para todos los públicos</p>
       </div>

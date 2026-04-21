@@ -1,7 +1,7 @@
 function ActivityHighlightCard({ name, description, schedule, image }) {
   return (
-    <article className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 transition duration-200 hover:border-orange-500/40 hover:bg-neutral-900/90">
-      <div className="relative h-56 overflow-hidden bg-neutral-800">
+    <article className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 transition duration-200 hover:-translate-y-1 hover:border-orange-500/40 hover:bg-neutral-900/90">
+      <div className="relative h-56 overflow-hidden bg-neutral-800 md:h-60">
         {image ? (
           <img
             src={image}
@@ -13,15 +13,15 @@ function ActivityHighlightCard({ name, description, schedule, image }) {
             Actividad
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/22 to-black/72" />
       </div>
 
-      <div className="space-y-5 p-7">
+      <div className="space-y-5 p-7 md:p-8">
         <div className="space-y-3">
           <h3 className="text-2xl font-bold leading-tight text-white">
             {name}
           </h3>
-          <p className="text-base leading-relaxed text-white/65">
+          <p className="text-base leading-relaxed text-white/70">
             {description}
           </p>
         </div>
