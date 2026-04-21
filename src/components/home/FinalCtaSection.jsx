@@ -1,40 +1,36 @@
-import { Link } from 'react-router-dom'
-
 function FinalCtaSection({ contactInfo }) {
   return (
     <section
       id="cta"
-      className="scroll-mt-24 rounded-3xl border border-orange-500/25 bg-gradient-to-br from-neutral-900 via-neutral-950 to-black px-7 py-12 shadow-[0_24px_80px_rgba(0,0,0,0.28)] md:px-12 md:py-14"
+      className="scroll-mt-24 py-16 text-center md:py-20"
     >
-      <div className="space-y-6">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-400">
-          Empecemos juntos
-        </p>
-        <h2 className="max-w-3xl text-3xl font-extrabold leading-tight tracking-normal md:text-5xl">
-          Elige un movimiento que cuide tu cuerpo y tu bienestar.
+      <div className="mx-auto max-w-5xl space-y-7">
+        <h2 className="text-4xl font-extrabold leading-tight text-white md:text-6xl">
+          &Uacute;nete a una comunidad que te{' '}
+          <span className="text-orange-500">celebra</span>
         </h2>
-        <p className="max-w-2xl text-base leading-relaxed text-neutral-300 md:text-lg">
-          Empieza por la opci&oacute;n que mejor se adapte a ti. Estamos aqu&iacute; para
-          guiarte paso a paso, con respeto y claridad.
+        <p className="mx-auto max-w-3xl text-lg leading-8 text-neutral-300 md:text-xl">
+          Da el primer paso hacia un bienestar aut&eacute;ntico. Todos los cuerpos,
+          todas las personas, todas bienvenidas.
         </p>
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-col items-center justify-center gap-4 pt-2 sm:flex-row">
           <a
-            href="#activities"
-            className="rounded-[10px] bg-orange-500 px-6 py-3 text-sm font-semibold text-neutral-950 transition-colors hover:bg-orange-400"
+            href={`mailto:${contactInfo.email}`}
+            className="inline-flex min-h-14 w-full items-center justify-center rounded-xl bg-orange-500 px-8 py-4 text-base font-semibold text-neutral-950 transition-colors hover:bg-orange-400 sm:w-auto"
           >
-            Ver actividades
+            Cont&aacute;ctanos
           </a>
-          <Link
-            to="/dashboard"
-            className="inline-flex items-center justify-center rounded-[10px] border border-white/20 bg-white/[0.03] px-6 py-3 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/10"
+          <a
+            href="/#activities"
+            className="inline-flex min-h-14 w-full items-center justify-center rounded-xl border border-white/15 bg-white/[0.04] px-8 py-4 text-base font-semibold text-white transition hover:border-white/25 hover:bg-white/10 sm:w-auto"
           >
-            Acceso gesti&oacute;n
-          </Link>
+            Ver Horarios
+          </a>
         </div>
       </div>
 
-      <div className="mt-10 grid gap-3 border-t border-white/10 pt-7 text-sm leading-relaxed text-neutral-300 md:grid-cols-2">
+      <div className="mx-auto mt-12 flex max-w-4xl flex-col items-center justify-center gap-5 border-t border-white/10 pt-8 text-sm leading-relaxed text-neutral-300 md:flex-row md:flex-wrap">
         <p>
           <span className="font-semibold text-white">Tel&eacute;fono:</span>{' '}
           {contactInfo.phone}
