@@ -5,6 +5,7 @@ import { getActivities } from '../../services/activitiesService'
 function ManagementActivitiesPage() {
   const location = useLocation()
   const [activities, setActivities] = useState([])
+  const [professors, setProfessors] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
@@ -58,6 +59,16 @@ function ManagementActivitiesPage() {
     }
   }, [])
 
+  useEffect(() => {
+    try {
+      const savedProfessors = localStorage.getItem('professors')
+      if (savedProfessors) {
+        setProfessors(JSON.parse(savedProfessors))
+      }
+    } catch {
+      setProfessors([])
+    }
+  }, [])
 
   useEffect(() => {
     try {
@@ -74,6 +85,7 @@ function ManagementActivitiesPage() {
     .join(' ')
   const hasSelectedUser = Boolean(selectedUser)
   const enrolledActivities = selectedUser?.enrolledActivities ?? []
+  const activeProfessors = professors.filter((p) => p.isActive)
   const hasReachedLimit = enrolledActivities.length >= 3
   const canUserEnroll =
     hasSelectedUser &&
@@ -102,6 +114,7 @@ function ManagementActivitiesPage() {
       weekDay: day || '',
       startHour: startHour || '',
       endHour: endHour || '',
+      instructor: formData.instructor,
       image: formData.image,
     }
     const updatedActivities = [...activities, newActivity]
@@ -279,14 +292,19 @@ function ManagementActivitiesPage() {
                 />
               </div>
             </div>
-            <input
-              type="text"
+            <select
               name="instructor"
               value={formData.instructor}
               onChange={handleFormChange}
-              placeholder="Instructor"
-              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
-            />
+              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white focus:border-orange-400 focus:outline-none"
+            >
+              <option value="">Seleccionar instructor</option>
+              {activeProfessors.map((professor) => (
+                <option key={professor.id} value={professor.name}>
+                  {professor.name} - {professor.specialty}
+                </option>
+              ))}
+            </select>
             <input
               type="text"
               name="image"
