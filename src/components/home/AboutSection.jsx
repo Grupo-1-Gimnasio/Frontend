@@ -4,9 +4,9 @@ function AboutSection() {
   return (
     <section
       id="about"
-      className="relative left-1/2 right-1/2 ml-[calc(-50vw+7.5px)] mr-[calc(-50vw+7.5px)] w-[calc(100vw-15px)] scroll-mt-24 bg-[#12110f] py-12 md:py-16 lg:py-20"
+      className="scroll-mt-24 bg-[#12110f] py-12 md:py-16 lg:py-20"
     >
-      <div className="mx-auto max-w-[1720px] px-4">
+      <div className="mx-auto w-full max-w-6xl px-6 md:px-8">
         <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-24">
           <div className="max-w-[640px]">
             <h2

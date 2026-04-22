@@ -4,9 +4,9 @@ function ValuesSection({ values }) {
   return (
     <section
       id="values"
-      className="relative left-1/2 right-1/2 mt-16 ml-[calc(-50vw+7.5px)] mr-[calc(-50vw+7.5px)] w-[calc(100vw-15px)] scroll-mt-24 py-16 md:py-24"
+      className="scroll-mt-24 py-16 md:py-24"
     >
-      <div className="mx-auto max-w-7xl space-y-14 px-6">
+      <div className="mx-auto w-full max-w-6xl px-6 md:px-8 space-y-14">
         <div className="mx-auto max-w-4xl space-y-4 text-center">
           <h2 className="text-4xl font-extrabold tracking-normal text-white md:text-5xl">
             Nuestros Valores
