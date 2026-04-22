@@ -1,11 +1,45 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { getActivities } from '../../services/activitiesService'
 
+function getStoredActivitiesState() {
+  try {
+    const savedActivities = localStorage.getItem('activities')
+    if (!savedActivities) {
+      return { activities: [], shouldFetch: true }
+    }
+
+    return {
+      activities: JSON.parse(savedActivities),
+      shouldFetch: false,
+    }
+  } catch {
+    localStorage.removeItem('activities')
+    return { activities: [], shouldFetch: true }
+  }
+}
+
+function getStoredProfessors() {
+  try {
+    const savedProfessors = localStorage.getItem('professors')
+    return savedProfessors ? JSON.parse(savedProfessors) : []
+  } catch {
+    return []
+  }
+}
+
+function getStoredSelectedUser() {
+  try {
+    const savedUser = localStorage.getItem('selectedUser')
+    return savedUser ? JSON.parse(savedUser) : null
+  } catch {
+    return null
+  }
+}
+
 function ManagementActivitiesPage() {
-  const location = useLocation()
-  const [activities, setActivities] = useState([])
-  const [professors, setProfessors] = useState([])
+  const [initialActivitiesState] = useState(() => getStoredActivitiesState())
+  const [activities, setActivities] = useState(initialActivitiesState.activities)
+  const [professors] = useState(getStoredProfessors)
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
@@ -19,30 +53,15 @@ function ManagementActivitiesPage() {
     location: 'Lorza Fitness',
     image: '',
   })
-  const [selectedUser, setSelectedUser] = useState(() => {
-    try {
-      const savedUser = localStorage.getItem('selectedUser')
-      return savedUser ? JSON.parse(savedUser) : null
-    } catch {
-      return null
-    }
-  })
-  const [loading, setLoading] = useState(true)
+  const [selectedUser, setSelectedUser] = useState(getStoredSelectedUser)
+  const [loading, setLoading] = useState(initialActivitiesState.shouldFetch)
 
   useEffect(() => {
-    let isMounted = true
-
-    try {
-      const savedActivities = localStorage.getItem('activities')
-
-      if (savedActivities) {
-        setActivities(JSON.parse(savedActivities))
-        setLoading(false)
-        return
-      }
-    } catch {
-      localStorage.removeItem('activities')
+    if (!loading) {
+      return undefined
     }
+
+    let isMounted = true
 
     getActivities().then((data) => {
       if (!isMounted) {
@@ -57,27 +76,7 @@ function ManagementActivitiesPage() {
     return () => {
       isMounted = false
     }
-  }, [])
-
-  useEffect(() => {
-    try {
-      const savedProfessors = localStorage.getItem('professors')
-      if (savedProfessors) {
-        setProfessors(JSON.parse(savedProfessors))
-      }
-    } catch {
-      setProfessors([])
-    }
-  }, [])
-
-  useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('selectedUser')
-      setSelectedUser(savedUser ? JSON.parse(savedUser) : null)
-    } catch {
-      setSelectedUser(null)
-    }
-  }, [location.pathname])
+  }, [loading])
 
   const totalActivities = activities.length
   const selectedUserFullName = [selectedUser?.name, selectedUser?.surname]

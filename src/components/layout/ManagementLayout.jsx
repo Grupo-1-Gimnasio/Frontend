@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom'
+import AccessibilityWidget from './AccessibilityWidget'
 import ManagementSidebar from './ManagementSidebar'
 
 function ManagementLayout() {
@@ -8,6 +9,7 @@ function ManagementLayout() {
       <main className="flex-1 bg-neutral-950 p-6">
         <Outlet />
       </main>
+      <AccessibilityWidget />
     </div>
   )
 }

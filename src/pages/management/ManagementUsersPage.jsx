@@ -2,9 +2,27 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getUsers } from '../../services/usersService'
 
+function getStoredUsersState() {
+  try {
+    const savedUsers = localStorage.getItem('users')
+    if (!savedUsers) {
+      return { users: [], shouldFetch: true }
+    }
+
+    return {
+      users: JSON.parse(savedUsers),
+      shouldFetch: false,
+    }
+  } catch {
+    localStorage.removeItem('users')
+    return { users: [], shouldFetch: true }
+  }
+}
+
 function ManagementUsersPage() {
   const navigate = useNavigate()
-  const [users, setUsers] = useState([])
+  const [initialUsersState] = useState(() => getStoredUsersState())
+  const [users, setUsers] = useState(initialUsersState.users)
   const [searchTerm, setSearchTerm] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [editingUser, setEditingUser] = useState(null)
@@ -24,22 +42,14 @@ function ManagementUsersPage() {
       return null
     }
   })
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(initialUsersState.shouldFetch)
 
   useEffect(() => {
-    let isMounted = true
-
-    try {
-      const savedUsers = localStorage.getItem('users')
-
-      if (savedUsers) {
-        setUsers(JSON.parse(savedUsers))
-        setLoading(false)
-        return
-      }
-    } catch {
-      localStorage.removeItem('users')
+    if (!loading) {
+      return undefined
     }
+
+    let isMounted = true
 
     getUsers().then((data) => {
       if (!isMounted) {
@@ -54,7 +64,7 @@ function ManagementUsersPage() {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [loading])
 
   const totalUsers = users.length
   const normalizedSearchTerm = searchTerm.trim().toLowerCase()

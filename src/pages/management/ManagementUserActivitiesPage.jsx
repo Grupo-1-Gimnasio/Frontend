@@ -3,7 +3,7 @@ import { getActivities } from '../../services/activitiesService'
 
 function ManagementUserActivitiesPage() {
   const [activities, setActivities] = useState([])
-  const [selectedUser, setSelectedUser] = useState(() => {
+  const [selectedUser] = useState(() => {
     try {
       const savedUser = localStorage.getItem('selectedUser')
       return savedUser ? JSON.parse(savedUser) : null
@@ -27,15 +27,6 @@ function ManagementUserActivitiesPage() {
 
     return () => {
       isMounted = false
-    }
-  }, [])
-
-  useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('selectedUser')
-      setSelectedUser(savedUser ? JSON.parse(savedUser) : null)
-    } catch {
-      setSelectedUser(null)
     }
   }, [])
 

@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom'
+import AccessibilityWidget from './AccessibilityWidget'
 import HashScroll from './HashScroll'
 import Navbar from './Navbar'
 
@@ -16,6 +17,7 @@ function PublicLayout() {
       <main id="main-content" className="mx-auto w-full max-w-6xl px-6 py-10">
         <Outlet />
       </main>
+      <AccessibilityWidget />
     </div>
   )
 }

@@ -1,8 +1,31 @@
 import { useEffect, useState } from 'react'
 import { getProfessors } from '../../services/professorsService'
 
+function getStoredProfessorsState() {
+  try {
+    const savedProfessors = localStorage.getItem('professors')
+    if (!savedProfessors) {
+      return { professors: [], shouldFetch: true }
+    }
+
+    const parsedProfessors = JSON.parse(savedProfessors)
+    const cleanProfessors = parsedProfessors.filter(
+      (professor) => professor.name && professor.dni && professor.specialty
+    )
+
+    return {
+      professors: cleanProfessors,
+      shouldFetch: false,
+    }
+  } catch {
+    localStorage.removeItem('professors')
+    return { professors: [], shouldFetch: true }
+  }
+}
+
 function ManagementProfessorsPage() {
-  const [professors, setProfessors] = useState([])
+  const [initialProfessorsState] = useState(() => getStoredProfessorsState())
+  const [professors, setProfessors] = useState(initialProfessorsState.professors)
   const [showForm, setShowForm] = useState(false)
   const [editingProfessor, setEditingProfessor] = useState(null)
   const [formData, setFormData] = useState({
@@ -13,28 +36,14 @@ function ManagementProfessorsPage() {
     image: '',
     isActive: true,
   })
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(initialProfessorsState.shouldFetch)
 
   useEffect(() => {
-    let isMounted = true
-
-    try {
-      const savedProfessors = localStorage.getItem('professors')
-
-      if (savedProfessors) {
-        const parsedProfessors = JSON.parse(savedProfessors)
-        const cleanProfessors = parsedProfessors.filter(
-          (professor) => professor.name && professor.dni && professor.specialty
-        )
-
-        setProfessors(cleanProfessors)
-        localStorage.setItem('professors', JSON.stringify(cleanProfessors))
-        setLoading(false)
-        return
-      }
-    } catch {
-      localStorage.removeItem('professors')
+    if (!loading) {
+      return undefined
     }
+
+    let isMounted = true
 
     getProfessors().then((data) => {
       if (!isMounted) {
@@ -49,7 +58,7 @@ function ManagementProfessorsPage() {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [loading])
 
   const totalProfessors = professors.length
   const handleFormChange = (event) => {

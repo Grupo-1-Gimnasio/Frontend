@@ -34,27 +34,27 @@ function Navbar() {
           <Link to="/" onClick={scrollToTop} className={linkClassName}>
             Inicio
           </Link>
-          <a
-            href="#about"
+          <Link
+            to="/#about"
             onClick={closeMenu}
             className={linkClassName}
           >
             Qui&eacute;nes Somos
-          </a>
-          <a
-            href="#activities"
+          </Link>
+          <Link
+            to="/#activities"
             onClick={closeMenu}
             className={linkClassName}
           >
             Actividades
-          </a>
-          <a
-            href="#team"
+          </Link>
+          <Link
+            to="/#team"
             onClick={closeMenu}
             className={linkClassName}
           >
             Profesores
-          </a>
+          </Link>
           <Link
             to="/dashboard"
             onClick={closeMenu}
@@ -102,27 +102,27 @@ function Navbar() {
             <Link to="/" onClick={scrollToTop} className={linkClassName}>
               Inicio
             </Link>
-            <a
-              href="#about"
+            <Link
+              to="/#about"
               onClick={closeMenu}
               className={linkClassName}
             >
               Qui&eacute;nes Somos
-            </a>
-            <a
-              href="#activities"
+            </Link>
+            <Link
+              to="/#activities"
               onClick={closeMenu}
               className={linkClassName}
             >
               Actividades
-            </a>
-            <a
-              href="#team"
+            </Link>
+            <Link
+              to="/#team"
               onClick={closeMenu}
               className={linkClassName}
             >
               Profesores
-            </a>
+            </Link>
             <Link
               to="/dashboard"
               onClick={closeMenu}
