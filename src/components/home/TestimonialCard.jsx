@@ -13,7 +13,7 @@ function TestimonialCard({ name, message, memberType }) {
 
       <div className="mt-8 border-t border-neutral-800 pt-6">
         <p className="text-base font-semibold text-white">{name}</p>
-        <p className="mt-1 text-sm text-neutral-400">{memberType}</p>
+        <p className="mt-1 text-sm leading-6 text-neutral-400">{memberType}</p>
       </div>
     </article>
   )

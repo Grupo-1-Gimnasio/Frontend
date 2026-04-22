@@ -29,6 +29,8 @@ function PhoneIcon({ className = '' }) {
   )
 }
 
+import Button from '../ui/Button'
+
 function MapPinIcon({ className = '' }) {
   return (
     <svg
@@ -62,18 +64,22 @@ function FinalCtaSection({ contactInfo }) {
         </p>
 
         <div className="flex flex-col items-center justify-center gap-4 pt-3 sm:flex-row">
-          <a
+          <Button
             href={`mailto:${contactInfo.email}`}
-            className="inline-flex min-h-14 w-full items-center justify-center rounded-lg bg-orange-500 px-9 py-4 text-base font-semibold text-neutral-950 transition-colors hover:bg-orange-400 sm:w-auto"
+            variant="primary"
+            size="lg"
+            className="w-full sm:w-auto"
           >
             Cont&aacute;ctanos
-          </a>
-          <a
+          </Button>
+          <Button
             href="/#activities"
-            className="inline-flex min-h-14 w-full items-center justify-center rounded-lg border border-white/15 bg-white/[0.06] px-9 py-4 text-base font-semibold text-white transition hover:border-white/25 hover:bg-white/10 sm:w-auto"
+            variant="secondary"
+            size="lg"
+            className="w-full sm:w-auto"
           >
             Ver Horarios
-          </a>
+          </Button>
         </div>
       </div>
 

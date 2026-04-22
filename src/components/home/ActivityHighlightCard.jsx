@@ -18,15 +18,15 @@ function ActivityHighlightCard({ name, description, schedule, image }) {
 
       <div className="space-y-5 p-7 md:p-8">
         <div className="space-y-3">
-          <h3 className="text-2xl font-bold leading-tight text-white">
+          <h3 className="text-3xl font-bold leading-tight text-white">
             {name}
           </h3>
-          <p className="text-base leading-relaxed text-white/70">
+          <p className="text-base leading-7 text-white/75">
             {description}
           </p>
         </div>
 
-        <p className="flex items-center gap-2 text-sm font-semibold text-orange-400">
+        <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.12em] text-orange-400">
           <span className="h-2 w-2 rounded-full bg-orange-400" />
           {schedule}
         </p>

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Button from '../ui/Button'
 import heroImage from '../../assets/lorzas-hero.jpg'
 
 function HeroSection() {
@@ -51,22 +51,24 @@ function HeroSection() {
           </p>
 
           <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:flex-wrap md:mt-28 lg:mt-32">
-            <Link
+            <Button
               to="/#activities"
               onClick={() => scrollToSection('activities')}
-              className="inline-flex w-full items-center justify-center rounded-[10px] bg-[#ff6b2c] px-8 py-4 text-[17px] font-semibold tracking-normal text-black transition-colors duration-200 hover:bg-[#ff7a42] sm:w-auto md:px-9 md:py-5 md:text-[18px]"
-              style={{ fontFamily: 'var(--font-display, "Outfit", sans-serif)' }}
+              variant="primary"
+              size="lg"
+              className="w-full sm:w-auto"
             >
               &Uacute;nete a la Comunidad &rarr;
-            </Link>
-            <Link
+            </Button>
+            <Button
               to="/#about"
               onClick={() => scrollToSection('about')}
-              className="inline-flex w-full items-center justify-center rounded-[10px] border border-white/10 bg-[#212123]/92 px-8 py-4 text-[17px] font-semibold tracking-normal text-white transition-colors duration-200 hover:border-white/20 hover:bg-[#2a2a2d] sm:w-auto md:px-9 md:py-5 md:text-[18px]"
-              style={{ fontFamily: 'var(--font-display, "Outfit", sans-serif)' }}
+              variant="secondary"
+              size="lg"
+              className="w-full sm:w-auto"
             >
               Conoce M&aacute;s
-            </Link>
+            </Button>
           </div>
         </div>
       </div>
