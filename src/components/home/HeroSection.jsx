@@ -2,12 +2,6 @@ import Button from '../ui/Button'
 import heroImage from '../../assets/lorzas-hero.jpg'
 
 function HeroSection() {
-  const scrollToSection = (sectionId) => {
-    setTimeout(() => {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
-    }, 100)
-  }
-
   return (
     <section
       id="home"
@@ -22,10 +16,10 @@ function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-black/5" />
       <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/60 to-transparent" />
 
-      <div className="relative z-10 mx-auto flex h-screen w-full max-w-[1160px] items-start px-6 pt-14 sm:pt-12 md:pt-14 lg:pt-16">
+      <div className="relative z-10 flex h-screen w-screen items-start px-6 pt-14 sm:pt-12 md:pt-14 lg:pt-16">
         <div className="max-w-[360px] sm:max-w-[720px]">
           <h1
-            className="flex max-w-[720px] flex-col gap-1 text-[54px] tracking-normal text-white sm:gap-2 sm:text-[72px] md:gap-3 md:text-[96px]"
+            className="flex max-w-[720px] flex-col gap-1 text-[46px] tracking-normal text-white sm:gap-2 sm:text-[62px] md:gap-3 md:text-[76px]"
             style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}
           >
             <span className="block leading-[0.92] md:leading-[0.88]">
@@ -52,8 +46,7 @@ function HeroSection() {
 
           <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:flex-wrap md:mt-28 lg:mt-32">
             <Button
-              to="/#activities"
-              onClick={() => scrollToSection('activities')}
+              href="#activities"
               variant="primary"
               size="lg"
               className="w-full sm:w-auto"
@@ -61,8 +54,7 @@ function HeroSection() {
               &Uacute;nete a la Comunidad &rarr;
             </Button>
             <Button
-              to="/#about"
-              onClick={() => scrollToSection('about')}
+              href="#about"
               variant="secondary"
               size="lg"
               className="w-full sm:w-auto"

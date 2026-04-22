@@ -73,7 +73,7 @@ function FinalCtaSection({ contactInfo }) {
             Cont&aacute;ctanos
           </Button>
           <Button
-            href="/#activities"
+            href="#activities"
             variant="secondary"
             size="lg"
             className="w-full sm:w-auto"

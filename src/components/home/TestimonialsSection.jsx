@@ -3,7 +3,7 @@ import TestimonialCard from './TestimonialCard'
 function TestimonialsSection({ testimonials }) {
   return (
     <section id="testimonials" className="scroll-mt-24 py-12 md:py-16">
-      <div className="mx-auto max-w-3xl space-y-4 text-center">
+      <div className="mx-auto max-w-3xl space-y-4 text-center px-6 lg:px-8">
         <h2 className="text-4xl font-bold text-white md:text-5xl">
           Voces de Nuestra Comunidad
         </h2>
@@ -12,7 +12,7 @@ function TestimonialsSection({ testimonials }) {
         </p>
       </div>
 
-      <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid gap-6 px-6 lg:px-8 md:grid-cols-2 lg:grid-cols-3">
         {testimonials.map((testimonial) => (
           <TestimonialCard
             key={testimonial.name}

@@ -7,8 +7,8 @@ function ProfessorPreviewCard({ name, specialty, experience, image }) {
     .toUpperCase()
 
   return (
-    <article className="group">
-      <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-orange-500/10">
+    <article className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900/85 transition duration-300 hover:-translate-y-1 hover:border-orange-500/40 hover:bg-neutral-900/95">
+      <div className="aspect-[3/4] overflow-hidden rounded-t-2xl bg-orange-500/10">
         {image ? (
           <img
             src={image}
@@ -22,7 +22,7 @@ function ProfessorPreviewCard({ name, specialty, experience, image }) {
         )}
       </div>
 
-      <div className="space-y-4 pt-5">
+      <div className="space-y-4 p-6">
         <div>
           <h3 className="text-2xl font-bold leading-tight text-white">
             {name}

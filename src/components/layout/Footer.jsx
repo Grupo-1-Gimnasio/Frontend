@@ -115,14 +115,12 @@ function Footer({ footerLinks, contactInfo }) {
   const isExternalLink = (href) => /^https?:\/\//.test(href)
   const isHashLink = (href) => href.startsWith('/#')
 
-  const handleInternalLinkClick = (href) => {
+  const handleInternalLinkClick = (href, event) => {
     if (isHashLink(href)) {
+      event?.preventDefault()
       const sectionId = href.replace('/#', '')
 
-      setTimeout(() => {
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
-      }, 100)
-
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
       return
     }
 
@@ -221,8 +219,8 @@ function Footer({ footerLinks, contactInfo }) {
                 {isInternalLink(item.href) ? (
                   <Link
                     to={item.href}
-                    onClick={() => handleInternalLinkClick(item.href)}
-                  className={`font-medium transition-colors hover:text-white ${focusRingClassName}`}
+                    onClick={(event) => handleInternalLinkClick(item.href, event)}
+                    className={`font-medium transition-colors hover:text-white ${focusRingClassName}`}
                   >
                     {item.label}
                   </Link>

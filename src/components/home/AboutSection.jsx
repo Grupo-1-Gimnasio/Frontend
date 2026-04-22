@@ -1,3 +1,4 @@
+import Button from '../ui/Button'
 import aboutImage from '../../assets/lorzas13.jpg'
 
 function AboutSection() {
@@ -39,6 +40,20 @@ function AboutSection() {
                 una comunidad aut&eacute;ntica que te apoya en tu camino &uacute;nico
                 hacia la salud.
               </p>
+            </div>
+
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+              <div className="rounded-3xl border border-white/10 bg-white/5 px-5 py-4 text-sm leading-6 text-white/80">
+                Sesiones adaptadas, comunidad segura y soporte profesional.
+              </div>
+              <Button
+                href="#activities"
+                variant="ghost"
+                size="md"
+                className="w-full sm:w-auto"
+              >
+                Ver actividades
+              </Button>
             </div>
           </div>
 

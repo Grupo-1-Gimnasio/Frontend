@@ -4,9 +4,9 @@ function TeamPreviewSection({ featuredProfessors }) {
   return (
     <section
       id="team"
-      className="relative left-1/2 right-1/2 ml-[calc(-50vw+7.5px)] mr-[calc(-50vw+7.5px)] w-[calc(100vw-15px)] scroll-mt-24 py-16 md:py-24"
+      className="scroll-mt-24 py-16 md:py-24"
     >
-      <div className="mx-auto max-w-[1360px] space-y-16 px-6">
+      <div className="mx-auto max-w-[1360px] space-y-16 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl space-y-5 text-center">
           <h2 className="text-4xl font-extrabold text-white md:text-5xl">
             Nuestro Equipo
