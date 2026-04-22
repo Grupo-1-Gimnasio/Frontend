@@ -17,7 +17,7 @@ import {
 
 function HomePage() {
   return (
-    <div className="space-y-16">
+    <div className="space-y-20 md:space-y-24">
       <HeroSection />
       <AboutSection />
       <ValuesSection values={values} />

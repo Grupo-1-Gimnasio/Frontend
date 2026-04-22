@@ -1,6 +1,6 @@
 function ActivityHighlightCard({ name, description, schedule, image }) {
   return (
-    <article className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 transition duration-200 hover:-translate-y-1 hover:border-orange-500/40 hover:bg-neutral-900/90">
+    <article role="article" className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 transition duration-200 hover:-translate-y-1 hover:border-orange-500/40 hover:bg-neutral-900/90 focus-within:ring-2 focus-within:ring-orange-500/60 focus-within:ring-offset-2 focus-within:ring-offset-[#111111]">
       <div className="relative h-56 overflow-hidden bg-neutral-800 md:h-60">
         {image ? (
           <img
