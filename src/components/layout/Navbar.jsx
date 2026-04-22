@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import logoLs from '../../assets/logo-ls.png'
 
 const linkClassName =
-  'text-[17px] leading-none font-medium tracking-[-0.02em] text-white transition-colors duration-200 hover:text-orange-200'
+  'text-[17px] leading-none font-medium tracking-[-0.02em] text-white transition-colors duration-200 hover:text-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c0c0c] rounded px-2 py-1'
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -13,13 +13,6 @@ function Navbar() {
   const scrollToTop = () => {
     closeMenu()
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  const scrollToSection = (sectionId) => {
-    closeMenu()
-    setTimeout(() => {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
-    }, 100)
   }
 
   return (
@@ -41,27 +34,27 @@ function Navbar() {
           <Link to="/" onClick={scrollToTop} className={linkClassName}>
             Inicio
           </Link>
-          <Link
-            to="/#about"
-            onClick={() => scrollToSection('about')}
+          <a
+            href="#about"
+            onClick={closeMenu}
             className={linkClassName}
           >
             Qui&eacute;nes Somos
-          </Link>
-          <Link
-            to="/#activities"
-            onClick={() => scrollToSection('activities')}
+          </a>
+          <a
+            href="#activities"
+            onClick={closeMenu}
             className={linkClassName}
           >
             Actividades
-          </Link>
-          <Link
-            to="/#team"
-            onClick={() => scrollToSection('team')}
+          </a>
+          <a
+            href="#team"
+            onClick={closeMenu}
             className={linkClassName}
           >
             Profesores
-          </Link>
+          </a>
           <Link
             to="/dashboard"
             onClick={closeMenu}
@@ -109,27 +102,27 @@ function Navbar() {
             <Link to="/" onClick={scrollToTop} className={linkClassName}>
               Inicio
             </Link>
-            <Link
-              to="/#about"
-              onClick={() => scrollToSection('about')}
+            <a
+              href="#about"
+              onClick={closeMenu}
               className={linkClassName}
             >
               Qui&eacute;nes Somos
-            </Link>
-            <Link
-              to="/#activities"
-              onClick={() => scrollToSection('activities')}
+            </a>
+            <a
+              href="#activities"
+              onClick={closeMenu}
               className={linkClassName}
             >
               Actividades
-            </Link>
-            <Link
-              to="/#team"
-              onClick={() => scrollToSection('team')}
+            </a>
+            <a
+              href="#team"
+              onClick={closeMenu}
               className={linkClassName}
             >
               Profesores
-            </Link>
+            </a>
             <Link
               to="/dashboard"
               onClick={closeMenu}
