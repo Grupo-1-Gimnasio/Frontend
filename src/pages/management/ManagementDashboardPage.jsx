@@ -35,19 +35,32 @@ function ManagementDashboardPage() {
   const [kpiCards, setKpiCards] = useState([])
   const [recentActivity, setRecentActivity] = useState([])
   const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     let isMounted = true
 
-    getDashboardData().then((data) => {
-      if (!isMounted) {
-        return
-      }
+    getDashboardData()
+      .then((data) => {
+        if (!isMounted) {
+          return
+        }
 
-      setKpiCards(data.kpiCards)
-      setRecentActivity(data.recentActivity)
-      setLoading(false)
-    })
+        setKpiCards(data.kpiCards)
+        setRecentActivity(data.recentActivity)
+        setErrorMessage('')
+        setLoading(false)
+      })
+      .catch(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setKpiCards([])
+        setRecentActivity([])
+        setErrorMessage('No se pudo cargar la informacion del dashboard.')
+        setLoading(false)
+      })
 
     return () => {
       isMounted = false
@@ -74,6 +87,12 @@ function ManagementDashboardPage() {
           profesores.
         </p>
       </div>
+
+      {errorMessage ? (
+        <p className="rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+          {errorMessage}
+        </p>
+      ) : null}
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {kpiCards.map((card) => (

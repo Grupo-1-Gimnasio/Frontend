@@ -14,7 +14,7 @@ function PublicLayout() {
       </a>
       <Navbar />
       <HashScroll />
-      <main id="main-content" className="mx-auto w-full max-w-6xl px-6 py-10">
+      <main id="main-content" className="mx-auto w-full max-w-6xl px-6 pb-10">
         <Outlet />
       </main>
       <AccessibilityWidget />

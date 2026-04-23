@@ -7,66 +7,67 @@ import {
   ManagementActionButton,
   ManagementStatusIcon,
 } from '../../components/management/ManagementUi'
-import { getProfessors } from '../../services/professorsService'
+import {
+  createProfessor,
+  deleteProfessor,
+  getProfessors,
+  updateProfessor,
+} from '../../services/professorsService'
+import { isTrainerRelationError } from '../../services/apiErrorUtils'
 
-function getStoredProfessorsState() {
-  try {
-    const savedProfessors = localStorage.getItem('professors')
-    if (!savedProfessors) {
-      return { professors: [], shouldFetch: true }
-    }
-
-    const parsedProfessors = JSON.parse(savedProfessors)
-    const cleanProfessors = parsedProfessors.filter(
-      (professor) => professor.name && professor.dni && professor.specialty
-    )
-
-    return {
-      professors: cleanProfessors,
-      shouldFetch: false,
-    }
-  } catch {
-    localStorage.removeItem('professors')
-    return { professors: [], shouldFetch: true }
+function getDefaultFormData() {
+  return {
+    name: '',
+    dni: '',
+    specialty: '',
+    experience: '',
+    hiringYear: '',
+    image: '',
+    isActive: true,
   }
 }
 
 function ManagementProfessorsPage() {
-  const [initialProfessorsState] = useState(() => getStoredProfessorsState())
-  const [professors, setProfessors] = useState(initialProfessorsState.professors)
+  const [professors, setProfessors] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [editingProfessor, setEditingProfessor] = useState(null)
-  const [formData, setFormData] = useState({
-    name: '',
-    dni: '',
-    specialty: '',
-    hiringYear: '',
-    image: '',
-    isActive: true,
-  })
-  const [loading, setLoading] = useState(initialProfessorsState.shouldFetch)
+  const [formData, setFormData] = useState(getDefaultFormData)
+  const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [statusMessage, setStatusMessage] = useState('')
 
   useEffect(() => {
-    if (!loading) {
-      return undefined
-    }
-
     let isMounted = true
 
-    getProfessors().then((data) => {
-      if (!isMounted) {
-        return
-      }
+    getProfessors()
+      .then((data) => {
+        if (!isMounted) {
+          return
+        }
 
-      setProfessors(data)
-      localStorage.setItem('professors', JSON.stringify(data))
-      setLoading(false)
-    })
+        setProfessors(Array.isArray(data) ? data : [])
+        setErrorMessage('')
+      })
+      .catch(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setProfessors([])
+        setErrorMessage('No se pudieron cargar los profesores.')
+      })
+      .finally(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setLoading(false)
+      })
 
     return () => {
       isMounted = false
     }
-  }, [loading])
+  }, [])
 
   const totalProfessors = professors.length
 
@@ -86,48 +87,92 @@ function ManagementProfessorsPage() {
       name: professor.name || '',
       dni: professor.dni || '',
       specialty: professor.specialty || '',
+      experience: professor.experience || '',
+      hiringYear: professor.hiringYear || '',
       image: professor.image || '',
       isActive: professor.isActive ?? true,
-      hiringYear: professor.hiringYear || '',
     })
     setShowForm(true)
+    setErrorMessage('')
+    setStatusMessage('')
   }
 
-  const handleCreateProfessor = (event) => {
+  const handleCloseForm = () => {
+    setFormData(getDefaultFormData())
+    setEditingProfessor(null)
+    setShowForm(false)
+  }
+
+  const handleCreateOrUpdateProfessor = async (event) => {
     event.preventDefault()
+    setErrorMessage('')
+    setStatusMessage('')
 
     if (!formData.name || !formData.dni || !formData.specialty) {
-      alert('Completa todos los campos obligatorios')
+      setErrorMessage('Nombre, DNI y especialidad son obligatorios.')
       return
     }
 
-    const updatedProfessors =
-      editingProfessor !== null
-        ? professors.map((professor) =>
-            professor.id === editingProfessor.id
-              ? { ...professor, ...formData }
-              : professor
-          )
-        : [
-            ...professors,
-            {
-              id: Date.now(),
-              ...formData,
-            },
-          ]
+    try {
+      const professorPayload = {
+        ...formData,
+        hiringYear: formData.hiringYear ? Number(formData.hiringYear) : null,
+      }
 
-    setProfessors(updatedProfessors)
-    localStorage.setItem('professors', JSON.stringify(updatedProfessors))
-    setFormData({
-      name: '',
-      dni: '',
-      specialty: '',
-      hiringYear: '',
-      image: '',
-      isActive: true,
-    })
-    setEditingProfessor(null)
-    setShowForm(false)
+      const savedProfessor = editingProfessor
+        ? await updateProfessor(editingProfessor.id, professorPayload)
+        : await createProfessor(professorPayload)
+
+      setProfessors((currentProfessors) =>
+        editingProfessor
+          ? currentProfessors.map((professor) =>
+              professor.id === editingProfessor.id ? savedProfessor : professor
+            )
+          : [...currentProfessors, savedProfessor]
+      )
+
+      setStatusMessage(
+        editingProfessor
+          ? 'Profesor actualizado correctamente.'
+          : 'Profesor creado correctamente.'
+      )
+      handleCloseForm()
+    } catch {
+      setErrorMessage(
+        editingProfessor
+          ? 'No se pudo actualizar el profesor.'
+          : 'No se pudo crear el profesor.'
+      )
+    }
+  }
+
+  const handleDeleteProfessor = async (event, professor) => {
+    event.stopPropagation()
+    setErrorMessage('')
+    setStatusMessage('')
+
+    if (!window.confirm('¿Seguro que quieres borrar este profesor?')) {
+      return
+    }
+
+    try {
+      await deleteProfessor(professor.id)
+      setProfessors((currentProfessors) =>
+        currentProfessors.filter(
+          (currentProfessor) => currentProfessor.id !== professor.id
+        )
+      )
+      setStatusMessage('Profesor eliminado correctamente.')
+    } catch (error) {
+      if (isTrainerRelationError(error)) {
+        setErrorMessage(
+          'No se puede eliminar el profesor porque esta relacionado con actividades mediante trainer_id. Reasigna o elimina esas actividades primero.'
+        )
+        return
+      }
+
+      setErrorMessage('No se pudo eliminar el profesor.')
+    }
   }
 
   if (loading) {
@@ -148,15 +193,36 @@ function ManagementProfessorsPage() {
         icon="plus"
         label={showForm ? 'Cerrar formulario de profesor' : 'Crear profesor'}
         tone="primary"
-        onClick={() => setShowForm((currentValue) => !currentValue)}
+        onClick={() => {
+          if (showForm) {
+            handleCloseForm()
+            return
+          }
+
+          setShowForm(true)
+          setErrorMessage('')
+          setStatusMessage('')
+        }}
       >
         Crear profesor
       </ManagementActionButton>
       <span className="sr-only">Total de profesores: {totalProfessors}</span>
 
+      {errorMessage ? (
+        <p className="rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+          {errorMessage}
+        </p>
+      ) : null}
+
+      {statusMessage ? (
+        <p className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-4 text-sm text-emerald-200">
+          {statusMessage}
+        </p>
+      ) : null}
+
       {showForm ? (
         <form
-          onSubmit={handleCreateProfessor}
+          onSubmit={handleCreateOrUpdateProfessor}
           className="space-y-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
         >
           <div className="grid gap-4 md:grid-cols-2">
@@ -186,22 +252,30 @@ function ManagementProfessorsPage() {
 
             <div className="space-y-1">
               <label className="text-xs text-neutral-400">Especialidad</label>
-              <select
+              <input
+                type="text"
                 name="specialty"
                 value={formData.specialty}
                 onChange={handleFormChange}
+                placeholder="Ej: Yoga"
                 className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
-              >
-                <option value="">Selecciona una especialidad</option>
-                <option value="Yoga">Yoga</option>
-                <option value="Cardio">Cardio</option>
-                <option value="Fuerza">Fuerza</option>
-                <option value="Funcional">Funcional</option>
-              </select>
+              />
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs text-neutral-400">Ano de contratacion</label>
+              <label className="text-xs text-neutral-400">Experiencia</label>
+              <input
+                type="text"
+                name="experience"
+                value={formData.experience}
+                onChange={handleFormChange}
+                placeholder="Ej: 5 años"
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs text-neutral-400">Año de contratacion</label>
               <input
                 type="number"
                 name="hiringYear"
@@ -250,18 +324,7 @@ function ManagementProfessorsPage() {
             <ManagementActionButton
               icon="cancel"
               label="Cancelar formulario de profesor"
-              onClick={() => {
-                setFormData({
-                  name: '',
-                  dni: '',
-                  specialty: '',
-                  hiringYear: '',
-                  image: '',
-                  isActive: true,
-                })
-                setEditingProfessor(null)
-                setShowForm(false)
-              }}
+              onClick={handleCloseForm}
             >
               Cancelar
             </ManagementActionButton>
@@ -276,7 +339,7 @@ function ManagementProfessorsPage() {
       ) : (
         <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {professors.map((professor) => {
-            const description = `DNI ${professor.dni || 'sin DNI'}. Gestiona su perfil docente dentro del centro.`
+            const description = `${professor.specialty || 'Sin especialidad'}. DNI ${professor.dni || 'sin DNI'}.`
             const accent = `Contratacion ${professor.hiringYear || 'no disponible'}`
 
             return (
@@ -287,6 +350,7 @@ function ManagementProfessorsPage() {
                     src={professor.image}
                     alt={`Avatar de ${professor.name || 'profesor'}`}
                     fallback={professor.name?.slice(0, 1).toUpperCase() || 'P'}
+                    imageClassName="object-[center_24%]"
                   />
                 }
                 title={professor.name || 'Profesor sin nombre'}
@@ -295,21 +359,25 @@ function ManagementProfessorsPage() {
                 titleClassName="text-[2rem]"
                 footer={
                   <div className="flex flex-wrap items-center gap-2">
-                    {typeof professor.isActive !== 'undefined' ? (
-                      <ManagementStatusIcon
-                        icon={professor.isActive ? 'active' : 'inactive'}
-                        label={
-                          professor.isActive ? 'Profesor activo' : 'Profesor inactivo'
-                        }
-                        tone={professor.isActive ? 'success' : 'muted'}
-                      />
-                    ) : null}
+                    <ManagementStatusIcon
+                      icon={professor.isActive ? 'active' : 'inactive'}
+                      label={
+                        professor.isActive ? 'Profesor activo' : 'Profesor inactivo'
+                      }
+                      tone={professor.isActive ? 'success' : 'muted'}
+                    />
 
                     <div className="ml-auto flex items-center gap-2">
                       <ManagementActionButton
                         onClick={(event) => handleEditProfessor(event, professor)}
                         icon="edit"
                         label={`Editar profesor ${professor.name || 'sin nombre'}`}
+                        iconOnly
+                      />
+                      <ManagementActionButton
+                        onClick={(event) => handleDeleteProfessor(event, professor)}
+                        icon="remove"
+                        label={`Eliminar profesor ${professor.name || 'sin nombre'}`}
                         iconOnly
                       />
                     </div>

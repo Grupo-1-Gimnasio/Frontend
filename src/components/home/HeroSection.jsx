@@ -5,7 +5,7 @@ function HeroSection() {
   return (
     <section
       id="home"
-      className="relative h-screen overflow-hidden border-b border-[#1a1a1a] bg-[#080808]"
+      className="relative left-1/2 h-screen w-screen -translate-x-1/2 overflow-hidden border-b border-[#1a1a1a] bg-[#080808]"
     >
       <img
         src={heroImage}
@@ -16,8 +16,8 @@ function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-black/5" />
       <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/60 to-transparent" />
 
-      <div className="relative z-10 flex h-screen w-screen items-start px-6 pt-14 sm:pt-12 md:pt-14 lg:pt-16">
-        <div className="max-w-[360px] sm:max-w-[720px]">
+      <div className="relative z-10 flex h-screen w-screen items-start justify-center px-6 md:justify-start">
+        <div className="max-w-[360px] sm:max-w-[720px] md:ml-32 lg:ml-48 xl:ml-60 pt-12">
           <h1
             className="flex max-w-[720px] flex-col gap-1 text-[46px] tracking-normal text-white sm:gap-2 sm:text-[62px] md:gap-3 md:text-[76px]"
             style={{ fontFamily: 'var(--font-display)', fontWeight: 800 }}

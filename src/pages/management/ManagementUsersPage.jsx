@@ -8,71 +8,79 @@ import {
   ManagementActionButton,
   ManagementStatusIcon,
 } from '../../components/management/ManagementUi'
-import { getUsers } from '../../services/usersService'
+import {
+  createUser,
+  deleteUser,
+  getUsers,
+  updateUser,
+} from '../../services/usersService'
+import { isForeignKeyError } from '../../services/apiErrorUtils'
 
-function getStoredUsersState() {
+function getStoredSelectedUser() {
   try {
-    const savedUsers = localStorage.getItem('users')
-    if (!savedUsers) {
-      return { users: [], shouldFetch: true }
-    }
-
-    return {
-      users: JSON.parse(savedUsers),
-      shouldFetch: false,
-    }
+    const savedUser = localStorage.getItem('selectedUser')
+    return savedUser ? JSON.parse(savedUser) : null
   } catch {
-    localStorage.removeItem('users')
-    return { users: [], shouldFetch: true }
+    return null
+  }
+}
+
+function getDefaultFormData() {
+  return {
+    name: '',
+    surname: '',
+    dni: '',
+    startYear: '',
+    image: '',
+    isActive: true,
+    annualFeePaid: false,
   }
 }
 
 function ManagementUsersPage() {
   const navigate = useNavigate()
-  const [initialUsersState] = useState(() => getStoredUsersState())
-  const [users, setUsers] = useState(initialUsersState.users)
+  const [users, setUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [editingUser, setEditingUser] = useState(null)
-  const [formData, setFormData] = useState({
-    name: '',
-    surname: '',
-    dni: '',
-    image: '',
-    isActive: true,
-    annualFeePaid: false,
-  })
-  const [selectedUser, setSelectedUser] = useState(() => {
-    try {
-      const savedUser = localStorage.getItem('selectedUser')
-      return savedUser ? JSON.parse(savedUser) : null
-    } catch {
-      return null
-    }
-  })
-  const [loading, setLoading] = useState(initialUsersState.shouldFetch)
+  const [formData, setFormData] = useState(getDefaultFormData)
+  const [selectedUser, setSelectedUser] = useState(getStoredSelectedUser)
+  const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [statusMessage, setStatusMessage] = useState('')
 
   useEffect(() => {
-    if (!loading) {
-      return undefined
-    }
-
     let isMounted = true
 
-    getUsers().then((data) => {
-      if (!isMounted) {
-        return
-      }
+    getUsers()
+      .then((data) => {
+        if (!isMounted) {
+          return
+        }
 
-      setUsers(data)
-      localStorage.setItem('users', JSON.stringify(data))
-      setLoading(false)
-    })
+        setUsers(Array.isArray(data) ? data : [])
+        setErrorMessage('')
+      })
+      .catch(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setUsers([])
+        setErrorMessage('No se pudieron cargar los usuarios.')
+      })
+      .finally(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setLoading(false)
+      })
 
     return () => {
       isMounted = false
     }
-  }, [loading])
+  }, [])
 
   const totalUsers = users.length
   const normalizedSearchTerm = searchTerm.trim().toLowerCase()
@@ -120,46 +128,106 @@ function ManagementUsersPage() {
       name: user.name || '',
       surname: user.surname || '',
       dni: user.dni || '',
+      startYear: user.startYear || '',
       image: user.image || '',
       isActive: user.isActive ?? false,
       annualFeePaid: user.annualFeePaid ?? false,
     })
     setShowForm(true)
+    setErrorMessage('')
+    setStatusMessage('')
   }
 
-  const handleCreateUser = (event) => {
-    event.preventDefault()
-
-    const updatedUsers =
-      editingUser !== null
-        ? users.map((user) =>
-            user.id === editingUser.id ? { ...user, ...formData } : user
-          )
-        : [
-            ...users,
-            {
-              id: Date.now(),
-              name: formData.name,
-              surname: formData.surname,
-              dni: formData.dni,
-              image: formData.image,
-              isActive: formData.isActive,
-              annualFeePaid: formData.annualFeePaid,
-            },
-          ]
-
-    setUsers(updatedUsers)
-    localStorage.setItem('users', JSON.stringify(updatedUsers))
-    setFormData({
-      name: '',
-      surname: '',
-      dni: '',
-      image: '',
-      isActive: true,
-      annualFeePaid: false,
-    })
-    setEditingUser(null)
+  const handleCloseForm = () => {
     setShowForm(false)
+    setEditingUser(null)
+    setFormData(getDefaultFormData())
+  }
+
+  const handleCreateOrUpdateUser = async (event) => {
+    event.preventDefault()
+    setErrorMessage('')
+    setStatusMessage('')
+
+    if (!formData.name || !formData.surname || !formData.dni) {
+      setErrorMessage('Nombre, apellido y DNI son obligatorios.')
+      return
+    }
+
+    try {
+      const userPayload = {
+        ...formData,
+        startYear: formData.startYear ? Number(formData.startYear) : null,
+      }
+
+      const savedUser = editingUser
+        ? await updateUser(editingUser.id, userPayload)
+        : await createUser(userPayload)
+
+      setUsers((currentUsers) =>
+        editingUser
+          ? currentUsers.map((user) =>
+              user.id === editingUser.id ? savedUser : user
+            )
+          : [...currentUsers, savedUser]
+      )
+
+      if (selectedUser?.id === savedUser.id) {
+        const mergedUser = {
+          ...selectedUser,
+          ...savedUser,
+          enrolledActivities: selectedUser.enrolledActivities ?? [],
+        }
+        setSelectedUser(mergedUser)
+        localStorage.setItem('selectedUser', JSON.stringify(mergedUser))
+      }
+
+      setStatusMessage(
+        editingUser
+          ? 'Usuario actualizado correctamente.'
+          : 'Usuario creado correctamente.'
+      )
+      handleCloseForm()
+    } catch {
+      setErrorMessage(
+        editingUser
+          ? 'No se pudo actualizar el usuario.'
+          : 'No se pudo crear el usuario.'
+      )
+    }
+  }
+
+  const handleDeleteUser = async (event, user) => {
+    event.stopPropagation()
+    setErrorMessage('')
+    setStatusMessage('')
+
+    if (!window.confirm('¿Seguro que quieres borrar este usuario?')) {
+      return
+    }
+
+    try {
+      await deleteUser(user.id)
+      setUsers((currentUsers) =>
+        currentUsers.filter((currentUser) => currentUser.id !== user.id)
+      )
+
+      if (selectedUser?.id === user.id) {
+        setSelectedUser(null)
+        localStorage.removeItem('selectedUser')
+      }
+
+      setStatusMessage('Usuario eliminado correctamente.')
+    } catch (error) {
+      if (isForeignKeyError(error)) {
+        setErrorMessage(
+          'No se puede eliminar el usuario porque tiene registros relacionados en otras tablas.'
+        )
+        return
+      }
+
+      setErrorMessage('No se pudo eliminar el usuario.')
+    }
   }
 
   const filteredUsers =
@@ -195,15 +263,36 @@ function ManagementUsersPage() {
         icon="plus"
         label={showForm ? 'Cerrar formulario de usuario' : 'Crear usuario'}
         tone="primary"
-        onClick={() => setShowForm((currentValue) => !currentValue)}
+        onClick={() => {
+          if (showForm) {
+            handleCloseForm()
+            return
+          }
+
+          setShowForm(true)
+          setErrorMessage('')
+          setStatusMessage('')
+        }}
       >
         Crear usuario
       </ManagementActionButton>
       <span className="sr-only">Total de usuarios: {totalUsers}</span>
 
+      {errorMessage ? (
+        <p className="rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+          {errorMessage}
+        </p>
+      ) : null}
+
+      {statusMessage ? (
+        <p className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-4 text-sm text-emerald-200">
+          {statusMessage}
+        </p>
+      ) : null}
+
       {showForm ? (
         <form
-          onSubmit={handleCreateUser}
+          onSubmit={handleCreateOrUpdateUser}
           className="space-y-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
         >
           <div className="grid gap-4 md:grid-cols-2">
@@ -232,12 +321,20 @@ function ManagementUsersPage() {
               className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
             />
             <input
+              type="number"
+              name="startYear"
+              value={formData.startYear}
+              onChange={handleFormChange}
+              placeholder="Año de alta"
+              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+            />
+            <input
               type="text"
               name="image"
               value={formData.image}
               onChange={handleFormChange}
               placeholder="URL de la imagen"
-              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none md:col-span-2"
             />
           </div>
 
@@ -263,14 +360,23 @@ function ManagementUsersPage() {
             Cuota pagada
           </label>
 
-          <ManagementActionButton
-            type="submit"
-            icon={editingUser ? 'edit' : 'plus'}
-            label={editingUser ? 'Actualizar usuario' : 'Guardar usuario'}
-            tone="primary"
-          >
-            {editingUser ? 'Actualizar usuario' : 'Guardar usuario'}
-          </ManagementActionButton>
+          <div className="flex flex-wrap gap-3">
+            <ManagementActionButton
+              type="submit"
+              icon={editingUser ? 'edit' : 'plus'}
+              label={editingUser ? 'Actualizar usuario' : 'Guardar usuario'}
+              tone="primary"
+            >
+              {editingUser ? 'Actualizar usuario' : 'Guardar usuario'}
+            </ManagementActionButton>
+            <ManagementActionButton
+              icon="cancel"
+              label="Cancelar formulario de usuario"
+              onClick={handleCloseForm}
+            >
+              Cancelar
+            </ManagementActionButton>
+          </div>
         </form>
       ) : null}
 
@@ -295,40 +401,36 @@ function ManagementUsersPage() {
           ) : (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {filteredUsers.map((user) => {
-              const fullName = [user.name, user.surname]
-                .filter(Boolean)
-                .join(' ')
-              const startYear = user.startYear ?? user.start_year
-              const cardDescription = `DNI ${user.dni || 'no disponible'}. Gestiona su seguimiento dentro del panel.`
-              const cardAccent = `Alta ${startYear || 'no disponible'}`
+                const fullName = [user.name, user.surname]
+                  .filter(Boolean)
+                  .join(' ')
+                const cardDescription = `DNI ${user.dni || 'no disponible'}. Gestiona su seguimiento dentro del panel.`
+                const cardAccent = `Alta ${user.startYear || 'no disponible'}`
 
-              return (
-                <ManagementCard
-                  key={user.id}
-                  onClick={() => handleUserSelect(user)}
-                  selected={selectedUser?.id === user.id}
-                  media={
-                    <ManagementCardImage
-                      src={user.image}
-                      alt={`Avatar de ${fullName || 'usuario'}`}
-                      fallback={fullName?.slice(0, 1).toUpperCase() || 'U'}
-                    />
-                  }
-                  title={fullName || 'Nombre no disponible'}
-                  description={cardDescription}
-                  accent={cardAccent}
-                  titleClassName="text-[2rem]"
-                  footer={
-                    <div className="flex flex-wrap items-center gap-2">
-                      {typeof user.isActive !== 'undefined' ? (
+                return (
+                  <ManagementCard
+                    key={user.id}
+                    onClick={() => handleUserSelect(user)}
+                    selected={selectedUser?.id === user.id}
+                    media={
+                      <ManagementCardImage
+                        src={user.image}
+                        alt={`Avatar de ${fullName || 'usuario'}`}
+                        fallback={fullName?.slice(0, 1).toUpperCase() || 'U'}
+                      />
+                    }
+                    title={fullName || 'Nombre no disponible'}
+                    description={cardDescription}
+                    accent={cardAccent}
+                    titleClassName="text-[2rem]"
+                    footer={
+                      <div className="flex flex-wrap items-center gap-2">
                         <ManagementStatusIcon
                           icon={user.isActive ? 'active' : 'inactive'}
                           label={user.isActive ? 'Usuario activo' : 'Usuario inactivo'}
                           tone={user.isActive ? 'success' : 'muted'}
                         />
-                      ) : null}
 
-                      {typeof user.annualFeePaid !== 'undefined' ? (
                         <ManagementStatusIcon
                           icon={user.annualFeePaid ? 'paid' : 'pending'}
                           label={
@@ -338,28 +440,34 @@ function ManagementUsersPage() {
                           }
                           tone={user.annualFeePaid ? 'info' : 'warning'}
                         />
-                      ) : null}
 
-                      <div className="ml-auto flex items-center gap-2">
-                        <ManagementActionButton
-                          onClick={(event) => handleEditUser(event, user)}
-                          icon="edit"
-                          label={`Editar usuario ${fullName || 'sin nombre'}`}
-                          iconOnly
-                        />
+                        <div className="ml-auto flex items-center gap-2">
+                          <ManagementActionButton
+                            onClick={(event) => handleEditUser(event, user)}
+                            icon="edit"
+                            label={`Editar usuario ${fullName || 'sin nombre'}`}
+                            iconOnly
+                          />
 
-                        <ManagementActionButton
-                          onClick={(event) => handleViewCourses(event, user)}
-                          icon="courses"
-                          label={`Ver cursos de ${fullName || 'usuario'}`}
-                          tone="primary"
-                          iconOnly
-                        />
+                          <ManagementActionButton
+                            onClick={(event) => handleDeleteUser(event, user)}
+                            icon="remove"
+                            label={`Eliminar usuario ${fullName || 'sin nombre'}`}
+                            iconOnly
+                          />
+
+                          <ManagementActionButton
+                            onClick={(event) => handleViewCourses(event, user)}
+                            icon="courses"
+                            label={`Ver cursos de ${fullName || 'usuario'}`}
+                            tone="primary"
+                            iconOnly
+                          />
+                        </div>
                       </div>
-                    </div>
-                  }
-                />
-              )
+                    }
+                  />
+                )
               })}
             </div>
           )}

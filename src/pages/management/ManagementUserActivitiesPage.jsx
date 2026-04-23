@@ -9,6 +9,7 @@ import {
   ManagementStatusIcon,
 } from '../../components/management/ManagementUi'
 import { getActivities } from '../../services/activitiesService'
+import { getProfessors } from '../../services/professorsService'
 
 function getWeekDayLabel(weekDay) {
   const dayMap = {
@@ -32,22 +33,6 @@ function getWeekDayLabel(weekDay) {
   return 'Dia'
 }
 
-function getActivityDescription(activity) {
-  if (activity.description && activity.description.trim() !== '') {
-    return activity.description
-  }
-
-  if (activity.instructor && activity.instructor.trim() !== '') {
-    return `Sesion guiada por ${activity.instructor}.`
-  }
-
-  if (activity.type && activity.type.trim() !== '') {
-    return `Actividad de ${activity.type.toLowerCase()} adaptada al ritmo del grupo.`
-  }
-
-  return 'Actividad inclusiva con seguimiento del equipo.'
-}
-
 function SummaryStatusItem({ icon, label, tone }) {
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-950/60 px-3 py-2 text-sm text-neutral-200">
@@ -62,24 +47,6 @@ function SummaryStatusItem({ icon, label, tone }) {
   )
 }
 
-function getStoredActivitiesState() {
-  try {
-    const savedActivities = localStorage.getItem('activities')
-
-    if (!savedActivities) {
-      return { activities: [], shouldFetch: true }
-    }
-
-    return {
-      activities: JSON.parse(savedActivities),
-      shouldFetch: false,
-    }
-  } catch {
-    localStorage.removeItem('activities')
-    return { activities: [], shouldFetch: true }
-  }
-}
-
 function getStoredSelectedUser() {
   try {
     const savedUser = localStorage.getItem('selectedUser')
@@ -91,32 +58,46 @@ function getStoredSelectedUser() {
 
 function ManagementUserActivitiesPage() {
   const navigate = useNavigate()
-  const [initialActivitiesState] = useState(() => getStoredActivitiesState())
-  const [activities, setActivities] = useState(initialActivitiesState.activities)
+  const [activities, setActivities] = useState([])
+  const [professors, setProfessors] = useState([])
   const [selectedUser, setSelectedUser] = useState(getStoredSelectedUser)
-  const [loading, setLoading] = useState(initialActivitiesState.shouldFetch)
+  const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
-    if (!loading) {
-      return undefined
-    }
-
     let isMounted = true
 
-    getActivities().then((data) => {
-      if (!isMounted) {
-        return
-      }
+    Promise.all([getActivities(), getProfessors()])
+      .then(([activitiesData, professorsData]) => {
+        if (!isMounted) {
+          return
+        }
 
-      setActivities(data)
-      localStorage.setItem('activities', JSON.stringify(data))
-      setLoading(false)
-    })
+        setActivities(Array.isArray(activitiesData) ? activitiesData : [])
+        setProfessors(Array.isArray(professorsData) ? professorsData : [])
+        setErrorMessage('')
+      })
+      .catch(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setActivities([])
+        setProfessors([])
+        setErrorMessage('No se pudieron cargar las actividades del usuario.')
+      })
+      .finally(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setLoading(false)
+      })
 
     return () => {
       isMounted = false
     }
-  }, [loading])
+  }, [])
 
   const enrolledActivities = selectedUser?.enrolledActivities ?? []
   const userActivities = activities.filter((activity) =>
@@ -127,6 +108,9 @@ function ManagementUserActivitiesPage() {
     .join(' ')
   const totalActivities = userActivities.length
   const hasReachedLimit = enrolledActivities.length >= 3
+  const professorsById = Object.fromEntries(
+    professors.map((professor) => [professor.id, professor])
+  )
 
   const handleUnenroll = (activity) => {
     setSelectedUser((currentUser) => {
@@ -165,6 +149,12 @@ function ManagementUserActivitiesPage() {
         Panel de gesti&oacute;n
       </p>
       <h1 className="text-3xl font-bold">Cursos del usuario</h1>
+
+      {errorMessage ? (
+        <p className="rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+          {errorMessage}
+        </p>
+      ) : null}
 
       {!selectedUser ? (
         <p className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-300">
@@ -224,11 +214,13 @@ function ManagementUserActivitiesPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {userActivities.map((activity) => {
-            const weekDay = activity.weekDay ?? activity.week_day
-            const startHour = activity.startHour ?? activity.start_hour
-            const endHour = activity.endHour ?? activity.end_hour
-            const description = getActivityDescription(activity)
-            const accent = `${getWeekDayLabel(weekDay).toUpperCase()} ${startHour ?? '--:--'}-${endHour ?? '--:--'}`
+            const weekDay = activity.weekDay
+            const startHour = activity.startHour
+            const endHour = activity.endHour
+            const professor = professorsById[activity.trainerId]
+            const trainerName = professor?.name || 'Profesor no disponible'
+            const description = `Sesion guiada por ${trainerName}.`
+            const accent = `${getWeekDayLabel(weekDay).toUpperCase()} ${(startHour ?? '--:--').slice(0, 5)}-${(endHour ?? '--:--').slice(0, 5)}`
 
             return (
               <ManagementCard

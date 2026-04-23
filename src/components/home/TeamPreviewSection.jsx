@@ -17,15 +17,21 @@ function TeamPreviewSection({ featuredProfessors }) {
         </div>
 
         <div className="grid gap-9 md:grid-cols-2 lg:grid-cols-4">
-          {featuredProfessors.map((professor) => (
-            <ProfessorPreviewCard
-              key={professor.name}
-              name={professor.name}
-              specialty={professor.specialty}
-              experience={professor.experience}
-              image={professor.image}
-            />
-          ))}
+          {featuredProfessors.length === 0 ? (
+            <div className="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/5 p-8 text-center text-white/70">
+              No hay profesores disponibles en este momento.
+            </div>
+          ) : (
+            featuredProfessors.map((professor) => (
+              <ProfessorPreviewCard
+                key={professor.id ?? professor.name}
+                name={professor.name}
+                specialty={professor.specialty}
+                experience={professor.experience || 'Equipo docente especializado.'}
+                image={professor.image}
+              />
+            ))
+          )}
         </div>
       </div>
     </section>

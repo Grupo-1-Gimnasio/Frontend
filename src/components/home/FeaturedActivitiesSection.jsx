@@ -30,7 +30,10 @@ function FeaturedActivitiesSection({ featuredActivities = [] }) {
                 <ActivityHighlightCard
                   key={activity.id}
                   title={activity.title}
-                  description={activity.description}
+                  description={
+                    activity.description ||
+                    'Actividad guiada por profesionales, adaptada a distintos niveles.'
+                  }
                   schedule={fullSchedule}
                   image={activity.image}
                 />

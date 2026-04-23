@@ -7,7 +7,14 @@ import {
   ManagementActionButton,
   ManagementStatusIcon,
 } from '../../components/management/ManagementUi'
-import { getActivities } from '../../services/activitiesService'
+import {
+  createActivity,
+  deleteActivity,
+  getActivities,
+  updateActivity,
+} from '../../services/activitiesService'
+import { getProfessors } from '../../services/professorsService'
+import { isForeignKeyError } from '../../services/apiErrorUtils'
 
 function getWeekDayLabel(weekDay) {
   const dayMap = {
@@ -31,55 +38,12 @@ function getWeekDayLabel(weekDay) {
   return 'Dia'
 }
 
-function getActivityDescription(activity) {
-  if (activity.description && activity.description.trim() !== '') {
-    return activity.description
-  }
+function getActivitySchedule(activity) {
+  const day = getWeekDayLabel(activity.weekDay)
+  const start = (activity.startHour ?? '00:00:00').slice(0, 5)
+  const end = (activity.endHour ?? '00:00:00').slice(0, 5)
 
-  if (activity.instructor && activity.instructor.trim() !== '') {
-    return `Sesion guiada por ${activity.instructor}.`
-  }
-
-  if (activity.type && activity.type.trim() !== '') {
-    return `Actividad de ${activity.type.toLowerCase()} adaptada al ritmo del grupo.`
-  }
-
-  return 'Actividad inclusiva con seguimiento del equipo.'
-}
-
-function SummaryStatusItem({ icon, label, tone }) {
-  return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-950/60 px-3 py-2 text-sm text-neutral-200">
-      <ManagementStatusIcon icon={icon} label={label} tone={tone} className="h-9 w-9" />
-      <span>{label}</span>
-    </div>
-  )
-}
-
-function getStoredActivitiesState() {
-  try {
-    const savedActivities = localStorage.getItem('activities')
-    if (!savedActivities) {
-      return { activities: [], shouldFetch: true }
-    }
-
-    return {
-      activities: JSON.parse(savedActivities),
-      shouldFetch: false,
-    }
-  } catch {
-    localStorage.removeItem('activities')
-    return { activities: [], shouldFetch: true }
-  }
-}
-
-function getStoredProfessors() {
-  try {
-    const savedProfessors = localStorage.getItem('professors')
-    return savedProfessors ? JSON.parse(savedProfessors) : []
-  } catch {
-    return []
-  }
+  return `${day.toUpperCase()} ${start}-${end}`
 }
 
 function getStoredSelectedUser() {
@@ -91,48 +55,72 @@ function getStoredSelectedUser() {
   }
 }
 
+function getDefaultFormData() {
+  return {
+    title: '',
+    weekDay: '',
+    startHour: '',
+    endHour: '',
+    price: '',
+    trainerId: '',
+    image: '',
+  }
+}
+
+function SummaryStatusItem({ icon, label, tone }) {
+  return (
+    <div className="inline-flex items-center gap-2 rounded-full border border-neutral-700 bg-neutral-950/60 px-3 py-2 text-sm text-neutral-200">
+      <ManagementStatusIcon icon={icon} label={label} tone={tone} className="h-9 w-9" />
+      <span>{label}</span>
+    </div>
+  )
+}
+
 function ManagementActivitiesPage() {
-  const [initialActivitiesState] = useState(() => getStoredActivitiesState())
-  const [activities, setActivities] = useState(initialActivitiesState.activities)
-  const [professors] = useState(getStoredProfessors)
+  const [activities, setActivities] = useState([])
+  const [professors, setProfessors] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [editingActivity, setEditingActivity] = useState(null)
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    type: '',
-    schedule: '',
-    price: '',
-    capacity: 10,
-    enrolled: 0,
-    instructor: '',
-    location: 'Lorza Fitness',
-    image: '',
-  })
+  const [formData, setFormData] = useState(getDefaultFormData)
   const [selectedUser, setSelectedUser] = useState(getStoredSelectedUser)
-  const [loading, setLoading] = useState(initialActivitiesState.shouldFetch)
+  const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [statusMessage, setStatusMessage] = useState('')
 
   useEffect(() => {
-    if (!loading) {
-      return undefined
-    }
-
     let isMounted = true
 
-    getActivities().then((data) => {
-      if (!isMounted) {
-        return
-      }
+    Promise.all([getActivities(), getProfessors()])
+      .then(([activitiesData, professorsData]) => {
+        if (!isMounted) {
+          return
+        }
 
-      setActivities(data)
-      localStorage.setItem('activities', JSON.stringify(data))
-      setLoading(false)
-    })
+        setActivities(Array.isArray(activitiesData) ? activitiesData : [])
+        setProfessors(Array.isArray(professorsData) ? professorsData : [])
+        setErrorMessage('')
+      })
+      .catch(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setActivities([])
+        setProfessors([])
+        setErrorMessage('No se pudieron cargar actividades y profesores.')
+      })
+      .finally(() => {
+        if (!isMounted) {
+          return
+        }
+
+        setLoading(false)
+      })
 
     return () => {
       isMounted = false
     }
-  }, [loading])
+  }, [])
 
   const totalActivities = activities.length
   const selectedUserFullName = [selectedUser?.name, selectedUser?.surname]
@@ -147,85 +135,139 @@ function ManagementActivitiesPage() {
     selectedUser.isActive === true &&
     selectedUser.annualFeePaid === true &&
     !hasReachedLimit
+  const professorsById = Object.fromEntries(
+    professors.map((professor) => [professor.id, professor])
+  )
 
   const handleFormChange = (event) => {
     const { name, value } = event.target
 
     setFormData((currentData) => ({
       ...currentData,
-      [name]: name === 'capacity' || name === 'enrolled' ? Number(value) : value,
+      [name]: value,
     }))
   }
 
-  const handleCreateActivity = (event) => {
-    event.preventDefault()
-
-    const [day, hours] = formData.schedule.split(' ')
-    const [startHour, endHour] = (hours || '').split('-')
-    const activityData = {
-      title: formData.title,
-      price: Number(formData.price) || 0,
-      weekDay: day || '',
-      startHour: startHour || '',
-      endHour: endHour || '',
-      instructor: formData.instructor,
-      image: formData.image,
-    }
-    const updatedActivities =
-      editingActivity !== null
-        ? activities.map((activity) =>
-            activity.id === editingActivity.id
-              ? { ...activity, ...activityData }
-              : activity
-          )
-        : [
-            ...activities,
-            {
-              id: Date.now(),
-              ...activityData,
-            },
-          ]
-
-    setActivities(updatedActivities)
-    localStorage.setItem('activities', JSON.stringify(updatedActivities))
-    setFormData({
-      title: '',
-      description: '',
-      type: '',
-      schedule: '',
-      price: '',
-      capacity: 10,
-      enrolled: 0,
-      instructor: '',
-      location: 'Lorza Fitness',
-      image: '',
-    })
-    setEditingActivity(null)
+  const handleCloseForm = () => {
     setShowForm(false)
+    setEditingActivity(null)
+    setFormData(getDefaultFormData())
+  }
+
+  const handleCreateOrUpdateActivity = async (event) => {
+    event.preventDefault()
+    setErrorMessage('')
+    setStatusMessage('')
+
+    if (
+      !formData.title ||
+      !formData.weekDay ||
+      !formData.startHour ||
+      !formData.endHour ||
+      !formData.trainerId
+    ) {
+      setErrorMessage(
+        'Titulo, dia, hora inicio, hora fin y profesor son obligatorios.'
+      )
+      return
+    }
+
+    try {
+      const activityPayload = {
+        title: formData.title,
+        price: formData.price,
+        weekDay: formData.weekDay,
+        startHour: `${formData.startHour}:00`,
+        endHour: `${formData.endHour}:00`,
+        image: formData.image,
+        trainerId: Number(formData.trainerId),
+      }
+
+      const savedActivity = editingActivity
+        ? await updateActivity(editingActivity.id, activityPayload)
+        : await createActivity(activityPayload)
+
+      setActivities((currentActivities) =>
+        editingActivity
+          ? currentActivities.map((activity) =>
+              activity.id === editingActivity.id ? savedActivity : activity
+            )
+          : [...currentActivities, savedActivity]
+      )
+
+      setStatusMessage(
+        editingActivity
+          ? 'Actividad actualizada correctamente.'
+          : 'Actividad creada correctamente.'
+      )
+      handleCloseForm()
+    } catch {
+      setErrorMessage(
+        editingActivity
+          ? 'No se pudo actualizar la actividad.'
+          : 'No se pudo crear la actividad.'
+      )
+    }
   }
 
   const handleEditActivity = (activity) => {
-    const weekDay = activity.weekDay ?? activity.week_day ?? ''
-    const startHour = activity.startHour ?? activity.start_hour ?? ''
-    const endHour = activity.endHour ?? activity.end_hour ?? ''
-
     setEditingActivity(activity)
     setFormData({
       title: activity.title || '',
-      description: activity.description || '',
-      type: activity.type || '',
-      schedule:
-        weekDay && startHour && endHour
-          ? `${weekDay} ${startHour}-${endHour}`
-          : '',
+      weekDay: activity.weekDay || '',
+      startHour: (activity.startHour || '').slice(0, 5),
+      endHour: (activity.endHour || '').slice(0, 5),
       price: activity.price ?? '',
-      capacity: activity.capacity ?? 10,
-      enrolled: activity.enrolled ?? 0,
-      instructor: activity.instructor || '',
-      location: activity.location || 'Lorza Fitness',
+      trainerId: activity.trainerId ? String(activity.trainerId) : '',
       image: activity.image || '',
     })
     setShowForm(true)
+    setErrorMessage('')
+    setStatusMessage('')
+  }
+
+  const handleDeleteActivity = async (activity) => {
+    setErrorMessage('')
+    setStatusMessage('')
+
+    if (!window.confirm('¿Seguro que quieres borrar esta actividad?')) {
+      return
+    }
+
+    try {
+      await deleteActivity(activity.id)
+      setActivities((currentActivities) =>
+        currentActivities.filter(
+          (currentActivity) => currentActivity.id !== activity.id
+        )
+      )
+
+      setSelectedUser((currentUser) => {
+        if (!currentUser) {
+          return currentUser
+        }
+
+        const updatedUser = {
+          ...currentUser,
+          enrolledActivities: (currentUser.enrolledActivities ?? []).filter(
+            (activityId) => activityId !== activity.id
+          ),
+        }
+        localStorage.setItem('selectedUser', JSON.stringify(updatedUser))
+        return updatedUser
+      })
+
+      setStatusMessage('Actividad eliminada correctamente.')
+    } catch (error) {
+      if (isForeignKeyError(error)) {
+        setErrorMessage(
+          'No se puede eliminar la actividad porque tiene registros relacionados en otras tablas.'
+        )
+        return
+      }
+
+      setErrorMessage('No se pudo eliminar la actividad.')
+    }
   }
 
   const handleEnroll = (activity) => {
@@ -293,40 +335,37 @@ function ManagementActivitiesPage() {
       <h1 className="text-3xl font-bold">Actividades</h1>
       <ManagementActionButton
         icon="plus"
-        label={
-          showForm
-            ? 'Cerrar formulario de actividad'
-            : 'Crear actividad'
-        }
+        label={showForm ? 'Cerrar formulario de actividad' : 'Crear actividad'}
         tone="primary"
         onClick={() => {
           if (showForm) {
-            setShowForm(false)
-            setEditingActivity(null)
-            setFormData({
-              title: '',
-              description: '',
-              type: '',
-              schedule: '',
-              price: '',
-              capacity: 10,
-              enrolled: 0,
-              instructor: '',
-              location: 'Lorza Fitness',
-              image: '',
-            })
+            handleCloseForm()
             return
           }
 
           setShowForm(true)
+          setErrorMessage('')
+          setStatusMessage('')
         }}
       >
         Crear actividad
       </ManagementActionButton>
 
+      {errorMessage ? (
+        <p className="rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+          {errorMessage}
+        </p>
+      ) : null}
+
+      {statusMessage ? (
+        <p className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-4 text-sm text-emerald-200">
+          {statusMessage}
+        </p>
+      ) : null}
+
       {showForm ? (
         <form
-          onSubmit={handleCreateActivity}
+          onSubmit={handleCreateOrUpdateActivity}
           className="space-y-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
         >
           <div className="grid gap-4 md:grid-cols-2">
@@ -338,92 +377,84 @@ function ManagementActivitiesPage() {
               placeholder="Titulo"
               className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
             />
+
             <div className="space-y-1">
-              <label className="text-xs text-neutral-400">Tipo de actividad</label>
+              <label className="text-xs text-neutral-400">Dia de la semana</label>
               <select
-                name="type"
-                value={formData.type}
+                name="weekDay"
+                value={formData.weekDay}
                 onChange={handleFormChange}
                 className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white focus:border-orange-400 focus:outline-none"
               >
-                <option value="">Seleccionar tipo</option>
-                <option value="Yoga">Yoga</option>
-                <option value="Cardio">Cardio</option>
-                <option value="Fuerza">Fuerza</option>
-                <option value="Funcional">Funcional</option>
+                <option value="">Seleccionar dia</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
               </select>
             </div>
+
             <div className="space-y-1">
-              <label className="text-xs text-neutral-400">Horario</label>
+              <label className="text-xs text-neutral-400">Hora de inicio</label>
               <input
-                type="text"
-                name="schedule"
-                value={formData.schedule}
+                type="time"
+                name="startHour"
+                value={formData.startHour}
                 onChange={handleFormChange}
-                placeholder="Ej: Lun 09:00-10:00"
-                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white focus:border-orange-400 focus:outline-none"
               />
             </div>
+
+            <div className="space-y-1">
+              <label className="text-xs text-neutral-400">Hora de fin</label>
+              <input
+                type="time"
+                name="endHour"
+                value={formData.endHour}
+                onChange={handleFormChange}
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white focus:border-orange-400 focus:outline-none"
+              />
+            </div>
+
             <div className="space-y-1">
               <label className="text-xs text-neutral-400">Precio (EUR)</label>
               <input
                 type="number"
+                step="0.01"
                 name="price"
                 value={formData.price}
                 onChange={handleFormChange}
-                placeholder="Ej: 20"
+                placeholder="Ej: 20.00"
                 className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
               />
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-1">
-                <label className="text-xs text-neutral-400">Capacidad maxima</label>
-                <input
-                  type="number"
-                  name="capacity"
-                  value={formData.capacity}
-                  onChange={handleFormChange}
-                  className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white focus:border-orange-400 focus:outline-none"
-                />
-              </div>
 
-              <div className="space-y-1">
-                <label className="text-xs text-neutral-400">Inscritos</label>
-                <input
-                  type="number"
-                  value={formData.enrolled}
-                  disabled
-                  className="w-full cursor-not-allowed rounded-xl border border-neutral-800 bg-neutral-800 px-4 py-3 text-sm text-neutral-400"
-                />
-              </div>
+            <div className="space-y-1">
+              <label className="text-xs text-neutral-400">Profesor</label>
+              <select
+                name="trainerId"
+                value={formData.trainerId}
+                onChange={handleFormChange}
+                className="w-full rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white focus:border-orange-400 focus:outline-none"
+              >
+                <option value="">Seleccionar profesor</option>
+                {activeProfessors.map((professor) => (
+                  <option key={professor.id} value={professor.id}>
+                    {professor.name} - {professor.specialty}
+                  </option>
+                ))}
+              </select>
             </div>
-            <select
-              name="instructor"
-              value={formData.instructor}
-              onChange={handleFormChange}
-              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white focus:border-orange-400 focus:outline-none"
-            >
-              <option value="">Seleccionar instructor</option>
-              {activeProfessors.map((professor) => (
-                <option key={professor.id} value={professor.name}>
-                  {professor.name} - {professor.specialty}
-                </option>
-              ))}
-            </select>
+
             <input
               type="text"
               name="image"
               value={formData.image}
               onChange={handleFormChange}
               placeholder="URL de la imagen"
-              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none md:col-span-2"
-            />
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleFormChange}
-              placeholder="Descripcion"
-              rows="4"
               className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none md:col-span-2"
             />
           </div>
@@ -444,22 +475,7 @@ function ManagementActivitiesPage() {
             <ManagementActionButton
               icon="cancel"
               label="Cancelar formulario de actividad"
-              onClick={() => {
-                setShowForm(false)
-                setEditingActivity(null)
-                setFormData({
-                  title: '',
-                  description: '',
-                  type: '',
-                  schedule: '',
-                  price: '',
-                  capacity: 10,
-                  enrolled: 0,
-                  instructor: '',
-                  location: 'Lorza Fitness',
-                  image: '',
-                })
-              }}
+              onClick={handleCloseForm}
             >
               Cancelar
             </ManagementActionButton>
@@ -533,13 +549,11 @@ function ManagementActivitiesPage() {
       ) : (
         <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {activities.map((activity) => {
-            const weekDay = activity.weekDay ?? activity.week_day
-            const startHour = activity.startHour ?? activity.start_hour
-            const endHour = activity.endHour ?? activity.end_hour
             const isAlreadyEnrolled = enrolledActivities.includes(activity.id)
             const canEnrollInActivity = canUserEnroll && !isAlreadyEnrolled
-            const description = getActivityDescription(activity)
-            const accent = `${getWeekDayLabel(weekDay).toUpperCase()} ${startHour ?? '--:--'}-${endHour ?? '--:--'}`
+            const professor = professorsById[activity.trainerId]
+            const trainerName = professor?.name || 'Profesor no disponible'
+            const description = `Sesion guiada por ${trainerName}.`
 
             return (
               <ManagementCard
@@ -553,11 +567,14 @@ function ManagementActivitiesPage() {
                 }
                 title={activity.title || 'Titulo no disponible'}
                 description={description}
-                accent={accent}
+                accent={getActivitySchedule(activity)}
                 footer={
                   <div className="space-y-3">
                     <p className="text-sm text-neutral-300">
                       Precio: {activity.price ?? 'No disponible'} EUR
+                    </p>
+                    <p className="text-sm text-neutral-400">
+                      Profesor: {trainerName}
                     </p>
                     {isAlreadyEnrolled ? (
                       <p className="text-sm text-sky-200">
@@ -575,6 +592,12 @@ function ManagementActivitiesPage() {
                           onClick={() => handleEditActivity(activity)}
                           icon="edit"
                           label={`Editar actividad ${activity.title || 'sin titulo'}`}
+                          iconOnly
+                        />
+                        <ManagementActionButton
+                          onClick={() => handleDeleteActivity(activity)}
+                          icon="remove"
+                          label={`Eliminar actividad ${activity.title || 'sin titulo'}`}
                           iconOnly
                         />
                         <ManagementActionButton

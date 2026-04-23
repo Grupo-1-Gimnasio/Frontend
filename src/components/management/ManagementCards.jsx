@@ -5,6 +5,7 @@ function ManagementCardImage({
   alt,
   fallback = '?',
   className = '',
+  imageClassName = '',
   aspectClassName = 'aspect-[4/3]',
 }) {
   const [hasError, setHasError] = useState(false)
@@ -18,7 +19,7 @@ function ManagementCardImage({
           src={src}
           alt={alt}
           onError={() => setHasError(true)}
-          className="h-full w-full object-cover"
+          className={`h-full w-full object-cover ${imageClassName}`}
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(180deg,#222_0%,#171717_100%)] text-4xl font-semibold text-neutral-300">
