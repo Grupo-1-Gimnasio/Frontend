@@ -1,4 +1,5 @@
 import { Link, NavLink } from 'react-router-dom'
+import logoLs from '../../assets/logo-ls.png'
 
 const getSidebarLinkClassName = ({ isActive }) =>
   [
@@ -12,8 +13,18 @@ function ManagementSidebar() {
   return (
     <aside className="flex w-64 flex-col border-r border-neutral-800 bg-neutral-900 p-4">
       <div className="mb-8">
-        <p className="text-lg font-semibold text-white">Lorza&apos;s Fitness</p>
-        <p className="text-xs text-neutral-400">Panel de gesti&oacute;n</p>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img
+            src={logoLs}
+            alt="Lorza's Fitness logo"
+            className="h-8 w-8 object-contain"
+          />
+          <p className="whitespace-nowrap text-[18px] leading-none font-semibold tracking-[-0.03em]">
+            <span className="text-[#ff6b2c]">Lorza&apos;s</span>{' '}
+            <span className="text-white">Fitness</span>
+          </p>
+        </Link>
+        <p className="mt-2 text-xs text-neutral-400">Panel de gesti&oacute;n</p>
       </div>
 
       <nav className="space-y-2">

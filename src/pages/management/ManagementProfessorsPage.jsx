@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 import {
+  ManagementCard,
+  ManagementCardImage,
+} from '../../components/management/ManagementCards'
+import {
   ManagementActionButton,
   ManagementStatusIcon,
 } from '../../components/management/ManagementUi'
@@ -270,54 +274,50 @@ function ManagementProfessorsPage() {
           No hay profesores disponibles.
         </p>
       ) : (
-        <div className="mt-4 space-y-3">
-          {professors.map((professor) => (
-            <article
-              key={professor.id}
-              className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 lg:grid lg:grid-cols-[minmax(0,360px)_auto] lg:items-center lg:justify-between"
-            >
-              <div className="flex items-center gap-4">
-                {professor.image ? (
-                  <img
+        <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {professors.map((professor) => {
+            const description = `DNI ${professor.dni || 'sin DNI'}. Gestiona su perfil docente dentro del centro.`
+            const accent = `Contratacion ${professor.hiringYear || 'no disponible'}`
+
+            return (
+              <ManagementCard
+                key={professor.id}
+                media={
+                  <ManagementCardImage
                     src={professor.image}
                     alt={`Avatar de ${professor.name || 'profesor'}`}
-                    className="h-12 w-12 rounded-full object-cover"
+                    fallback={professor.name?.slice(0, 1).toUpperCase() || 'P'}
                   />
-                ) : null}
+                }
+                title={professor.name || 'Profesor sin nombre'}
+                description={description}
+                accent={accent}
+                titleClassName="text-[2rem]"
+                footer={
+                  <div className="flex flex-wrap items-center gap-2">
+                    {typeof professor.isActive !== 'undefined' ? (
+                      <ManagementStatusIcon
+                        icon={professor.isActive ? 'active' : 'inactive'}
+                        label={
+                          professor.isActive ? 'Profesor activo' : 'Profesor inactivo'
+                        }
+                        tone={professor.isActive ? 'success' : 'muted'}
+                      />
+                    ) : null}
 
-                <div className="space-y-1">
-                  <p className="font-semibold text-white">
-                    {professor.name || 'Profesor sin nombre'}
-                  </p>
-                  <p className="text-sm text-neutral-300">
-                    DNI: {professor.dni || 'Sin DNI'}
-                  </p>
-                  <p className="text-sm text-neutral-400">
-                    Ano de contratacion: {professor.hiringYear || 'No disponible'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex w-full flex-wrap items-center gap-2 md:min-w-[98px] md:flex-nowrap md:justify-end">
-                {typeof professor.isActive !== 'undefined' ? (
-                  <ManagementStatusIcon
-                    icon={professor.isActive ? 'active' : 'inactive'}
-                    label={
-                      professor.isActive ? 'Profesor activo' : 'Profesor inactivo'
-                    }
-                    tone={professor.isActive ? 'success' : 'muted'}
-                  />
-                ) : null}
-
-                <ManagementActionButton
-                  onClick={(event) => handleEditProfessor(event, professor)}
-                  icon="edit"
-                  label={`Editar profesor ${professor.name || 'sin nombre'}`}
-                  iconOnly
-                />
-              </div>
-            </article>
-          ))}
+                    <div className="ml-auto flex items-center gap-2">
+                      <ManagementActionButton
+                        onClick={(event) => handleEditProfessor(event, professor)}
+                        icon="edit"
+                        label={`Editar profesor ${professor.name || 'sin nombre'}`}
+                        iconOnly
+                      />
+                    </div>
+                  </div>
+                }
+              />
+            )
+          })}
         </div>
       )}
     </section>

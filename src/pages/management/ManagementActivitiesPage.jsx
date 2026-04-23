@@ -1,32 +1,50 @@
 import { useEffect, useState } from 'react'
 import {
+  ManagementCard,
+  ManagementCardImage,
+} from '../../components/management/ManagementCards'
+import {
   ManagementActionButton,
   ManagementStatusIcon,
 } from '../../components/management/ManagementUi'
 import { getActivities } from '../../services/activitiesService'
 
-function ActivityThumbnail({ src, title }) {
-  const [hasError, setHasError] = useState(false)
-
-  if (!src || hasError) {
-    return (
-      <div
-        aria-hidden="true"
-        className="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900 text-lg font-semibold text-neutral-300 md:h-32 md:w-32"
-      >
-        {title?.slice(0, 1).toUpperCase() || 'A'}
-      </div>
-    )
+function getWeekDayLabel(weekDay) {
+  const dayMap = {
+    1: 'Lun',
+    2: 'Mar',
+    3: 'Mie',
+    4: 'Jue',
+    5: 'Vie',
+    6: 'Sab',
+    7: 'Dom',
   }
 
-  return (
-    <img
-      src={src}
-      alt={`Imagen de ${title || 'actividad'}`}
-      onError={() => setHasError(true)}
-      className="h-24 w-24 shrink-0 rounded-xl object-cover md:h-32 md:w-32"
-    />
-  )
+  if (typeof weekDay === 'number') {
+    return dayMap[weekDay] || 'Dia'
+  }
+
+  if (typeof weekDay === 'string' && weekDay.trim() !== '') {
+    return weekDay
+  }
+
+  return 'Dia'
+}
+
+function getActivityDescription(activity) {
+  if (activity.description && activity.description.trim() !== '') {
+    return activity.description
+  }
+
+  if (activity.instructor && activity.instructor.trim() !== '') {
+    return `Sesion guiada por ${activity.instructor}.`
+  }
+
+  if (activity.type && activity.type.trim() !== '') {
+    return `Actividad de ${activity.type.toLowerCase()} adaptada al ritmo del grupo.`
+  }
+
+  return 'Actividad inclusiva con seguimiento del equipo.'
 }
 
 function SummaryStatusItem({ icon, label, tone }) {
@@ -513,72 +531,73 @@ function ManagementActivitiesPage() {
           No hay actividades disponibles.
         </p>
       ) : (
-        <div className="mt-4 space-y-3">
+        <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {activities.map((activity) => {
             const weekDay = activity.weekDay ?? activity.week_day
             const startHour = activity.startHour ?? activity.start_hour
             const endHour = activity.endHour ?? activity.end_hour
             const isAlreadyEnrolled = enrolledActivities.includes(activity.id)
             const canEnrollInActivity = canUserEnroll && !isAlreadyEnrolled
+            const description = getActivityDescription(activity)
+            const accent = `${getWeekDayLabel(weekDay).toUpperCase()} ${startHour ?? '--:--'}-${endHour ?? '--:--'}`
 
             return (
-              <article
+              <ManagementCard
                 key={activity.id}
-                className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 lg:grid lg:grid-cols-[minmax(0,520px)_auto] lg:items-center lg:justify-between"
-              >
-                <div className="flex items-start gap-4">
-                  <ActivityThumbnail
+                media={
+                  <ManagementCardImage
                     src={activity.image}
-                    title={activity.title}
+                    alt={`Imagen de ${activity.title || 'actividad'}`}
+                    fallback={activity.title?.slice(0, 1).toUpperCase() || 'A'}
                   />
-
-                  <div className="space-y-1">
-                    <p className="font-semibold text-white">
-                      {activity.title || 'Titulo no disponible'}
-                    </p>
+                }
+                title={activity.title || 'Titulo no disponible'}
+                description={description}
+                accent={accent}
+                footer={
+                  <div className="space-y-3">
                     <p className="text-sm text-neutral-300">
-                      Precio: {activity.price ?? 'No disponible'}
-                    </p>
-                    <p className="text-sm text-neutral-400">
-                      Dia: {weekDay ?? 'No disponible'}
-                    </p>
-                    <p className="text-sm text-neutral-400">
-                      Horario: {startHour ?? 'No disponible'} -{' '}
-                      {endHour ?? 'No disponible'}
+                      Precio: {activity.price ?? 'No disponible'} EUR
                     </p>
                     {isAlreadyEnrolled ? (
                       <p className="text-sm text-sky-200">
                         Ya inscrito en esta actividad
                       </p>
-                    ) : null}
-                  </div>
-                </div>
+                    ) : (
+                      <p className="text-sm text-neutral-400">
+                        Gestiona su asignacion desde esta tarjeta.
+                      </p>
+                    )}
 
-                <div className="flex items-center gap-2">
-                  <ManagementActionButton
-                    onClick={() => handleEditActivity(activity)}
-                    icon="edit"
-                    label={`Editar actividad ${activity.title || 'sin titulo'}`}
-                    iconOnly
-                  />
-                  <ManagementActionButton
-                    onClick={() =>
-                      isAlreadyEnrolled
-                        ? handleUnenroll(activity)
-                        : handleEnroll(activity)
-                    }
-                    disabled={!isAlreadyEnrolled && !canEnrollInActivity}
-                    icon={isAlreadyEnrolled ? 'cancel' : 'plus'}
-                    label={`${
-                      isAlreadyEnrolled
-                        ? 'Desinscribirse de'
-                        : 'Seleccionar actividad'
-                    } ${activity.title || 'sin titulo'}`}
-                    tone="primary"
-                    iconOnly
-                  />
-                </div>
-              </article>
+                    <div className="flex items-center gap-2">
+                      <div className="ml-auto flex items-center gap-2">
+                        <ManagementActionButton
+                          onClick={() => handleEditActivity(activity)}
+                          icon="edit"
+                          label={`Editar actividad ${activity.title || 'sin titulo'}`}
+                          iconOnly
+                        />
+                        <ManagementActionButton
+                          onClick={() =>
+                            isAlreadyEnrolled
+                              ? handleUnenroll(activity)
+                              : handleEnroll(activity)
+                          }
+                          disabled={!isAlreadyEnrolled && !canEnrollInActivity}
+                          icon={isAlreadyEnrolled ? 'cancel' : 'plus'}
+                          label={`${
+                            isAlreadyEnrolled
+                              ? 'Desinscribirse de'
+                              : 'Seleccionar actividad'
+                          } ${activity.title || 'sin titulo'}`}
+                          tone="primary"
+                          iconOnly
+                        />
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
             )
           })}
         </div>

@@ -1,5 +1,40 @@
 import { useEffect, useState } from 'react'
+import { ManagementCard } from '../../components/management/ManagementCards'
 import { getDashboardData } from '../../services/dashboardService'
+
+function DashboardVisual({ label, toneClassName }) {
+  const initials = label
+    .split(' ')
+    .slice(0, 2)
+    .map((chunk) => chunk.slice(0, 1).toUpperCase())
+    .join('')
+
+  return (
+    <div
+      className={`flex aspect-[4/3] items-end bg-[linear-gradient(180deg,#161616_0%,#101010_100%)] p-5 ${toneClassName}`}
+    >
+      <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-black/20 text-xl font-semibold tracking-[0.08em] text-white">
+        {initials}
+      </div>
+    </div>
+  )
+}
+
+function getKpiDescription(label) {
+  if (label === 'Usuarios activos') {
+    return 'Seguimiento actualizado del numero de personas activas dentro del centro.'
+  }
+
+  if (label === 'Actividades') {
+    return 'Vista rapida del volumen de actividades disponibles en la gestion.'
+  }
+
+  if (label === 'Profesores') {
+    return 'Control del equipo docente actualmente registrado en la plataforma.'
+  }
+
+  return 'Indicador general para revisar la evolucion del panel de gestion.'
+}
 
 function ManagementDashboardPage() {
   const [kpiCards, setKpiCards] = useState([])
@@ -45,31 +80,46 @@ function ManagementDashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {kpiCards.map((card) => (
-          <article
+          <ManagementCard
             key={card.label}
-            className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5"
-          >
-            <p className="text-sm text-neutral-400">{card.label}</p>
-            <p className="mt-3 text-3xl font-bold text-white">{card.value}</p>
-          </article>
+            media={
+              <DashboardVisual
+                label={card.label}
+                toneClassName="text-orange-300"
+              />
+            }
+            title={card.value}
+            description={getKpiDescription(card.label)}
+            accent={card.label}
+            titleClassName="text-[2.4rem]"
+          />
         ))}
       </div>
 
-      <article className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5">
+      <div className="space-y-4">
         <h2 className="text-xl font-semibold text-white">Actividad reciente</h2>
-        <ul className="mt-5 grid gap-3 lg:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {recentActivity.map((item) => (
-            <li
+            <ManagementCard
               key={item.id}
-              className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-neutral-300"
-            >
-              {item.name}
-            </li>
+              media={
+                <DashboardVisual
+                  label={item.name}
+                  toneClassName="text-sky-300"
+                />
+              }
+              title={item.name}
+              description="Movimiento reciente registrado dentro del panel de gestion."
+              accent="Actividad reciente"
+              titleClassName="text-[1.8rem]"
+              descriptionClassName="leading-7"
+              className="list-none"
+            />
           ))}
-        </ul>
-      </article>
+        </div>
+      </div>
     </section>
   )
 }

@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
+  ManagementCard,
+  ManagementCardImage,
+} from '../../components/management/ManagementCards'
+import {
   ManagementActionButton,
   ManagementStatusIcon,
 } from '../../components/management/ManagementUi'
@@ -289,83 +293,75 @@ function ManagementUsersPage() {
               No hay usuarios que coincidan con la busqueda.
             </p>
           ) : (
-            filteredUsers.map((user) => {
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {filteredUsers.map((user) => {
               const fullName = [user.name, user.surname]
                 .filter(Boolean)
                 .join(' ')
               const startYear = user.startYear ?? user.start_year
+              const cardDescription = `DNI ${user.dni || 'no disponible'}. Gestiona su seguimiento dentro del panel.`
+              const cardAccent = `Alta ${startYear || 'no disponible'}`
 
               return (
-                <article
+                <ManagementCard
                   key={user.id}
                   onClick={() => handleUserSelect(user)}
-                  className={`flex cursor-pointer flex-col gap-4 rounded-xl border p-4 transition lg:grid lg:grid-cols-[minmax(0,360px)_auto] lg:items-center lg:justify-between ${
-                    selectedUser?.id === user.id
-                      ? 'border-orange-400 bg-neutral-800'
-                      : 'border-neutral-800 bg-neutral-900'
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    {user.image ? (
-                      <img
-                        src={user.image}
-                        alt={`Avatar de ${fullName || 'usuario'}`}
-                        className="h-12 w-12 rounded-full object-cover"
-                      />
-                    ) : null}
+                  selected={selectedUser?.id === user.id}
+                  media={
+                    <ManagementCardImage
+                      src={user.image}
+                      alt={`Avatar de ${fullName || 'usuario'}`}
+                      fallback={fullName?.slice(0, 1).toUpperCase() || 'U'}
+                    />
+                  }
+                  title={fullName || 'Nombre no disponible'}
+                  description={cardDescription}
+                  accent={cardAccent}
+                  titleClassName="text-[2rem]"
+                  footer={
+                    <div className="flex flex-wrap items-center gap-2">
+                      {typeof user.isActive !== 'undefined' ? (
+                        <ManagementStatusIcon
+                          icon={user.isActive ? 'active' : 'inactive'}
+                          label={user.isActive ? 'Usuario activo' : 'Usuario inactivo'}
+                          tone={user.isActive ? 'success' : 'muted'}
+                        />
+                      ) : null}
 
-                    <div className="space-y-1">
-                      <p className="font-semibold text-white">
-                        {fullName || 'Nombre no disponible'}
-                      </p>
-                      <p className="text-sm text-neutral-300">
-                        DNI: {user.dni || 'No disponible'}
-                      </p>
-                      <p className="text-sm text-neutral-400">
-                        Ano de inicio: {startYear || 'No disponible'}
-                      </p>
+                      {typeof user.annualFeePaid !== 'undefined' ? (
+                        <ManagementStatusIcon
+                          icon={user.annualFeePaid ? 'paid' : 'pending'}
+                          label={
+                            user.annualFeePaid
+                              ? 'Cuota pagada'
+                              : 'Cuota pendiente'
+                          }
+                          tone={user.annualFeePaid ? 'info' : 'warning'}
+                        />
+                      ) : null}
+
+                      <div className="ml-auto flex items-center gap-2">
+                        <ManagementActionButton
+                          onClick={(event) => handleEditUser(event, user)}
+                          icon="edit"
+                          label={`Editar usuario ${fullName || 'sin nombre'}`}
+                          iconOnly
+                        />
+
+                        <ManagementActionButton
+                          onClick={(event) => handleViewCourses(event, user)}
+                          icon="courses"
+                          label={`Ver cursos de ${fullName || 'usuario'}`}
+                          tone="primary"
+                          iconOnly
+                        />
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex w-full flex-wrap items-center gap-2 md:min-w-[204px] md:flex-nowrap md:justify-end">
-                    {typeof user.isActive !== 'undefined' ? (
-                      <ManagementStatusIcon
-                        icon={user.isActive ? 'active' : 'inactive'}
-                        label={user.isActive ? 'Usuario activo' : 'Usuario inactivo'}
-                        tone={user.isActive ? 'success' : 'muted'}
-                      />
-                    ) : null}
-
-                    {typeof user.annualFeePaid !== 'undefined' ? (
-                      <ManagementStatusIcon
-                        icon={user.annualFeePaid ? 'paid' : 'pending'}
-                        label={
-                          user.annualFeePaid
-                            ? 'Cuota pagada'
-                            : 'Cuota pendiente'
-                        }
-                        tone={user.annualFeePaid ? 'info' : 'warning'}
-                      />
-                    ) : null}
-
-                    <ManagementActionButton
-                      onClick={(event) => handleEditUser(event, user)}
-                      icon="edit"
-                      label={`Editar usuario ${fullName || 'sin nombre'}`}
-                      iconOnly
-                    />
-
-                    <ManagementActionButton
-                      onClick={(event) => handleViewCourses(event, user)}
-                      icon="courses"
-                      label={`Ver cursos de ${fullName || 'usuario'}`}
-                      tone="primary"
-                      iconOnly
-                    />
-                  </div>
-                </article>
+                  }
+                />
               )
-            })
+              })}
+            </div>
           )}
         </div>
       )}
