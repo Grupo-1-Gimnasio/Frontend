@@ -135,7 +135,7 @@ function ManagementProfessorsPage() {
   }
 
   return (
-    <section className="space-y-3" aria-label={`Profesores (${totalProfessors})`}>
+    <section className="space-y-4" aria-label={`Profesores (${totalProfessors})`}>
       <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
         Panel de gestion
       </p>
@@ -274,7 +274,7 @@ function ManagementProfessorsPage() {
           {professors.map((professor) => (
             <article
               key={professor.id}
-              className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 md:grid md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
+              className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 lg:grid lg:grid-cols-[minmax(0,360px)_auto] lg:items-center lg:justify-between"
             >
               <div className="flex items-center gap-4">
                 {professor.image ? (

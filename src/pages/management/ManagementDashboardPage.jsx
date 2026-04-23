@@ -33,7 +33,7 @@ function ManagementDashboardPage() {
   }
 
   return (
-    <section className="space-y-8">
+    <section className="space-y-6">
       <div className="space-y-3">
         <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
           Panel de gesti&oacute;n
@@ -57,9 +57,9 @@ function ManagementDashboardPage() {
         ))}
       </div>
 
-      <article className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
+      <article className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5">
         <h2 className="text-xl font-semibold text-white">Actividad reciente</h2>
-        <ul className="mt-5 space-y-3">
+        <ul className="mt-5 grid gap-3 lg:grid-cols-2">
           {recentActivity.map((item) => (
             <li
               key={item.id}

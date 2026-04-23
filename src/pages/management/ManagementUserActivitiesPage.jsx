@@ -48,7 +48,7 @@ function ManagementUserActivitiesPage() {
 
   return (
     <section
-      className="space-y-3"
+      className="space-y-4"
       aria-label={`Cursos del usuario (${userActivities.length})`}
     >
       <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
@@ -77,7 +77,7 @@ function ManagementUserActivitiesPage() {
             return (
               <article
                 key={activity.id}
-                className="flex items-center justify-between gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
+                className="rounded-xl border border-neutral-800 bg-neutral-900 p-4"
               >
                 <div className="flex items-center gap-4">
                   {activity.image ? (

@@ -182,7 +182,7 @@ function ManagementUsersPage() {
   }
 
   return (
-    <section className="space-y-3" aria-label={`Usuarios (${totalUsers})`}>
+    <section className="space-y-4" aria-label={`Usuarios (${totalUsers})`}>
       <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
         Panel de gestion
       </p>
@@ -299,7 +299,7 @@ function ManagementUsersPage() {
                 <article
                   key={user.id}
                   onClick={() => handleUserSelect(user)}
-                  className={`flex cursor-pointer flex-col gap-4 rounded-xl border p-4 transition md:grid md:grid-cols-[minmax(0,1fr)_auto] md:items-center ${
+                  className={`flex cursor-pointer flex-col gap-4 rounded-xl border p-4 transition lg:grid lg:grid-cols-[minmax(0,360px)_auto] lg:items-center lg:justify-between ${
                     selectedUser?.id === user.id
                       ? 'border-orange-400 bg-neutral-800'
                       : 'border-neutral-800 bg-neutral-900'

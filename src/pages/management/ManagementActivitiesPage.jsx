@@ -268,7 +268,7 @@ function ManagementActivitiesPage() {
   }
 
   return (
-    <section className="space-y-3" aria-label={`Actividades (${totalActivities})`}>
+    <section className="space-y-4" aria-label={`Actividades (${totalActivities})`}>
       <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
         Panel de gestion
       </p>
@@ -451,7 +451,7 @@ function ManagementActivitiesPage() {
 
       <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-300">
         {hasSelectedUser ? (
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,280px)_auto] lg:items-start lg:justify-between">
             <div className="space-y-2">
               <p className="text-lg font-semibold text-white">
                 {selectedUserFullName}
@@ -524,7 +524,7 @@ function ManagementActivitiesPage() {
             return (
               <article
                 key={activity.id}
-                className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 md:grid md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
+                className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 lg:grid lg:grid-cols-[minmax(0,520px)_auto] lg:items-center lg:justify-between"
               >
                 <div className="flex items-start gap-4">
                   <ActivityThumbnail
