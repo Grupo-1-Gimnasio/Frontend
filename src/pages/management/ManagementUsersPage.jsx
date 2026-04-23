@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import {
+  ManagementCard,
+  ManagementCardImage,
+} from '../../components/management/ManagementCards'
+import {
+  ManagementActionButton,
+  ManagementStatusIcon,
+} from '../../components/management/ManagementUi'
 import { getUsers } from '../../services/usersService'
 
 function getStoredUsersState() {
@@ -68,6 +76,7 @@ function ManagementUsersPage() {
 
   const totalUsers = users.length
   const normalizedSearchTerm = searchTerm.trim().toLowerCase()
+
   const handleUserSelect = (user) => {
     let finalUser = user
 
@@ -88,11 +97,13 @@ function ManagementUsersPage() {
     setSelectedUser(finalUser)
     localStorage.setItem('selectedUser', JSON.stringify(finalUser))
   }
+
   const handleViewCourses = (event, user) => {
     event.stopPropagation()
     handleUserSelect(user)
     navigate('/dashboard/user-activities')
   }
+
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target
 
@@ -101,6 +112,7 @@ function ManagementUsersPage() {
       [name]: type === 'checkbox' ? checked : value,
     }))
   }
+
   const handleEditUser = (event, user) => {
     event.stopPropagation()
     setEditingUser(user)
@@ -114,13 +126,14 @@ function ManagementUsersPage() {
     })
     setShowForm(true)
   }
+
   const handleCreateUser = (event) => {
     event.preventDefault()
 
     const updatedUsers =
       editingUser !== null
-        ? users.map((u) =>
-            u.id === editingUser.id ? { ...u, ...formData } : u
+        ? users.map((user) =>
+            user.id === editingUser.id ? { ...user, ...formData } : user
           )
         : [
             ...users,
@@ -148,6 +161,7 @@ function ManagementUsersPage() {
     setEditingUser(null)
     setShowForm(false)
   }
+
   const filteredUsers =
     normalizedSearchTerm === ''
       ? users
@@ -172,21 +186,19 @@ function ManagementUsersPage() {
   }
 
   return (
-    <section className="space-y-3" aria-label={`Usuarios (${totalUsers})`}>
+    <section className="space-y-4" aria-label={`Usuarios (${totalUsers})`}>
       <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
-        Panel de gesti&oacute;n
+        Panel de gestion
       </p>
       <h1 className="text-3xl font-bold">Usuarios</h1>
-      <p className="text-neutral-300">
-        P&aacute;gina base lista para la gesti&oacute;n de usuarios.
-      </p>
-      <button
-        type="button"
+      <ManagementActionButton
+        icon="plus"
+        label={showForm ? 'Cerrar formulario de usuario' : 'Crear usuario'}
+        tone="primary"
         onClick={() => setShowForm((currentValue) => !currentValue)}
-        className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
       >
         Crear usuario
-      </button>
+      </ManagementActionButton>
       <span className="sr-only">Total de usuarios: {totalUsers}</span>
 
       {showForm ? (
@@ -251,12 +263,14 @@ function ManagementUsersPage() {
             Cuota pagada
           </label>
 
-          <button
+          <ManagementActionButton
             type="submit"
-            className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
+            icon={editingUser ? 'edit' : 'plus'}
+            label={editingUser ? 'Actualizar usuario' : 'Guardar usuario'}
+            tone="primary"
           >
             {editingUser ? 'Actualizar usuario' : 'Guardar usuario'}
-          </button>
+          </ManagementActionButton>
         </form>
       ) : null}
 
@@ -276,93 +290,78 @@ function ManagementUsersPage() {
 
           {filteredUsers.length === 0 ? (
             <p className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-300">
-              No hay usuarios que coincidan con la b&uacute;squeda.
+              No hay usuarios que coincidan con la busqueda.
             </p>
           ) : (
-            filteredUsers.map((user) => {
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {filteredUsers.map((user) => {
               const fullName = [user.name, user.surname]
                 .filter(Boolean)
                 .join(' ')
               const startYear = user.startYear ?? user.start_year
+              const cardDescription = `DNI ${user.dni || 'no disponible'}. Gestiona su seguimiento dentro del panel.`
+              const cardAccent = `Alta ${startYear || 'no disponible'}`
 
               return (
-                <article
+                <ManagementCard
                   key={user.id}
                   onClick={() => handleUserSelect(user)}
-                  className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border p-4 transition ${
-                    selectedUser?.id === user.id
-                      ? 'border-orange-400 bg-neutral-800'
-                      : 'border-neutral-800 bg-neutral-900'
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    {user.image ? (
-                      <img
-                        src={user.image}
-                        alt={`Avatar de ${fullName || 'usuario'}`}
-                        className="h-12 w-12 rounded-full object-cover"
-                      />
-                    ) : null}
+                  selected={selectedUser?.id === user.id}
+                  media={
+                    <ManagementCardImage
+                      src={user.image}
+                      alt={`Avatar de ${fullName || 'usuario'}`}
+                      fallback={fullName?.slice(0, 1).toUpperCase() || 'U'}
+                    />
+                  }
+                  title={fullName || 'Nombre no disponible'}
+                  description={cardDescription}
+                  accent={cardAccent}
+                  titleClassName="text-[2rem]"
+                  footer={
+                    <div className="flex flex-wrap items-center gap-2">
+                      {typeof user.isActive !== 'undefined' ? (
+                        <ManagementStatusIcon
+                          icon={user.isActive ? 'active' : 'inactive'}
+                          label={user.isActive ? 'Usuario activo' : 'Usuario inactivo'}
+                          tone={user.isActive ? 'success' : 'muted'}
+                        />
+                      ) : null}
 
-                    <div className="space-y-1">
-                      <p className="font-semibold text-white">
-                        {fullName || 'Nombre no disponible'}
-                      </p>
-                      <p className="text-sm text-neutral-300">
-                        DNI: {user.dni || 'No disponible'}
-                      </p>
-                      <p className="text-sm text-neutral-400">
-                        A&ntilde;o de inicio: {startYear || 'No disponible'}
-                      </p>
+                      {typeof user.annualFeePaid !== 'undefined' ? (
+                        <ManagementStatusIcon
+                          icon={user.annualFeePaid ? 'paid' : 'pending'}
+                          label={
+                            user.annualFeePaid
+                              ? 'Cuota pagada'
+                              : 'Cuota pendiente'
+                          }
+                          tone={user.annualFeePaid ? 'info' : 'warning'}
+                        />
+                      ) : null}
+
+                      <div className="ml-auto flex items-center gap-2">
+                        <ManagementActionButton
+                          onClick={(event) => handleEditUser(event, user)}
+                          icon="edit"
+                          label={`Editar usuario ${fullName || 'sin nombre'}`}
+                          iconOnly
+                        />
+
+                        <ManagementActionButton
+                          onClick={(event) => handleViewCourses(event, user)}
+                          icon="courses"
+                          label={`Ver cursos de ${fullName || 'usuario'}`}
+                          tone="primary"
+                          iconOnly
+                        />
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex flex-wrap justify-end gap-2">
-                    {typeof user.isActive !== 'undefined' ? (
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          user.isActive
-                            ? 'bg-emerald-500/20 text-emerald-300'
-                            : 'bg-red-500/20 text-red-300'
-                        }`}
-                      >
-                        {user.isActive ? 'Activo' : 'Inactivo'}
-                      </span>
-                    ) : null}
-
-                    {typeof user.annualFeePaid !== 'undefined' ? (
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          user.annualFeePaid
-                            ? 'bg-blue-500/20 text-blue-300'
-                            : 'bg-amber-500/20 text-amber-300'
-                        }`}
-                      >
-                        {user.annualFeePaid
-                          ? 'Cuota pagada'
-                          : 'Cuota pendiente'}
-                      </span>
-                    ) : null}
-
-                    <button
-                      type="button"
-                      onClick={(event) => handleEditUser(event, user)}
-                      className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-200 transition hover:bg-neutral-800"
-                    >
-                      Editar
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={(event) => handleViewCourses(event, user)}
-                      className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
-                    >
-                      Ver cursos
-                    </button>
-                  </div>
-                </article>
+                  }
+                />
               )
-            })
+              })}
+            </div>
           )}
         </div>
       )}

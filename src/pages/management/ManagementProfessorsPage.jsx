@@ -1,4 +1,12 @@
 import { useEffect, useState } from 'react'
+import {
+  ManagementCard,
+  ManagementCardImage,
+} from '../../components/management/ManagementCards'
+import {
+  ManagementActionButton,
+  ManagementStatusIcon,
+} from '../../components/management/ManagementUi'
 import { getProfessors } from '../../services/professorsService'
 
 function getStoredProfessorsState() {
@@ -61,6 +69,7 @@ function ManagementProfessorsPage() {
   }, [loading])
 
   const totalProfessors = professors.length
+
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target
 
@@ -69,11 +78,10 @@ function ManagementProfessorsPage() {
       [name]: type === 'checkbox' ? checked : value,
     }))
   }
+
   const handleEditProfessor = (event, professor) => {
     event.stopPropagation()
-
     setEditingProfessor(professor)
-
     setFormData({
       name: professor.name || '',
       dni: professor.dni || '',
@@ -82,9 +90,9 @@ function ManagementProfessorsPage() {
       isActive: professor.isActive ?? true,
       hiringYear: professor.hiringYear || '',
     })
-
     setShowForm(true)
   }
+
   const handleCreateProfessor = (event) => {
     event.preventDefault()
 
@@ -131,24 +139,19 @@ function ManagementProfessorsPage() {
   }
 
   return (
-    <section
-      className="space-y-3"
-      aria-label={`Profesores (${totalProfessors})`}
-    >
+    <section className="space-y-4" aria-label={`Profesores (${totalProfessors})`}>
       <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
-        Panel de gesti&oacute;n
+        Panel de gestion
       </p>
       <h1 className="text-3xl font-bold">Profesores</h1>
-      <p className="text-neutral-300">
-        P&aacute;gina base lista para la gesti&oacute;n de profesores.
-      </p>
-      <button
-        type="button"
+      <ManagementActionButton
+        icon="plus"
+        label={showForm ? 'Cerrar formulario de profesor' : 'Crear profesor'}
+        tone="primary"
         onClick={() => setShowForm((currentValue) => !currentValue)}
-        className="w-fit rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
       >
         Crear profesor
-      </button>
+      </ManagementActionButton>
       <span className="sr-only">Total de profesores: {totalProfessors}</span>
 
       {showForm ? (
@@ -198,9 +201,7 @@ function ManagementProfessorsPage() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs text-neutral-400">
-                📅 A&ntilde;o de contrataci&oacute;n
-              </label>
+              <label className="text-xs text-neutral-400">Ano de contratacion</label>
               <input
                 type="number"
                 name="hiringYear"
@@ -236,14 +237,19 @@ function ManagementProfessorsPage() {
           </label>
 
           <div className="flex flex-wrap gap-3">
-            <button
+            <ManagementActionButton
               type="submit"
-              className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
+              icon={editingProfessor ? 'edit' : 'plus'}
+              label={
+                editingProfessor ? 'Actualizar profesor' : 'Crear profesor'
+              }
+              tone="primary"
             >
               {editingProfessor ? 'Actualizar profesor' : 'Crear profesor'}
-            </button>
-            <button
-              type="button"
+            </ManagementActionButton>
+            <ManagementActionButton
+              icon="cancel"
+              label="Cancelar formulario de profesor"
               onClick={() => {
                 setFormData({
                   name: '',
@@ -256,10 +262,9 @@ function ManagementProfessorsPage() {
                 setEditingProfessor(null)
                 setShowForm(false)
               }}
-              className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-200 transition hover:bg-neutral-800"
             >
               Cancelar
-            </button>
+            </ManagementActionButton>
           </div>
         </form>
       ) : null}
@@ -269,58 +274,48 @@ function ManagementProfessorsPage() {
           No hay profesores disponibles.
         </p>
       ) : (
-        <div className="mt-4 space-y-3">
+        <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {professors.map((professor) => {
+            const description = `DNI ${professor.dni || 'sin DNI'}. Gestiona su perfil docente dentro del centro.`
+            const accent = `Contratacion ${professor.hiringYear || 'no disponible'}`
+
             return (
-              <article
+              <ManagementCard
                 key={professor.id}
-                className="flex items-center justify-between gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
-              >
-                <div className="flex items-center gap-4">
-                  {professor.image ? (
-                    <img
-                      src={professor.image}
-                      alt={`Avatar de ${professor.name || 'profesor'}`}
-                      className="h-12 w-12 rounded-full object-cover"
-                    />
-                  ) : null}
+                media={
+                  <ManagementCardImage
+                    src={professor.image}
+                    alt={`Avatar de ${professor.name || 'profesor'}`}
+                    fallback={professor.name?.slice(0, 1).toUpperCase() || 'P'}
+                  />
+                }
+                title={professor.name || 'Profesor sin nombre'}
+                description={description}
+                accent={accent}
+                titleClassName="text-[2rem]"
+                footer={
+                  <div className="flex flex-wrap items-center gap-2">
+                    {typeof professor.isActive !== 'undefined' ? (
+                      <ManagementStatusIcon
+                        icon={professor.isActive ? 'active' : 'inactive'}
+                        label={
+                          professor.isActive ? 'Profesor activo' : 'Profesor inactivo'
+                        }
+                        tone={professor.isActive ? 'success' : 'muted'}
+                      />
+                    ) : null}
 
-                  <div className="space-y-1">
-                    <p className="font-semibold text-white">
-                      {professor.name || 'Profesor sin nombre'}
-                    </p>
-                    <p className="text-sm text-neutral-300">
-                      DNI: {professor.dni || 'Sin DNI'}
-                    </p>
-                    <p className="text-sm text-neutral-400">
-                      A&ntilde;o de contrataci&oacute;n:{' '}
-                      {professor.hiringYear || 'No disponible'}
-                    </p>
+                    <div className="ml-auto flex items-center gap-2">
+                      <ManagementActionButton
+                        onClick={(event) => handleEditProfessor(event, professor)}
+                        icon="edit"
+                        label={`Editar profesor ${professor.name || 'sin nombre'}`}
+                        iconOnly
+                      />
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex flex-wrap justify-end gap-2">
-                  {typeof professor.isActive !== 'undefined' ? (
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        professor.isActive
-                          ? 'bg-emerald-500/20 text-emerald-300'
-                          : 'bg-red-500/20 text-red-300'
-                      }`}
-                    >
-                      {professor.isActive ? 'Activo' : 'Inactivo'}
-                    </span>
-                  ) : null}
-
-                  <button
-                    type="button"
-                    onClick={(event) => handleEditProfessor(event, professor)}
-                    className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-200 hover:bg-neutral-800"
-                  >
-                    Editar
-                  </button>
-                </div>
-              </article>
+                }
+              />
             )
           })}
         </div>

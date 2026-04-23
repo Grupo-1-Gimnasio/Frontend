@@ -7,7 +7,9 @@ function ManagementLayout() {
     <div className="min-h-screen bg-neutral-950 text-white md:flex">
       <ManagementSidebar />
       <main className="flex-1 bg-neutral-950 p-6">
-        <Outlet />
+        <div className="mx-auto w-full max-w-[1080px]">
+          <Outlet />
+        </div>
       </main>
       <AccessibilityWidget />
     </div>
