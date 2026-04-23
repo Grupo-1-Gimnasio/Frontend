@@ -1,11 +1,10 @@
-import Button from '../ui/Button'
 import aboutImage from '../../assets/lorzas13.jpg'
 
 function AboutSection() {
   return (
     <section
       id="about"
-      className="scroll-mt-24 bg-[#12110f] py-12 md:py-16 lg:py-20"
+      className="scroll-mt-24 bg-[#1a1a1a] py-12 md:py-16 lg:py-20"
     >
       <div className="mx-auto w-full max-w-6xl px-6 md:px-8">
         <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-24">
@@ -42,26 +41,16 @@ function AboutSection() {
               </p>
             </div>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="rounded-3xl border border-white/10 bg-white/5 px-5 py-4 text-sm leading-6 text-white/80">
-                Sesiones adaptadas, comunidad segura y soporte profesional.
-              </div>
-              <Button
-                href="#activities"
-                variant="ghost"
-                size="md"
-                className="w-full sm:w-auto"
-              >
-                Ver actividades
-              </Button>
-            </div>
           </div>
-
-          <div className="bg-[#12110f] lg:justify-self-end">
+          <div className="relative overflow-hidden rounded-[24px] bg-[#1a1a1a] lg:justify-self-end">
             <img
               src={aboutImage}
               alt="Comunidad de Lorza's Fitness compartiendo un entrenamiento inclusivo"
-              className="h-auto w-full rounded-[24px] bg-[#12110f] object-cover object-[50%_20%]"
+              className="h-auto w-full object-cover object-[50%_20%]"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"
             />
           </div>
         </div>
