@@ -140,9 +140,6 @@ function ManagementProfessorsPage() {
         Panel de gestion
       </p>
       <h1 className="text-3xl font-bold">Profesores</h1>
-      <p className="text-neutral-300">
-        Pagina base lista para la gestion de profesores.
-      </p>
       <ManagementActionButton
         icon="plus"
         label={showForm ? 'Cerrar formulario de profesor' : 'Crear profesor'}

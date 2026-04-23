@@ -187,9 +187,6 @@ function ManagementUsersPage() {
         Panel de gestion
       </p>
       <h1 className="text-3xl font-bold">Usuarios</h1>
-      <p className="text-neutral-300">
-        Pagina base lista para la gestion de usuarios.
-      </p>
       <ManagementActionButton
         icon="plus"
         label={showForm ? 'Cerrar formulario de usuario' : 'Crear usuario'}

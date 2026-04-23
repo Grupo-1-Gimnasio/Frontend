@@ -273,9 +273,6 @@ function ManagementActivitiesPage() {
         Panel de gestion
       </p>
       <h1 className="text-3xl font-bold">Actividades</h1>
-      <p className="text-neutral-300">
-        Pagina base lista para la gestion de actividades.
-      </p>
       <ManagementActionButton
         icon="plus"
         label={
