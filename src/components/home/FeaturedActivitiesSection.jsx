@@ -1,11 +1,8 @@
 import ActivityHighlightCard from './ActivityHighlightCard'
 
-function FeaturedActivitiesSection({ featuredActivities }) {
+function FeaturedActivitiesSection({ featuredActivities = [] }) {
   return (
-    <section
-      id="activities"
-      className="scroll-mt-24 py-16 md:py-24"
-    >
+    <section id="activities" className="scroll-mt-24 py-16 md:py-24">
       <div className="mx-auto max-w-7xl space-y-14 px-6 lg:px-8">
         <div className="mx-auto max-w-4xl space-y-4 text-center">
           <h2 className="text-4xl font-extrabold tracking-normal text-white md:text-5xl">
@@ -18,21 +15,28 @@ function FeaturedActivitiesSection({ featuredActivities }) {
         </div>
 
         <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {featuredActivities.map((activity) => {
-            const day = activity.weekDay || activity.week_day || "Día no definido";
-            const start = activity.startHour || activity.start_hour || "00:00";
-            const end = activity.endHour || activity.end_hour || "00:00";
-            const fullSchedule = `${activity.weekDay} ${activity.startHour} - ${activity.endHour}`;
-            return (
-              <ActivityHighlightCard
-                key={activity.id }
-                name={activity.name}
-                description={activity.description}
-                schedule={fullSchedule}
-                image={activity.image}
-              />
-            );
-          })}
+          {featuredActivities.length === 0 ? (
+            <div className="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/5 p-8 text-center text-white/70">
+              No hay actividades destacadas para mostrar ahora mismo.
+            </div>
+          ) : (
+            featuredActivities.map((activity) => {
+              const day = activity.weekDay ?? activity.week_day ?? 'Día'
+              const start = (activity.startHour ?? activity.start_hour ?? '00:00:00').substring(0, 5)
+              const end = (activity.endHour ?? activity.end_hour ?? '00:00:00').substring(0, 5)
+              const fullSchedule = `${day} ${start} - ${end}`
+
+              return (
+                <ActivityHighlightCard
+                  key={activity.id}
+                  title={activity.title}
+                  description={activity.description}
+                  schedule={fullSchedule}
+                  image={activity.image}
+                />
+              )
+            })
+          )}
         </div>
       </div>
     </section>
