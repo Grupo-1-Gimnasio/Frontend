@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import {
+  ManagementActionButton,
+  ManagementStatusIcon,
+} from '../../components/management/ManagementUi'
 import { getUsers } from '../../services/usersService'
 
 function getStoredUsersState() {
@@ -68,6 +72,7 @@ function ManagementUsersPage() {
 
   const totalUsers = users.length
   const normalizedSearchTerm = searchTerm.trim().toLowerCase()
+
   const handleUserSelect = (user) => {
     let finalUser = user
 
@@ -88,11 +93,13 @@ function ManagementUsersPage() {
     setSelectedUser(finalUser)
     localStorage.setItem('selectedUser', JSON.stringify(finalUser))
   }
+
   const handleViewCourses = (event, user) => {
     event.stopPropagation()
     handleUserSelect(user)
     navigate('/dashboard/user-activities')
   }
+
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target
 
@@ -101,6 +108,7 @@ function ManagementUsersPage() {
       [name]: type === 'checkbox' ? checked : value,
     }))
   }
+
   const handleEditUser = (event, user) => {
     event.stopPropagation()
     setEditingUser(user)
@@ -114,13 +122,14 @@ function ManagementUsersPage() {
     })
     setShowForm(true)
   }
+
   const handleCreateUser = (event) => {
     event.preventDefault()
 
     const updatedUsers =
       editingUser !== null
-        ? users.map((u) =>
-            u.id === editingUser.id ? { ...u, ...formData } : u
+        ? users.map((user) =>
+            user.id === editingUser.id ? { ...user, ...formData } : user
           )
         : [
             ...users,
@@ -148,6 +157,7 @@ function ManagementUsersPage() {
     setEditingUser(null)
     setShowForm(false)
   }
+
   const filteredUsers =
     normalizedSearchTerm === ''
       ? users
@@ -174,19 +184,20 @@ function ManagementUsersPage() {
   return (
     <section className="space-y-3" aria-label={`Usuarios (${totalUsers})`}>
       <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
-        Panel de gesti&oacute;n
+        Panel de gestion
       </p>
       <h1 className="text-3xl font-bold">Usuarios</h1>
       <p className="text-neutral-300">
-        P&aacute;gina base lista para la gesti&oacute;n de usuarios.
+        Pagina base lista para la gestion de usuarios.
       </p>
-      <button
-        type="button"
+      <ManagementActionButton
+        icon="plus"
+        label={showForm ? 'Cerrar formulario de usuario' : 'Crear usuario'}
+        tone="primary"
         onClick={() => setShowForm((currentValue) => !currentValue)}
-        className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
       >
         Crear usuario
-      </button>
+      </ManagementActionButton>
       <span className="sr-only">Total de usuarios: {totalUsers}</span>
 
       {showForm ? (
@@ -251,12 +262,14 @@ function ManagementUsersPage() {
             Cuota pagada
           </label>
 
-          <button
+          <ManagementActionButton
             type="submit"
-            className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
+            icon={editingUser ? 'edit' : 'plus'}
+            label={editingUser ? 'Actualizar usuario' : 'Guardar usuario'}
+            tone="primary"
           >
             {editingUser ? 'Actualizar usuario' : 'Guardar usuario'}
-          </button>
+          </ManagementActionButton>
         </form>
       ) : null}
 
@@ -276,7 +289,7 @@ function ManagementUsersPage() {
 
           {filteredUsers.length === 0 ? (
             <p className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-300">
-              No hay usuarios que coincidan con la b&uacute;squeda.
+              No hay usuarios que coincidan con la busqueda.
             </p>
           ) : (
             filteredUsers.map((user) => {
@@ -289,7 +302,7 @@ function ManagementUsersPage() {
                 <article
                   key={user.id}
                   onClick={() => handleUserSelect(user)}
-                  className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl border p-4 transition ${
+                  className={`flex cursor-pointer flex-col gap-4 rounded-xl border p-4 transition md:grid md:grid-cols-[minmax(0,1fr)_auto] md:items-center ${
                     selectedUser?.id === user.id
                       ? 'border-orange-400 bg-neutral-800'
                       : 'border-neutral-800 bg-neutral-900'
@@ -312,53 +325,46 @@ function ManagementUsersPage() {
                         DNI: {user.dni || 'No disponible'}
                       </p>
                       <p className="text-sm text-neutral-400">
-                        A&ntilde;o de inicio: {startYear || 'No disponible'}
+                        Ano de inicio: {startYear || 'No disponible'}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap justify-end gap-2">
+                  <div className="flex w-full flex-wrap items-center gap-2 md:min-w-[204px] md:flex-nowrap md:justify-end">
                     {typeof user.isActive !== 'undefined' ? (
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          user.isActive
-                            ? 'bg-emerald-500/20 text-emerald-300'
-                            : 'bg-red-500/20 text-red-300'
-                        }`}
-                      >
-                        {user.isActive ? 'Activo' : 'Inactivo'}
-                      </span>
+                      <ManagementStatusIcon
+                        icon={user.isActive ? 'active' : 'inactive'}
+                        label={user.isActive ? 'Usuario activo' : 'Usuario inactivo'}
+                        tone={user.isActive ? 'success' : 'muted'}
+                      />
                     ) : null}
 
                     {typeof user.annualFeePaid !== 'undefined' ? (
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      <ManagementStatusIcon
+                        icon={user.annualFeePaid ? 'paid' : 'pending'}
+                        label={
                           user.annualFeePaid
-                            ? 'bg-blue-500/20 text-blue-300'
-                            : 'bg-amber-500/20 text-amber-300'
-                        }`}
-                      >
-                        {user.annualFeePaid
-                          ? 'Cuota pagada'
-                          : 'Cuota pendiente'}
-                      </span>
+                            ? 'Cuota pagada'
+                            : 'Cuota pendiente'
+                        }
+                        tone={user.annualFeePaid ? 'info' : 'warning'}
+                      />
                     ) : null}
 
-                    <button
-                      type="button"
+                    <ManagementActionButton
                       onClick={(event) => handleEditUser(event, user)}
-                      className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-200 transition hover:bg-neutral-800"
-                    >
-                      Editar
-                    </button>
+                      icon="edit"
+                      label={`Editar usuario ${fullName || 'sin nombre'}`}
+                      iconOnly
+                    />
 
-                    <button
-                      type="button"
+                    <ManagementActionButton
                       onClick={(event) => handleViewCourses(event, user)}
-                      className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
-                    >
-                      Ver cursos
-                    </button>
+                      icon="courses"
+                      label={`Ver cursos de ${fullName || 'usuario'}`}
+                      tone="primary"
+                      iconOnly
+                    />
                   </div>
                 </article>
               )

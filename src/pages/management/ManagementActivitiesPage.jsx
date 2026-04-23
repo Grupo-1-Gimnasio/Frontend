@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react'
+import {
+  ManagementActionButton,
+  ManagementStatusIcon,
+} from '../../components/management/ManagementUi'
 import { getActivities } from '../../services/activitiesService'
 
 function getStoredActivitiesState() {
@@ -84,7 +88,7 @@ function ManagementActivitiesPage() {
     .join(' ')
   const hasSelectedUser = Boolean(selectedUser)
   const enrolledActivities = selectedUser?.enrolledActivities ?? []
-  const activeProfessors = professors.filter((p) => p.isActive)
+  const activeProfessors = professors.filter((professor) => professor.isActive)
   const hasReachedLimit = enrolledActivities.length >= 3
   const canUserEnroll =
     hasSelectedUser &&
@@ -193,24 +197,22 @@ function ManagementActivitiesPage() {
   }
 
   return (
-    <section
-      className="space-y-3"
-      aria-label={`Actividades (${totalActivities})`}
-    >
+    <section className="space-y-3" aria-label={`Actividades (${totalActivities})`}>
       <p className="text-sm font-semibold uppercase tracking-wide text-orange-400">
-        Panel de gesti&oacute;n
+        Panel de gestion
       </p>
       <h1 className="text-3xl font-bold">Actividades</h1>
       <p className="text-neutral-300">
-        P&aacute;gina base lista para la gesti&oacute;n de actividades.
+        Pagina base lista para la gestion de actividades.
       </p>
-      <button
-        type="button"
+      <ManagementActionButton
+        icon="plus"
+        label={showForm ? 'Cerrar formulario de actividad' : 'Crear actividad'}
+        tone="primary"
         onClick={() => setShowForm((currentValue) => !currentValue)}
-        className="w-fit rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
       >
         Crear actividad
-      </button>
+      </ManagementActionButton>
 
       {showForm ? (
         <form
@@ -223,13 +225,11 @@ function ManagementActivitiesPage() {
               name="title"
               value={formData.title}
               onChange={handleFormChange}
-              placeholder="T&iacute;tulo"
+              placeholder="Titulo"
               className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none"
             />
             <div className="space-y-1">
-              <label className="text-xs text-neutral-400">
-                🏷 Tipo de actividad
-              </label>
+              <label className="text-xs text-neutral-400">Tipo de actividad</label>
               <select
                 name="type"
                 value={formData.type}
@@ -244,7 +244,7 @@ function ManagementActivitiesPage() {
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-xs text-neutral-400">🕒 Horario</label>
+              <label className="text-xs text-neutral-400">Horario</label>
               <input
                 type="text"
                 name="schedule"
@@ -255,9 +255,7 @@ function ManagementActivitiesPage() {
               />
             </div>
             <div className="space-y-1">
-              <label className="text-xs text-neutral-400">
-                💰 Precio (€)
-              </label>
+              <label className="text-xs text-neutral-400">Precio (EUR)</label>
               <input
                 type="number"
                 name="price"
@@ -269,9 +267,7 @@ function ManagementActivitiesPage() {
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-1">
-                <label className="text-xs text-neutral-400">
-                  🧍 Capacidad (m&aacute;x. personas)
-                </label>
+                <label className="text-xs text-neutral-400">Capacidad maxima</label>
                 <input
                   type="number"
                   name="capacity"
@@ -282,7 +278,7 @@ function ManagementActivitiesPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs text-neutral-400">👥 Inscritos</label>
+                <label className="text-xs text-neutral-400">Inscritos</label>
                 <input
                   type="number"
                   value={formData.enrolled}
@@ -316,26 +312,28 @@ function ManagementActivitiesPage() {
               name="description"
               value={formData.description}
               onChange={handleFormChange}
-              placeholder="Descripci&oacute;n"
+              placeholder="Descripcion"
               rows="4"
               className="rounded-xl border border-neutral-800 bg-neutral-950 px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-orange-400 focus:outline-none md:col-span-2"
             />
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <button
+            <ManagementActionButton
               type="submit"
-              className="rounded-full bg-orange-400 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-orange-300"
+              icon="plus"
+              label="Crear actividad"
+              tone="primary"
             >
               Crear actividad
-            </button>
-            <button
-              type="button"
+            </ManagementActionButton>
+            <ManagementActionButton
+              icon="cancel"
+              label="Cancelar formulario de actividad"
               onClick={() => setShowForm(false)}
-              className="rounded-full border border-neutral-700 px-4 py-2 text-sm font-semibold text-neutral-200 transition hover:bg-neutral-800"
             >
               Cancelar
-            </button>
+            </ManagementActionButton>
           </div>
         </form>
       ) : null}
@@ -350,40 +348,36 @@ function ManagementActivitiesPage() {
             </p>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              <span
-                className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                  selectedUser.isActive
-                    ? 'bg-emerald-500/20 text-emerald-300'
-                    : 'bg-red-500/20 text-red-300'
-                }`}
-              >
-                {selectedUser.isActive ? 'Activo' : 'Inactivo'}
-              </span>
+              <ManagementStatusIcon
+                icon={selectedUser.isActive ? 'active' : 'inactive'}
+                label={selectedUser.isActive ? 'Usuario activo' : 'Usuario inactivo'}
+                tone={selectedUser.isActive ? 'success' : 'muted'}
+              />
 
-              <span
-                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+              <ManagementStatusIcon
+                icon={selectedUser.annualFeePaid ? 'paid' : 'pending'}
+                label={
                   selectedUser.annualFeePaid
-                    ? 'bg-blue-500/20 text-blue-300'
-                    : 'bg-amber-500/20 text-amber-300'
-                }`}
-              >
-                {selectedUser.annualFeePaid
-                  ? 'Cuota pagada'
-                  : 'Cuota pendiente'}
-              </span>
+                    ? 'Cuota pagada'
+                    : 'Cuota pendiente'
+                }
+                tone={selectedUser.annualFeePaid ? 'info' : 'warning'}
+              />
             </div>
 
             {!selectedUser.isActive ? (
-              <p className="mt-3 text-sm text-red-300">Usuario no activo</p>
+              <p className="mt-3 text-sm text-slate-300">Usuario inactivo</p>
             ) : null}
 
             {!selectedUser.annualFeePaid ? (
-              <p className="mt-1 text-sm text-amber-300">Cuota pendiente</p>
+              <p className="mt-1 text-sm text-amber-200">
+                Cuota pendiente de revision
+              </p>
             ) : null}
 
             {hasReachedLimit ? (
-              <p className="mt-1 text-sm text-red-300">
-                M&aacute;ximo de actividades alcanzado
+              <p className="mt-1 text-sm text-amber-200">
+                Maximo de actividades alcanzado
               </p>
             ) : null}
           </>
@@ -402,13 +396,12 @@ function ManagementActivitiesPage() {
             const startHour = activity.startHour ?? activity.start_hour
             const endHour = activity.endHour ?? activity.end_hour
             const isAlreadyEnrolled = enrolledActivities.includes(activity.id)
-            const canEnrollInActivity =
-              canUserEnroll && !isAlreadyEnrolled
+            const canEnrollInActivity = canUserEnroll && !isAlreadyEnrolled
 
             return (
               <article
                 key={activity.id}
-                className="flex items-center justify-between gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4"
+                className="flex flex-col gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 md:grid md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
               >
                 <div className="flex items-center gap-4">
                   {activity.image ? (
@@ -421,44 +414,42 @@ function ManagementActivitiesPage() {
 
                   <div className="space-y-1">
                     <p className="font-semibold text-white">
-                      {activity.title || 'T&iacute;tulo no disponible'}
+                      {activity.title || 'Titulo no disponible'}
                     </p>
                     <p className="text-sm text-neutral-300">
                       Precio: {activity.price ?? 'No disponible'}
                     </p>
                     <p className="text-sm text-neutral-400">
-                      D&iacute;a: {weekDay ?? 'No disponible'}
+                      Dia: {weekDay ?? 'No disponible'}
                     </p>
                     <p className="text-sm text-neutral-400">
                       Horario: {startHour ?? 'No disponible'} -{' '}
                       {endHour ?? 'No disponible'}
                     </p>
                     {isAlreadyEnrolled ? (
-                      <p className="text-sm text-red-300">
+                      <p className="text-sm text-sky-200">
                         Ya inscrito en esta actividad
                       </p>
                     ) : null}
                   </div>
                 </div>
 
-                <button
-                  type="button"
+                <ManagementActionButton
                   onClick={() =>
                     isAlreadyEnrolled
                       ? handleUnenroll(activity)
                       : handleEnroll(activity)
                   }
                   disabled={!isAlreadyEnrolled && !canEnrollInActivity}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                    isAlreadyEnrolled || canEnrollInActivity
-                      ? 'bg-orange-400 text-neutral-950 hover:bg-orange-300'
-                      : 'cursor-not-allowed bg-neutral-700 text-neutral-400 opacity-60'
-                  }`}
-                >
-                  {isAlreadyEnrolled
-                    ? 'Desinscribirse'
-                    : 'Seleccionar actividad'}
-                </button>
+                  icon={isAlreadyEnrolled ? 'cancel' : 'plus'}
+                  label={`${
+                    isAlreadyEnrolled
+                      ? 'Desinscribirse de'
+                      : 'Seleccionar actividad'
+                  } ${activity.title || 'sin titulo'}`}
+                  tone="primary"
+                  iconOnly
+                />
               </article>
             )
           })}
