@@ -1,13 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
-  font-family: Inter, system-ui, sans-serif;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   background-color: #111111;
   color: #f5f5f5;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Outfit", system-ui, sans-serif;
+  --color-accent: #ff6b2c;
+  --color-accent-hover: #ff7a42;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -15,4 +24,63 @@ body,
 #root {
   min-height: 100%;
   margin: 0;
+}
+
+html[data-a11y-font='large'] {
+  font-size: 112.5%;
+}
+
+html[data-a11y-font='large'] :where(p, li, a, button, input, label, textarea, span) {
+  line-height: 1.65;
+}
+
+html[data-a11y-links='enhanced'] a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+
+html[data-a11y-motion='reduced'] {
+  scroll-behavior: auto;
+}
+
+html[data-a11y-motion='reduced'] *,
+html[data-a11y-motion='reduced'] *::before,
+html[data-a11y-motion='reduced'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+html[data-a11y-contrast='high'] {
+  color-scheme: dark;
+}
+
+html[data-a11y-contrast='high'] body {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+html[data-a11y-contrast='high'] [class*='text-neutral-'],
+html[data-a11y-contrast='high'] [class*='text-white/'] {
+  color: #fff !important;
+}
+
+html[data-a11y-contrast='high'] [class*='bg-neutral-'] {
+  background-color: #000 !important;
+}
+
+html[data-a11y-contrast='high'] [class*='border-neutral-'],
+html[data-a11y-contrast='high'] [class*='border-white/'] {
+  border-color: #d4d4d8 !important;
+}
+
+html[data-a11y-contrast='high'] a {
+  color: #ffe08a !important;
+}
+
+html[data-a11y-contrast='high'] :where(button, a, input, textarea, select):focus-visible {
+  outline: 3px solid #ffe08a !important;
+  outline-offset: 2px !important;
 }
