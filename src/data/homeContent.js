@@ -2,6 +2,9 @@ import lorzas8 from '../assets/lorzas8.jpg'
 import lorzas9 from '../assets/lorzas9.jpg'
 import lorzas10 from '../assets/lorzas10.jpg'
 import lorzas11 from '../assets/lorzas11.jpg'
+import testimonial1 from '../assets/testimonial-1.png'
+import testimonial2 from '../assets/testimonial-2.png'
+import testimonial3 from '../assets/testimonial-3.png'
 
 export const values = [
   {
@@ -57,22 +60,16 @@ export const featuredProfessors = [
 
 export const testimonials = [
   {
-    name: 'Laura M.',
-    message:
-      'Por primera vez en mi vida, encontré un gimnasio donde puedo ser yo misma sin sentirme juzgada. La comunidad aquí es increíblemente acogedora.',
-    memberType: 'Miembro desde 2024',
+    image: testimonial1,
+    alt: 'Imagen testimonial 1',
   },
   {
-    name: 'Javier S.',
-    message:
-      'Como usuario de silla de ruedas, siempre me sentí excluido del fitness. Aquí descubrí que mi cuerpo es capaz de cosas increíbles.',
-    memberType: 'Atleta adaptado',
+    image: testimonial2,
+    alt: 'Imagen testimonial 2',
   },
   {
-    name: 'Sofia R.',
-    message:
-      'Después de años luchando con la imagen corporal, encontré un espacio que celebra la diversidad. Esto cambió mi relación con el movimiento.',
-    memberType: 'Instructora voluntaria',
+    image: testimonial3,
+    alt: 'Imagen testimonial 3',
   },
 ]
 
@@ -81,6 +78,7 @@ export const footerLinks = {
     { label: 'Inicio', href: '/' },
     { label: 'Actividades', href: '/#activities' },
     { label: 'Profesores', href: '/#team' },
+    { label: 'Gestión', href: '/dashboard' },
   ],
   community: [
     { label: 'Instagram', href: 'https://www.instagram.com/lorzasfitness' },

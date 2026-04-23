@@ -12,13 +12,12 @@ function TestimonialsSection({ testimonials }) {
         </p>
       </div>
 
-      <div className="mt-12 grid gap-6 px-6 lg:px-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto mt-12 grid max-w-[1240px] justify-items-center gap-6 px-6 md:grid-cols-2 lg:grid-cols-3 lg:px-8">
         {testimonials.map((testimonial) => (
           <TestimonialCard
-            key={testimonial.name}
-            name={testimonial.name}
-            message={testimonial.message}
-            memberType={testimonial.memberType}
+            key={testimonial.image}
+            image={testimonial.image}
+            alt={testimonial.alt}
           />
         ))}
       </div>
