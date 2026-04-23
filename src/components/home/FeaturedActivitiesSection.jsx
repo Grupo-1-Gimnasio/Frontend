@@ -18,15 +18,21 @@ function FeaturedActivitiesSection({ featuredActivities }) {
         </div>
 
         <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {featuredActivities.map((activity) => (
-            <ActivityHighlightCard
-              key={activity.name}
-              name={activity.name}
-              description={activity.description}
-              schedule={activity.schedule}
-              image={activity.image}
-            />
-          ))}
+          {featuredActivities.map((activity) => {
+            const day = activity.weekDay || activity.week_day || "Día no definido";
+            const start = activity.startHour || activity.start_hour || "00:00";
+            const end = activity.endHour || activity.end_hour || "00:00";
+            const fullSchedule = `${activity.weekDay} ${activity.startHour} - ${activity.endHour}`;
+            return (
+              <ActivityHighlightCard
+                key={activity.id }
+                name={activity.name}
+                description={activity.description}
+                schedule={fullSchedule}
+                image={activity.image}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

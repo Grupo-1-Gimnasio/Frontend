@@ -1,4 +1,4 @@
-function ActivityHighlightCard({ name, description, schedule, image }) {
+function ActivityHighlightCard({ title, description, schedule, image }) {
   return (
     <article role="article" className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 transition duration-200 hover:-translate-y-1 hover:border-orange-500/40 hover:bg-neutral-900/90 focus-within:ring-2 focus-within:ring-orange-500/60 focus-within:ring-offset-2 focus-within:ring-offset-[#111111]">
       <div className="relative h-56 overflow-hidden bg-neutral-800 md:h-60">
@@ -19,7 +19,7 @@ function ActivityHighlightCard({ name, description, schedule, image }) {
       <div className="space-y-5 p-7 md:p-8">
         <div className="space-y-3">
           <h3 className="text-3xl font-bold leading-tight text-white">
-            {name}
+            {title}
           </h3>
           <p className="text-base leading-7 text-white/75">
             {description}

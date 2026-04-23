@@ -1,23 +1,12 @@
-import { activities } from '../data/dashboardData'
-import httpClient from './httpClient'
+import axios from "axios";
 
-function mapActivity(activity) {
-  return {
-    id: activity.id,
-    title: activity.title,
-    price: activity.price,
-    weekDay: activity.weekDay ?? activity.week_day,
-    startHour: activity.startHour ?? activity.start_hour,
-    endHour: activity.endHour ?? activity.end_hour,
-    image: activity.image,
-  }
-}
+const API_URL = "http://localhost:8080/activities";
 
-export async function getActivities() {
+export const getActivities = async () => {
   try {
-    const response = await httpClient.get('/activities')
-    return response.data.map(mapActivity)
-  } catch {
-    return activities.map(mapActivity)
+    const response = await axios.get(API_URL);
+    return response.data;
+  } catch (error) {
+    throw error;
   }
-}
+};
