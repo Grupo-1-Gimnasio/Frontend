@@ -1,39 +1,34 @@
 import { useEffect, useState } from 'react'
-import { ManagementCard } from '../../components/management/ManagementCards'
 import { getDashboardData } from '../../services/dashboardService'
 
-function DashboardVisual({ label, toneClassName }) {
-  const initials = label
-    .split(' ')
-    .slice(0, 2)
-    .map((chunk) => chunk.slice(0, 1).toUpperCase())
-    .join('')
-
+function DashboardMetricCard({ label, value }) {
   return (
-    <div
-      className={`flex aspect-[4/3] items-end bg-[linear-gradient(180deg,#161616_0%,#101010_100%)] p-5 ${toneClassName}`}
-    >
-      <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-black/20 text-xl font-semibold tracking-[0.08em] text-white">
-        {initials}
+    <article className="rounded-[24px] border border-neutral-800 bg-neutral-900 p-5">
+      <div className="space-y-3">
+        <p className="text-sm font-semibold uppercase tracking-[0.08em] text-orange-400">
+          {label}
+        </p>
+        <p className="text-5xl font-bold leading-none tracking-[-0.05em] text-white">
+          {value}
+        </p>
       </div>
-    </div>
+    </article>
   )
 }
 
-function getKpiDescription(label) {
-  if (label === 'Usuarios activos') {
-    return 'Seguimiento actualizado del numero de personas activas dentro del centro.'
-  }
-
-  if (label === 'Actividades') {
-    return 'Vista rapida del volumen de actividades disponibles en la gestion.'
-  }
-
-  if (label === 'Profesores') {
-    return 'Control del equipo docente actualmente registrado en la plataforma.'
-  }
-
-  return 'Indicador general para revisar la evolucion del panel de gestion.'
+function DashboardRecentCard({ name }) {
+  return (
+    <article className="rounded-[24px] border border-neutral-800 bg-neutral-900 p-5">
+      <div className="space-y-3">
+        <p className="text-sm font-semibold uppercase tracking-[0.08em] text-orange-400">
+          Actividad reciente
+        </p>
+        <p className="text-[2rem] font-semibold leading-[1.05] tracking-[-0.04em] text-white">
+          {name}
+        </p>
+      </div>
+    </article>
+  )
 }
 
 function ManagementDashboardPage() {
@@ -82,18 +77,10 @@ function ManagementDashboardPage() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {kpiCards.map((card) => (
-          <ManagementCard
+          <DashboardMetricCard
             key={card.label}
-            media={
-              <DashboardVisual
-                label={card.label}
-                toneClassName="text-orange-300"
-              />
-            }
-            title={card.value}
-            description={getKpiDescription(card.label)}
-            accent={card.label}
-            titleClassName="text-[2.4rem]"
+            label={card.label}
+            value={card.value}
           />
         ))}
       </div>
@@ -102,20 +89,9 @@ function ManagementDashboardPage() {
         <h2 className="text-xl font-semibold text-white">Actividad reciente</h2>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {recentActivity.map((item) => (
-            <ManagementCard
+            <DashboardRecentCard
               key={item.id}
-              media={
-                <DashboardVisual
-                  label={item.name}
-                  toneClassName="text-sky-300"
-                />
-              }
-              title={item.name}
-              description="Movimiento reciente registrado dentro del panel de gestion."
-              accent="Actividad reciente"
-              titleClassName="text-[1.8rem]"
-              descriptionClassName="leading-7"
-              className="list-none"
+              name={item.name}
             />
           ))}
         </div>

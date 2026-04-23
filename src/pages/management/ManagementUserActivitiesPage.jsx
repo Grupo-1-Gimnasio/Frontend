@@ -119,45 +119,14 @@ function ManagementUserActivitiesPage() {
   }, [loading])
 
   const enrolledActivities = selectedUser?.enrolledActivities ?? []
+  const userActivities = activities.filter((activity) =>
+    enrolledActivities.includes(activity.id)
+  )
   const selectedUserFullName = [selectedUser?.name, selectedUser?.surname]
     .filter(Boolean)
     .join(' ')
-  const totalActivities = activities.length
+  const totalActivities = userActivities.length
   const hasReachedLimit = enrolledActivities.length >= 3
-  const canUserEnroll =
-    selectedUser &&
-    selectedUser.isActive === true &&
-    selectedUser.annualFeePaid === true &&
-    !hasReachedLimit
-
-  const handleEnroll = (activity) => {
-    setSelectedUser((currentUser) => {
-      if (!currentUser) {
-        return currentUser
-      }
-
-      const currentEnrolledActivities = currentUser.enrolledActivities ?? []
-      const isAlreadyEnrolled = currentEnrolledActivities.includes(activity.id)
-
-      if (
-        isAlreadyEnrolled ||
-        currentUser.isActive !== true ||
-        currentUser.annualFeePaid !== true ||
-        currentEnrolledActivities.length >= 3
-      ) {
-        return currentUser
-      }
-
-      const updatedUser = {
-        ...currentUser,
-        enrolledActivities: [...currentEnrolledActivities, activity.id],
-      }
-
-      localStorage.setItem('selectedUser', JSON.stringify(updatedUser))
-
-      return updatedUser
-    })
-  }
 
   const handleUnenroll = (activity) => {
     setSelectedUser((currentUser) => {
@@ -248,18 +217,16 @@ function ManagementUserActivitiesPage() {
         </div>
       )}
 
-      {!selectedUser ? null : activities.length === 0 ? (
+      {!selectedUser ? null : userActivities.length === 0 ? (
         <p className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-300">
-          No hay actividades disponibles.
+          Este usuario no esta inscrito en ninguna actividad.
         </p>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {activities.map((activity) => {
+          {userActivities.map((activity) => {
             const weekDay = activity.weekDay ?? activity.week_day
             const startHour = activity.startHour ?? activity.start_hour
             const endHour = activity.endHour ?? activity.end_hour
-            const isAlreadyEnrolled = enrolledActivities.includes(activity.id)
-            const canEnrollInActivity = canUserEnroll && !isAlreadyEnrolled
             const description = getActivityDescription(activity)
             const accent = `${getWeekDayLabel(weekDay).toUpperCase()} ${startHour ?? '--:--'}-${endHour ?? '--:--'}`
 
@@ -281,15 +248,9 @@ function ManagementUserActivitiesPage() {
                     <p className="text-sm text-neutral-300">
                       Precio: {activity.price ?? 'No disponible'} EUR
                     </p>
-                    {isAlreadyEnrolled ? (
-                      <p className="text-sm text-sky-200">
-                        Ya inscrito en esta actividad
-                      </p>
-                    ) : (
-                      <p className="text-sm text-neutral-400">
-                        Disponible para este usuario.
-                      </p>
-                    )}
+                    <p className="text-sm text-sky-200">
+                      Ya inscrito en esta actividad
+                    </p>
 
                     <div className="flex items-center gap-2">
                       <div className="ml-auto flex items-center gap-2">
@@ -300,18 +261,9 @@ function ManagementUserActivitiesPage() {
                           iconOnly
                         />
                         <ManagementActionButton
-                          onClick={() =>
-                            isAlreadyEnrolled
-                              ? handleUnenroll(activity)
-                              : handleEnroll(activity)
-                          }
-                          disabled={!isAlreadyEnrolled && !canEnrollInActivity}
-                          icon={isAlreadyEnrolled ? 'cancel' : 'plus'}
-                          label={`${
-                            isAlreadyEnrolled
-                              ? 'Desinscribirse de'
-                              : 'Inscribirse en'
-                          } ${activity.title || 'sin titulo'}`}
+                          onClick={() => handleUnenroll(activity)}
+                          icon="cancel"
+                          label={`Desinscribirse de ${activity.title || 'sin titulo'}`}
                           tone="primary"
                           iconOnly
                         />
