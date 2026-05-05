@@ -20,16 +20,8 @@
 
 ---
 
-## 📸 Capturas de Pantalla
+[<img src="./gadget-icon.png" alt="Demo Video" width="250" />](https://1drv.ms/v/c/e10641b190451823/IQBPolX2Vt83SrlqFkdGXWh7AbX-tZ3se0v_thdWh16cBt4?e=pArekb)
 
-### Página Principal
-![Home Page](screenshots/home.png)
-
-### Dashboard Administrativo
-![Admin Dashboard](screenshots/dashboard.png)
-
-### Página de Actividades
-![Activities Page](screenshots/activities.png)
 
 ---
 
